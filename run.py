@@ -1,6 +1,6 @@
 from app.flightdata import FlightDataApp
 
+# filecmp.clear_cache()
 
 if __name__ == '__main__':
-    project = FlightDataApp()
-    project.run()
+    FlightDataApp().run()
