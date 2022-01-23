@@ -2,6 +2,7 @@ import os
 import shutil
 import configparser
 import filecmp
+import secrets
 
 
 from utils.exceptions import MismatchFileError
@@ -30,23 +31,32 @@ class DataManager:
 
         :return: {bool} True if success, False if failure
         """
-        # TODO append unique identifier
         # TODO review path handling
-        # TODO handle directories
 
         try:
-            for file in os.listdir(self.config['Paths']['sd_dir']):
+            for root, dirs, files in os.walk(self.config['Paths']['sd_dir']):
+                for file in files:
 
-                shutil.copy2(os.path.join(self.config['Paths']['sd_dir'], file),
-                             self.config['Paths']['hd_dir'])
+                    if os.path.exists(os.path.join(self.config['Paths']['hd_dir'], file)):
 
-                if self.verify_copy(os.path.join(self.config['Paths']['sd_dir'], file),
-                                    os.path.join(self.config['Paths']['hd_dir'], file)):
+                        filename, extension = file.split(sep='.')
+                        filename += ' ' + secrets.token_hex(8) + '.' + extension
 
-                    print(f"Copied file '{file}' from SD card to SSD")
+                        shutil.copy2(os.path.join(root, file),
+                                     os.path.join(self.config['Paths']['hd_dir'], filename))
 
-                else:
-                    raise MismatchFileError
+                    else:
+                        shutil.copy2(os.path.join(root, file),
+                                     self.config['Paths']['hd_dir'])
+
+                    if self.verify_copy(os.path.join(root, file),
+                                        os.path.join(self.config['Paths']['hd_dir'], file)):
+
+                        print(f"Copied file '{file}' from SD card to SSD")
+
+                    else:
+                        print(f"Mismatched file '{file}'")
+                        raise MismatchFileError
 
             return True
 
