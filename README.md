@@ -28,13 +28,13 @@ ability to build a sd card reader into the device enclosure, I opted for a sd ca
 |       SCK       | Pin 23 - GPIO 11 (SCLK) |
 |      MISO       | Pin 21 - GPIO 9 (MISO)  |
 |       GND       |      Not Connected      |
-<img style="float: right;" src="/static/images/raspberry_pi_4_pinout.png">
+
 
 > Note: Use either 3V3 or 5V the module supports either one but not both. Only one ground connection is required.
 
-[![Raspberry Pi 4B Pinout ><](/static/images/raspberry_pi_4_pinout.png)](https://www.raspberrypi.com/documentation/computers/os.html)
+[![Raspberry Pi 4B Pinout ><](/static/images/raspberry_pi_4_pinout.png=592x340)](https://www.raspberrypi.com/documentation/computers/os.html)
 
-<img style="float: center;" src="/static/images/raspberry_pi_4_pinout.png">
+
 
 ### Software
 
