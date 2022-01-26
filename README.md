@@ -34,7 +34,7 @@ ability to build a sd card reader into the device enclosure, I opted for a sd ca
 
 [![Raspberry Pi 4B Pinout ><](/static/images/raspberry_pi_4_pinout.png)](https://www.raspberrypi.com/documentation/computers/os.html)
 
-<img style="float: right;" src="/static/images/raspberry_pi_4_pinout.png">
+<img style="float: center;" src="/static/images/raspberry_pi_4_pinout.png">
 
 ### Software
 
