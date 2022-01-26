@@ -12,7 +12,7 @@
 
 For this project flight data is accumulated to a full size sd card, however the raspberry pi doesn't have support for a
 full size sd card. One option would be to use a USB dongle, but taking into consideration aesthetics and having the
-ability to build a sd card reader into the device enclosure, I opted for a sd card module using SPI.
+ability to build a sd card reader into the device enclosure. I opted for a sd card module using SPI.
 
 [![SD Card Module](/static/images/sd_card_module.png)](https://www.amazon.com/dp/B07XGQ863W?psc=1&ref=ppx_yo2_dt_b_product_details)
 
@@ -33,10 +33,6 @@ ability to build a sd card reader into the device enclosure, I opted for a sd ca
 
 
 > Note: Use either 3V3 or 5V the module supports either one but not both. Only one ground connection is required.
-
-&nbsp;
-
-[![Raspberry Pi 4B Pinout](/static/images/raspberry_pi_4_pinout.png)](https://www.raspberrypi.com/documentation/computers/os.html)
 
 &nbsp;
 
