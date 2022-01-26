@@ -1,5 +1,8 @@
-
+import os
+import shutil
 
 
 class DriveManager:
-    pass
+
+    def check_hd_capacity(self):
+        pass

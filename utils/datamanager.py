@@ -60,13 +60,44 @@ class DataManager:
 
             return True
 
-        except IOError or PermissionError as e:
+        except IOError or PermissionError or OSError as e:
             print(f"Copy Error: {e}")
 
             return False
 
     def clear_sd_card(self):
-        pass
+
+        try:
+            for root, dirs, files in os.walk(self.config['Paths']['sd_dir']):
+                for file in files:
+
+                    if os.path.exists(os.path.join(self.config['Paths']['hd_dir'], file)):
+
+                        filename, extension = file.split(sep='.')
+                        filename += ' ' + secrets.token_hex(8) + '.' + extension
+
+                        shutil.copy2(os.path.join(root, file),
+                                     os.path.join(self.config['Paths']['hd_dir'], filename))
+
+                    else:
+                        shutil.copy2(os.path.join(root, file),
+                                     self.config['Paths']['hd_dir'])
+
+                    if self.verify_copy(os.path.join(root, file),
+                                        os.path.join(self.config['Paths']['hd_dir'], file)):
+
+                        print(f"Copied file '{file}' from SD card to SSD")
+
+                    else:
+                        print(f"Mismatched file '{file}'")
+                        raise MismatchFileError
+
+            return True
+
+        except IOError or PermissionError or OSError as e:
+            print(f"Copy Error: {e}")
+
+            return False
 
     def download_flight_data(self):
         pass
