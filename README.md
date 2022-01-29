@@ -6,6 +6,60 @@
     - [Software Setup](https://github.com/RyanHiatt/flight_data_manager#software-setup)
 
 
+## Geekworm X735 V2.5 Shield Installation
+
+[![Geekworm X735 V2.5 Shield](/static/images/geekworm_x735_v2-5.png)](https://www.amazon.com/Geekworm-Raspberry-Management-Expansion-Compatible/dp/B07R45W1LN/ref=pd_bxgy_img_2/147-1032413-0120637?pd_rd_w=GVGAz&pf_rd_p=6b3eefea-7b16-43e9-bc45-2e332cbf99da&pf_rd_r=N3J44B70SEC8CYZ6RK8T&pd_rd_r=0e130e86-118a-493c-8063-24000bf0cc8f&pd_rd_wg=ShFxX&pd_rd_i=B07R45W1LN&psc=1)
+
+### Installation
+
+
+### Software
+
+#### Install
+
+1. To begin ensure the system is up-to-date:
+```shell
+sudo apt update && sudo apt upgrade
+```
+
+2. Next, the following can be run line by line to install the required packages, 
+clone the repository(I cloned mine in the 'home' repository), and give permissions:
+```shell
+sudo apt-get install -y python-smbus python
+sudo apt-get install -y pigpio python-pigpio python3-pigpio git
+git clone https://github.com/geekworm-com/x735-v2.5
+cd x735-v2.5
+sudo chmod +x *.sh
+sudo bash install.sh
+echo "alias x735off='sudo x735softsd.sh'" >> ~/.bashrc
+sudo reboot
+```
+
+3. To have the script run automatically when the device is restarted, it will have to be added to the bashrc profile:
+```shell
+nano ~/.bashrc 
+```
+and copy the following to the bottom of the file:
+```shell
+python /home/pi/x735-v2.5/pwm_fan_control.py & 
+```
+> Note: You may have to change the file path depending on your OS or where you initially cloned the repository.
+
+4. Last step is to test it is working properly using the following:
+   1. `x735off` is safe shutdown command, you can run this command to safe shutdown.
+   2. Press onboard button 1-2 seconds to reboot
+   3. Press onboard button 3 seconds to safe shutdown,
+   4. Press onboard button 7-8 seconds to force shutdown.
+
+6. Extra: this script allows for live readings of the pwm fan rpm, this can be done by running `python3 x735-v2.5/read_fan_speed.py`.
+This however can be a bit tedious especially if you are starting from a different directory, therefore I like to add
+an alias to the `~/.bashrc` profile to be able to input `fanspeed` into the terminal and get the results:
+```shell
+echo "alias fanspeed='python3 home/pi/python3 x735-v2.5/read_fan_speed.py'" >> ~/.bashrc
+```
+
+#### Uninstall
+
 
 
 ## Interfacing the SD Card Module
@@ -44,7 +98,14 @@ by Ben V. Brown where he walks through the steps of setting up a secondary sd ca
 In addition, there are extra steps for using older models of the raspberry pi or compute modules.
 
 
-1. To begin ensure the system is up-to-date including the device tree compiler (on newer systems it comes preinstalled):
+1. To begin, first enable SPI on the raspberry device by entering `sudo raspi-config` and navigate to `Interface Options`
+and then to `SPI` where you can select 'Yes', followed by a reboot:
+```shell
+sudo shutdown -r now
+```
+
+
+2. To begin ensure the system is up-to-date including the device tree compiler (on newer systems it comes preinstalled):
 ```shell
 sudo apt update && sudo apt full-upgrade
 sudo apt install device-tree-compiler
