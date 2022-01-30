@@ -15,7 +15,7 @@
 
 ## Geekworm X735 V2.5 Shield Installation
 
-[![Geekworm X735 V2.5 Shield](/static/images/geekworm_x735_v2-5.png)](https://www.amazon.com/Geekworm-Raspberry-Management-Expansion-Compatible/dp/B07R45W1LN/ref=pd_bxgy_img_2/147-1032413-0120637?pd_rd_w=GVGAz&pf_rd_p=6b3eefea-7b16-43e9-bc45-2e332cbf99da&pf_rd_r=N3J44B70SEC8CYZ6RK8T&pd_rd_r=0e130e86-118a-493c-8063-24000bf0cc8f&pd_rd_wg=ShFxX&pd_rd_i=B07R45W1LN&psc=1)
+[![Geekworm X735 V2.5 Shield](/static/images-github/geekworm_x735_v2-5.png)](https://www.amazon.com/Geekworm-Raspberry-Management-Expansion-Compatible/dp/B07R45W1LN/ref=pd_bxgy_img_2/147-1032413-0120637?pd_rd_w=GVGAz&pf_rd_p=6b3eefea-7b16-43e9-bc45-2e332cbf99da&pf_rd_r=N3J44B70SEC8CYZ6RK8T&pd_rd_r=0e130e86-118a-493c-8063-24000bf0cc8f&pd_rd_wg=ShFxX&pd_rd_i=B07R45W1LN&psc=1)
 
 ### Installation
 
@@ -82,7 +82,7 @@ For this project flight data is accumulated to a full size sd card, however the 
 full size sd card. One option would be to use a USB dongle, but taking into consideration aesthetics and having the
 ability to build a sd card reader into the device enclosure. I opted for a sd card module using SPI.
 
-[![SD Card Module](/static/images/sd_card_module.png)](https://www.amazon.com/dp/B07XGQ863W?psc=1&ref=ppx_yo2_dt_b_product_details)
+[![SD Card Module](/static/images-github/sd_card_module.png)](https://www.amazon.com/dp/B07XGQ863W?psc=1&ref=ppx_yo2_dt_b_product_details)
 
 &nbsp;
 

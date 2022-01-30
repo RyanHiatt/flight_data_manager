@@ -1,9 +1,97 @@
 #:kivy 2.0.0
 
-TestWidget:
+# Set the Initial Screen
+HomeScreen:
 
-<TestWidget>:
-    Button:
-        text: "test button"
-        size: 400, 400
-        pos
+<HomeScreen>:
+    canvas:
+        Color:
+            rgba: 0.898, 0.898, 0.898, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    rows: 2
+
+    GridLayout:
+        cols: 3
+
+        AnchorLayout:
+            anchor_x: 'left'
+            anchor_y: 'top'
+
+            VersionLabel:
+
+
+        OsuLogo:
+
+        AnchorLayout:
+            padding: [0, 40, 40, 0]
+            anchor_y: 'top'
+            anchor_x: 'right'
+
+            SettingsButton:
+
+    GridLayout:
+        cols: 2
+
+        BoxLayout:
+            orientation: 'vertical'
+
+
+            DataTransferLabel:
+                size_hint_y: 0.4
+                text_size: self.size
+                valign: 'bottom'
+                halign: 'center'
+                text: 'SD Card'
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+                DataTransferButton:
+                    text: 'Upload'
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            DataTransferLabel:
+                size_hint_y: 0.4
+                text_size: self.size
+                valign: 'bottom'
+                halign: 'center'
+                text: 'USB Drive'
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+                DataTransferButton:
+                    text: 'Download'
+
+<DataTransferButton>:
+    text: 'undefined'
+    font_size: 56
+    size_hint: None, None
+    size: dp(300), dp(150)
+    background_normal: ''
+    background_color: 0.22, 0.22, 0.22, 1
+
+<DataTransferLabel>:
+    text: 'undefined'
+    font_size: 48
+    color: 0.22, 0.22, 0.22, 1
+
+<SettingsButton>:
+    size_hint: None, None
+    size: dp(50), dp(50)
+    background_normal: 'static/images-kivy/settings_dark_48dp.png'
+    background_down: 'static/images-kivy/settings_light_48dp.png'
+
+
+<OsuLogo>:
+    source: 'static/images-kivy/osu_logo.png'
+    allow_stretch: True
+    size_hint: None, None
+    size: dp(410), dp(213)
+
+<VersionLabel>:
