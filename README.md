@@ -1,9 +1,16 @@
 # Flight Data Retrieval and Management System
 
 ### Table of Contents
+- [Geekworm X735 V2.5 Shield Installation](https://github.com/RyanHiatt/flight_data_manager)
+  - [Installation]
+  - [Software]
+- [Connecting the Official Raspberry Pi 7in Touchscreen]
 - [Interfacing the SD Card Module](https://github.com/RyanHiatt/flight_data_manager#interfacing-the-sd-card-module)
-    - [Wiring](https://github.com/RyanHiatt/flight_data_manager#wiring)
-    - [Software Setup](https://github.com/RyanHiatt/flight_data_manager#software-setup)
+  - [Wiring](https://github.com/RyanHiatt/flight_data_manager#wiring)
+  - [Software Setup](https://github.com/RyanHiatt/flight_data_manager#software-setup)
+- [Creating Raspberry Pi Backup Images]
+  - [Linux]
+  - [macOS]
 
 
 ## Geekworm X735 V2.5 Shield Installation
@@ -60,6 +67,13 @@ echo "alias fanspeed='python3 home/pi/python3 x735-v2.5/read_fan_speed.py'" >> ~
 
 #### Uninstall
 
+To uninstall the scripts, cd into the scripts directory `cd x735-v2.5` and run:
+```shell
+sudo unistall.sh
+```
+
+
+## Connecting the Official Raspberry Pi 7in Touchscreen
 
 
 ## Interfacing the SD Card Module
@@ -165,4 +179,54 @@ added should appear as `mmcblk1, 2, ... ,some number`)
 ls /dev/mmc*
 ```
 
+## Creating Raspberry Pi Backup Images
 
+Throughout development, it is often useful to back up the raspbian operating systems as progress has been made. I have
+found myself in many situations in which I have seriously messed something up and have to repeat everything I have done
+thus far to catch back up. Saving different versions of the system using a versioning technique such as V0.1.0, can be
+highly beneficial even for future projects.
+
+### Linux
+
+1. Remove the sd card form the raspberry pi and insert into your computer or card reader. Open the terminal and enter
+`sudo fdisk -l` to list all the filesystems present on your system.
+
+2. Using your sd card size try to find the name of your device, often `/dev/sdb` with a slightly smaller storage size
+than what the card actually lists. **Note down this device name**.
+
+3. Use the `dd` command to write the image to your systems hard drive for example:
+```shell
+sudo dd if=/dev/sdb of=~/raspbian_backup.img
+```
+The *if* parameter refers to the input file(replace with the name of your device) and the *of* parameter refers to the 
+output file with the location and name of the backup file.
+> Note: double-check your parameters before executing the `dd` command as entering incorrect parameters can potentially 
+> data on your drives.
+
+4. There may not be any output from the command above until the cloning is complete and at this point you can remove the
+sd card and and place it back in the raspberry pi.
+
+### macOS
+
+1. Remove the sd card form the raspberry pi and insert into your computer or card reader. Open the terminal and enter
+`diskutil list` to list all the filesystems present on your system.
+
+2. Using your sd card size try to find the name of your device, often `/dev/disk3` with a slightly smaller storage size
+than what the card actually lists. **Note down this device name**.
+
+3. Next, unmount you sd card using the name of you sd card found previously:
+```shell
+diskutil unmountDisk /dev/disk3
+```
+
+5. Use the `dd` command to write the image to your systems hard drive for example:
+```shell
+sudo dd if=/dev/sdb of=~/raspbian_backup.img
+```
+The *if* parameter refers to the input file(replace with the name of your device) and the *of* parameter refers to the 
+output file with the location and name of the backup file.
+> Note: double-check your parameters before executing the `dd` command as entering incorrect parameters can potentially 
+> data on your drives.
+
+4. There may not be any output from the command above until the cloning is complete and at this point you can remove the
+sd card and and place it back in the raspberry pi.
