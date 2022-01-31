@@ -14,6 +14,13 @@
   - [Linux]
   - [macOS]
 
+___
+
+## Installing Kivy on Raspberry Pi Headless
+
+
+___
+/n/n/n
 
 ## Geekworm X735 V2.5 Shield Installation
 
@@ -35,7 +42,7 @@ sudo apt update && sudo apt upgrade
 2. Next, the following can be run line by line to install the required packages, 
 clone the repository(I cloned mine in the 'home' repository), and give permissions:
 ```shell
-sudo apt-get install -y python-smbus python
+python3 -m pip install smbus2
 sudo apt-get install -y pigpio python-pigpio python3-pigpio git
 git clone https://github.com/geekworm-com/x735-v2.5
 cd x735-v2.5
@@ -65,7 +72,7 @@ python /home/pi/x735-v2.5/pwm_fan_control.py &
 This however can be a bit tedious especially if you are starting from a different directory, therefore I like to add
 an alias to the `~/.bashrc` profile to be able to input `fanspeed` into the terminal and get the results:
 ```shell
-echo "alias fanspeed='python3 home/pi/python3 x735-v2.5/read_fan_speed.py'" >> ~/.bashrc
+echo "alias fanspeed='python3 ~/x735-v2.5/read_fan_speed.py'" >> ~/.bashrc
 ```
 
 #### Uninstall
@@ -75,9 +82,14 @@ To uninstall the scripts, cd into the scripts directory `cd x735-v2.5` and run:
 sudo unistall.sh
 ```
 
+___
+/n/n/n
 
 ## Connecting the Official Raspberry Pi 7in Touchscreen
 
+
+___
+/n/n/n
 
 ## Interfacing the SD Card Module
 
@@ -182,6 +194,9 @@ added should appear as `mmcblk1, 2, ... ,some number`)
 ls /dev/mmc*
 ```
 
+___
+/n/n/n
+
 ## Creating Raspberry Pi Backup Images
 
 Throughout development, it is often useful to back up the raspbian operating systems as progress has been made. I have
@@ -233,3 +248,14 @@ output file with the location and name of the backup file.
 
 4. There may not be any output from the command above until the cloning is complete and at this point you can remove the
 sd card and and place it back in the raspberry pi.
+
+
+
+
+
+
+
+
+
+
+pip install kivy
