@@ -1,0 +1,5 @@
+
+
+[App]
+Settings:
+    Toggle Option for sd card deletion

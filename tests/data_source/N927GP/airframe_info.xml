@@ -1,0 +1,12 @@
+<airframe_info   info_version="1.00">
+    <airframe_name>Cessna 172S</airframe_name>
+    <unit_software_part_number>006-B1177-69</unit_software_part_number>
+    <unit_software_version>20.83</unit_software_version>
+    <cockpit_reference_guide_pn>GPN 190-02178-02</cockpit_reference_guide_pn>
+    <system_id>25D5F09AC</system_id>
+    <this_cards_serial_number>0xA5BB1277</this_cards_serial_number>
+    <manifest>
+       <system_software_part_number>006-B2501-10</system_software_part_number>
+       <system_software_version>2501.10</system_software_version>
+    </manifest>
+</airframe_info>

@@ -16,12 +16,7 @@ HomeScreen:
     GridLayout:
         cols: 3
 
-        AnchorLayout:
-            anchor_x: 'left'
-            anchor_y: 'top'
-
-            VersionLabel:
-
+        VersionLabel:
 
         OsuLogo:
 
@@ -38,7 +33,6 @@ HomeScreen:
         BoxLayout:
             orientation: 'vertical'
 
-
             DataTransferLabel:
                 size_hint_y: 0.4
                 text_size: self.size
@@ -51,6 +45,7 @@ HomeScreen:
                 anchor_y: 'top'
                 DataTransferButton:
                     text: 'Upload'
+                    on_release: self.upload_data()
 
         BoxLayout:
             orientation: 'vertical'
@@ -67,6 +62,8 @@ HomeScreen:
                 anchor_y: 'top'
                 DataTransferButton:
                     text: 'Download'
+                    on_release: self.download_data()
+
 
 <DataTransferButton>:
     text: 'undefined'
@@ -86,7 +83,7 @@ HomeScreen:
     size: dp(50), dp(50)
     background_normal: 'static/images-kivy/settings_dark_48dp.png'
     background_down: 'static/images-kivy/settings_light_48dp.png'
-
+    on_release: app.open_settings()
 
 <OsuLogo>:
     source: 'static/images-kivy/osu_logo.png'
@@ -95,3 +92,8 @@ HomeScreen:
     size: dp(410), dp(213)
 
 <VersionLabel>:
+    font_size: 28
+    color: 0.22, 0.22, 0.22, 1
+    text_size: self.size
+    halign: 'left'
+    valign: 'top'
