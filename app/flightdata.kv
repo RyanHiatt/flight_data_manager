@@ -10,7 +10,6 @@ HomeScreen:
         Rectangle:
             size: self.size
             pos: self.pos
-
     rows: 2
 
     GridLayout:
@@ -45,6 +44,7 @@ HomeScreen:
                 anchor_y: 'top'
                 DataTransferButton:
                     text: 'Upload'
+
                     on_release: self.upload_data()
 
         BoxLayout:
@@ -62,6 +62,7 @@ HomeScreen:
                 anchor_y: 'top'
                 DataTransferButton:
                     text: 'Download'
+
                     on_release: self.download_data()
 
 
@@ -83,6 +84,7 @@ HomeScreen:
     size: dp(50), dp(50)
     background_normal: 'static/images-kivy/settings_dark_48dp.png'
     background_down: 'static/images-kivy/settings_light_48dp.png'
+    on_release: print('Settings Pressed')
     on_release: app.open_settings()
 
 <OsuLogo>:

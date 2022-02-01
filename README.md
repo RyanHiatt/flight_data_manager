@@ -3,6 +3,7 @@
 ## Project Overview
 
 ### Table of Contents
+- [Installing Kivy 2.0.0 on Raspberry Pi]
 - [Geekworm X735 V2.5 Shield Installation](https://github.com/RyanHiatt/flight_data_manager)
   - [Installation]
   - [Software]
@@ -16,11 +17,100 @@
 
 ___
 
-## Installing Kivy on Raspberry Pi Headless
+## Installing Kivy 2.0.0 on Raspberry Pi Headless
+The following are the origional documentation for the process of installing and running Kivy on a Raspberry Pi:
+- [Installing Kivy](https://kivy.org/doc/stable/gettingstarted/installation.html#kivy-source-install)
+- [Kivy Installation on Raspberry Pi](https://kivy.org/doc/stable/installation/installation-rpi.html)
 
+1. Before beginning, ensure your system is up-to-date, python and pip are installed, and also up-to-date:
+```shell
+sudo apt update && sudo apt upgrade
+sudo apt install python3-setuptools git-core python3-dev
+sudo apt install python-pip
+python -m pip install --upgrade pip setuptools virtualenv
+```
 
+2. First install Kivy using pip:
+```shell
+python3 -m pip install kivy
+```
+
+3. Source installation dependencies
+```shell
+sudo apt update
+sudo apt install pkg-config libgl1-mesa-dev libgles2-mesa-dev \
+   libgstreamer1.0-dev \
+   gstreamer1.0-plugins-{bad,base,good,ugly} \
+   gstreamer1.0-{omx,alsa} libmtdev-dev \
+   xclip xsel libjpeg-dev
+```
+
+4. SDL2 installation using headless environment:
+   1. Install Requirements:
+    ```shell
+    sudo apt-get install libfreetype6-dev libgl1-mesa-dev libgles2-mesa-dev libdrm-dev libgbm-dev libudev-dev libasound2-dev liblzma-dev libjpeg-dev libtiff-dev libwebp-dev git build-essential
+    sudo apt-get install gir1.2-ibus-1.0 libdbus-1-dev libegl1-mesa-dev libibus-1.0-5 libibus-1.0-dev libice-dev libsm-dev libsndio-dev libwayland-bin libwayland-dev libxi-dev libxinerama-dev libxkbcommon-dev libxrandr-dev libxss-dev libxt-dev libxv-dev x11proto-randr-dev x11proto-scrnsaver-dev x11proto-video-dev x11proto-xinerama-dev
+    ```
+   2. Install SDL2:
+   ```shell
+    wget https://libsdl.org/release/SDL2-2.0.10.tar.gz
+    tar -zxvf SDL2-2.0.10.tar.gz
+    pushd SDL2-2.0.10
+    ./configure --enable-video-kmsdrm --disable-video-opengl --disable-video-x11 --disable-video-rpi
+    make -j$(nproc)
+    sudo make install
+    popd
+    ```
+   3. Install SDL2_image:
+   ```shell
+    wget https://libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz
+    tar -zxvf SDL2_image-2.0.5.tar.gz
+    pushd SDL2_image-2.0.5
+    ./configure
+    make -j$(nproc)
+    sudo make install
+    popd
+    ```
+   4. Install SDL2_mixer:
+   ```shell
+    wget https://libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.4.tar.gz
+    tar -zxvf SDL2_mixer-2.0.4.tar.gz
+    pushd SDL2_mixer-2.0.4
+    ./configure
+    make -j$(nproc)
+    sudo make install
+    popd
+    ```
+   5. Install SDL2_ttf:
+   ```shell
+    wget https://libsdl.org/projects/SDL_ttf/release/SDL2_ttf-2.0.15.tar.gz
+    tar -zxvf SDL2_ttf-2.0.15.tar.gz
+    pushd SDL2_ttf-2.0.15
+    ./configure
+    make -j$(nproc)
+    sudo make install
+    popd
+    ```
+
+5. Make sure the dynamic libraries caches is updated:
+```shell
+sudo ldconfig -v
+```
+If you are getting output similar to this when running your app:
+```shell
+[INFO   ] GL: OpenGL vendor <b'VMware, Inc.'>
+[INFO   ] GL: OpenGL renderer <b'llvmpipe (LLVM 9.0.1, 128 bits)'>
+```
+Then it means that the renderer is NOT hardware accelerated. This can be fixed by adding your user to the render group:
+```shell
+sudo adduser "$USER" render
+```
+You will then see an output similar to this:
+```shell
+[INFO   ] GL: OpenGL vendor <b'Broadcom'>
+[INFO   ] GL: OpenGL renderer <b'V3D 4.2'>
+```
 ___
-/n/n/n
 
 ## Geekworm X735 V2.5 Shield Installation
 
@@ -83,13 +173,11 @@ sudo unistall.sh
 ```
 
 ___
-/n/n/n
 
 ## Connecting the Official Raspberry Pi 7in Touchscreen
 
 
 ___
-/n/n/n
 
 ## Interfacing the SD Card Module
 
@@ -195,7 +283,6 @@ ls /dev/mmc*
 ```
 
 ___
-/n/n/n
 
 ## Creating Raspberry Pi Backup Images
 
@@ -249,7 +336,7 @@ output file with the location and name of the backup file.
 4. There may not be any output from the command above until the cloning is complete and at this point you can remove the
 sd card and and place it back in the raspberry pi.
 
-
+___
 
 
 

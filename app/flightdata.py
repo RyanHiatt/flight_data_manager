@@ -1,22 +1,25 @@
 import configparser
+import threading
 
 from kivy.app import App
 from kivy.core.window import Window
+from kivy.clock import Clock
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.properties import StringProperty
+from kivy.properties import BooleanProperty
 
 from utils.datamanager import DataManager
 from utils.drivemanager import DriveManager
 
+# Instantiate configparser and read the config
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-data_manager = DataManager(sd_dir=config.get('Paths', 'sd_dir'),
-                           hd_dir=config.get('Paths', 'hd_dir'),
-                           usb_dir=config.get('Paths', 'usb_dir'))
+# Instantiate the manager utils
+data_manager = DataManager()
 drive_manager = DriveManager()
 
 
@@ -25,6 +28,9 @@ class HomeScreen(GridLayout):
 
 
 class DataTransferButton(Button):
+
+    def drive_check(self):
+        print('check')
 
     def upload_data(self):
         print('Upload Pressed')
@@ -55,6 +61,8 @@ class VersionLabel(Label):
 
 class FlightDataApp(App):
     Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
+
+
 
 
 if __name__ == '__main__':
