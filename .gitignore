@@ -229,4 +229,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # Remove test data from repository
-/tests/
+/tests/test_hd/
+/tests/test_sd/
+/tests/test_usb/
