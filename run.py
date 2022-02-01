@@ -9,8 +9,8 @@ from app.flightdata import FlightDataApp
 from utils.datamanager import DataManager
 
 # manager = DataManager()
-# manager.upload_sd_data()
-
+# manager.upload_sd_data_to_hd()
+# ---------------
 
 def setup():
     # Clear file comparison cache

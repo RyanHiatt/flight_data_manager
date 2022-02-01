@@ -62,7 +62,7 @@ class DataManager:
         else:  # if no differing files, return true
             return True
 
-    def parse_airframe_info_xml(self, xml_file: str) -> tuple:
+    def _parse_airframe_info_xml(self, xml_file: str) -> tuple:
         """
 
         :param xml_file:
@@ -78,7 +78,7 @@ class DataManager:
 
         return param1, param2
 
-    def get_file_path(self, file: str) -> tuple:
+    def _get_file_path(self, file: str) -> tuple:
         """
 
         :param file:
@@ -97,19 +97,19 @@ class DataManager:
         except IOError or PermissionError or OSError as e:
             print(f"SD Card Error: {e}")
 
-    def upload_sd_data(self):
+    def upload_sd_data_to_hd(self):
         """
 
 
         :return:
         """
         # Check if the target exists -> return bool and path
-        result, target_path = self.get_file_path(file=self.target)
+        result, target_path = self._get_file_path(file=self.target)
 
         if result:  # Continue with target file
 
             # parse the target file to find naming parameters
-            param1, param2 = self.parse_airframe_info_xml(xml_file=target_path)
+            param1, param2 = self._parse_airframe_info_xml(xml_file=target_path)
 
             # Generate the directory name based on the two xml parameters
             dst_dir_name = param1 + '-' + param2
@@ -143,6 +143,7 @@ class DataManager:
     def test(self):
         print(self.sd, self.hd)
 
+    @staticmethod
     def copy_files(self, src, dst) -> bool:
         """
         This method simply recursively copies all files from source(PATH) to destination(PATH)
@@ -183,4 +184,4 @@ class DataManager:
 if __name__ == '__main__':
 
     manager = DataManager()
-    manager.upload_sd_data()
+    manager.upload_sd_data_to_hd()

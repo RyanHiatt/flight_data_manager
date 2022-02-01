@@ -44,7 +44,7 @@ HomeScreen:
                 anchor_y: 'top'
                 DataTransferButton:
                     text: 'Upload'
-
+                    disabled: not self.upload_enabled
                     on_release: self.upload_data()
 
         BoxLayout:
@@ -62,17 +62,17 @@ HomeScreen:
                 anchor_y: 'top'
                 DataTransferButton:
                     text: 'Download'
-
+                    disabled: not self.download_enabled
                     on_release: self.download_data()
 
 
 <DataTransferButton>:
+    background_normal: 'static/images-kivy/dark_button.png'
+    background_down: 'static/images-kivy/light_button.png'
     text: 'undefined'
     font_size: 56
     size_hint: None, None
     size: dp(300), dp(150)
-    background_normal: ''
-    background_color: 0.22, 0.22, 0.22, 1
 
 <DataTransferLabel>:
     text: 'undefined'

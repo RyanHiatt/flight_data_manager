@@ -29,6 +29,9 @@ class HomeScreen(GridLayout):
 
 class DataTransferButton(Button):
 
+    upload_enabled = drive_manager.sd_mounted
+    download_enabled = drive_manager.usb_mounted
+
     def drive_check(self):
         print('check')
 
@@ -61,8 +64,6 @@ class VersionLabel(Label):
 
 class FlightDataApp(App):
     Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
-
-
 
 
 if __name__ == '__main__':
