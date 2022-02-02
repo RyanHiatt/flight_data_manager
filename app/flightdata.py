@@ -1,5 +1,4 @@
 import configparser
-import threading
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -9,7 +8,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.properties import StringProperty
-from kivy.properties import BooleanProperty
+
 
 from utils.datamanager import DataManager
 from utils.drivemanager import DriveManager
@@ -29,8 +28,6 @@ class HomeScreen(GridLayout):
 
 class DataTransferButton(Button):
 
-    upload_enabled = drive_manager.sd_mounted
-    download_enabled = drive_manager.usb_mounted
 
     def drive_check(self):
         print('check')
