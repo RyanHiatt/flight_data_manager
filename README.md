@@ -3,6 +3,7 @@
 ## Project Overview
 
 ### Table of Contents
+
 - [Installing Kivy 2.0.0 on Raspberry Pi]
 - [Geekworm X735 V2.5 Shield Installation](https://github.com/RyanHiatt/flight_data_manager)
   - [Installation]
@@ -18,6 +19,7 @@
 ___
 
 ## Installing Kivy 2.0.0 on Raspberry Pi Headless
+
 The following are the origional documentation for the process of installing and running Kivy on a Raspberry Pi:
 - [Installing Kivy](https://kivy.org/doc/stable/gettingstarted/installation.html#kivy-source-install)
 - [Kivy Installation on Raspberry Pi](https://kivy.org/doc/stable/installation/installation-rpi.html)
@@ -110,6 +112,19 @@ You will then see an output similar to this:
 [INFO   ] GL: OpenGL vendor <b'Broadcom'>
 [INFO   ] GL: OpenGL renderer <b'V3D 4.2'>
 ```
+
+### Enable Using Official RPi Touch Display
+
+To use the official Raspberry Pi Display, you need to configure Kivy to use it as an input source. To do this first run
+a Kivy application to generate its config files then edit the file `nano ~/.kivy/config.ini` and go to the [input] 
+section and add the following:
+```shell
+mouse = mouse
+mtdev_%(name)s = probesysfs,provider=mtdev
+hid_%(name)s = probesysfs,provider=hidinput
+%(name)s = probesysfs
+```
+
 ___
 
 ## Geekworm X735 V2.5 Shield Installation
@@ -118,7 +133,8 @@ ___
 
 ### Installation
 
-
+Installation is extremely simple, just attach the shield to the Raspberry Pi using the included standoffs, ensuring
+it is seated on the gpio pins.
 
 ### Software
 
