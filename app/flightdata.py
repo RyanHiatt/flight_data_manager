@@ -30,17 +30,21 @@ class HomeScreen(GridLayout):
 
     def device_update(self, dt):
 
-        self.ids.upload_button.disabled = not drive_manager.check_for_sd_card()
-        self.ids.download_button.disabled = not drive_manager.check_for_usb_drive()
+        self.ids.upload_button.disabled = not drive_manager.check_for_device(drive_manager.sd_device,
+                                                                             drive_manager.sd_path)
+        self.ids.download_button.disabled = not drive_manager.check_for_device(drive_manager.usb_device,
+                                                                               drive_manager.usb_path)
 
 
 class DataTransferButton(Button):
 
     def upload_data(self):
         print('Upload Pressed')
+        drive_manager.unmount_device(drive_manager.sd_path)
 
     def download_data(self):
         print('Download Pressed')
+        drive_manager.unmount_device(drive_manager.usb_path)
 
 
 class DataTransferLabel(Label):

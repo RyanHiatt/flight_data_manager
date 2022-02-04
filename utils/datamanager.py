@@ -17,9 +17,9 @@ class DataManager:
     config.read('config.ini')
 
     # Drive Paths
-    sd = config.get('Paths', 'sd_dir')
-    hd = config.get('Paths', 'hd_dir')
-    usb = config.get('Paths', 'usb_dir')
+    sd = config.get('Paths', 'sd')
+    hd = config.get('Paths', 'hd')
+    usb = config.get('Paths', 'usb')
 
     # File parsing variables
     target = config.get('File Parsing', 'sd_target')

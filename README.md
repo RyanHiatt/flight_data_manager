@@ -117,12 +117,11 @@ You will then see an output similar to this:
 
 To use the official Raspberry Pi Display, you need to configure Kivy to use it as an input source. To do this first run
 a Kivy application to generate its config files then edit the file `nano ~/.kivy/config.ini` and go to the [input] 
-section and add the following:
+section and match the following:
 ```shell
 mouse = mouse
 mtdev_%(name)s = probesysfs,provider=mtdev
 hid_%(name)s = probesysfs,provider=hidinput
-%(name)s = probesysfs
 ```
 
 ___
