@@ -13,9 +13,9 @@ class DriveManager:
     config.read('config.ini')
 
     context = pyudev.Context()
-    sd_device = pyudev.Devices.from_name(context, config.get('SD', 'subsystem'), config.get('SD', 'sys_name'))
+
     hd_device = pyudev.Devices.from_name(context, config.get('HD', 'subsystem'), config.get('HD', 'sys_name'))
-    usb_device = pyudev.Devices.from_name(context, config.get('USB', 'subsystem'), config.get('USB', 'sys_name'))
+
 
     # Drive Paths from config.ini
     hd_path = config.get('Paths', 'hd')
@@ -38,13 +38,21 @@ class DriveManager:
         return free // 1048576
 
     def check_for_sd_card(self):
-        if self.sd_device in self.context.list_devices():
+        sd_device = pyudev.Devices.from_name(self.context,
+                                             self.config.get('SD', 'subsystem'),
+                                             self.config.get('SD', 'sys_name'))
+
+        if sd_device in self.context.list_devices():
             return True
         else:
             return False
 
     def check_for_usb_drive(self):
-        if self.usb_device in self.context.list_devices():
+        usb_device = pyudev.Devices.from_name(self.context,
+                                              self.config.get('USB', 'subsystem'),
+                                              self.config.get('USB', 'sys_name'))
+
+        if usb_device in self.context.list_devices():
             return True
         else:
             return False
