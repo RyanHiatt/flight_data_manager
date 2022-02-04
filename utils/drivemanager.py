@@ -4,6 +4,7 @@ import configparser
 import time
 
 import pyudev
+from pyudev._errors import DeviceNotFoundAtPathError
 
 
 class DriveManager:
@@ -13,9 +14,6 @@ class DriveManager:
     config.read('config.ini')
 
     context = pyudev.Context()
-
-    hd_device = pyudev.Devices.from_name(context, config.get('HD', 'subsystem'), config.get('HD', 'sys_name'))
-
 
     # Drive Paths from config.ini
     hd_path = config.get('Paths', 'hd')
@@ -38,29 +36,42 @@ class DriveManager:
         return free // 1048576
 
     def check_for_sd_card(self):
-        sd_device = pyudev.Devices.from_name(self.context,
-                                             self.config.get('SD', 'subsystem'),
-                                             self.config.get('SD', 'sys_name'))
+        try:
+            sd_device = pyudev.Devices.from_path(context=self.context,
+                                                 path=self.config.get('Devices', 'sd'))
 
-        if sd_device in self.context.list_devices():
-            return True
-        else:
+            if sd_device in self.context.list_devices():
+                return True
+            else:
+                return False
+
+        except DeviceNotFoundAtPathError:
             return False
 
     def check_for_usb_drive(self):
-        usb_device = pyudev.Devices.from_name(self.context,
-                                              self.config.get('USB', 'subsystem'),
-                                              self.config.get('USB', 'sys_name'))
+        try:
+            usb_device = pyudev.Devices.from_path(context=self.context,
+                                                 path=self.config.get('Devices', 'usb'))
 
-        if usb_device in self.context.list_devices():
-            return True
-        else:
+            if usb_device in self.context.list_devices():
+                return True
+            else:
+                return False
+
+        except DeviceNotFoundAtPathError:
             return False
 
     def check_for_hard_drive(self):
-        if self.hd_device in self.context.list_devices():
-            return True
-        else:
+        try:
+            hd_device = pyudev.Devices.from_path(context=self.context,
+                                                 path=self.config.get('Devices', 'hd'))
+
+            if hd_device in self.context.list_devices():
+                return True
+            else:
+                return False
+
+        except DeviceNotFoundAtPathError:
             return False
 
 
