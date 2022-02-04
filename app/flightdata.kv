@@ -45,7 +45,7 @@ HomeScreen:
                 DataTransferButton:
                     id: upload_button
                     text: 'Upload'
-                    on_release: self.upload_data()
+                    on_press: self.upload_data()
 
         BoxLayout:
             orientation: 'vertical'
@@ -63,7 +63,7 @@ HomeScreen:
                 DataTransferButton:
                     id: download_button
                     text: 'Download'
-                    on_release: self.download_data()
+                    on_press: self.download_data()
 
 
 <DataTransferButton>:

@@ -20,9 +20,9 @@ class DriveManager:
     hd_path = config.get('Paths', 'hd_dir')
     usb_path = config.get('Paths', 'usb_dir')
 
-    # def __init__(self):
-    #     # Initialize DriveManager by updating remaining capacity
-    #     self.hd_remaining_cap = self.check_drive_capacity(self.hd)  # In GiB
+    def __init__(self):
+        # Initialize DriveManager by updating remaining capacity
+        self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
 
     @staticmethod
     def check_drive_capacity(drive):
@@ -48,10 +48,13 @@ class DriveManager:
         except DeviceNotFoundAtPathError:
             return False
 
+    def mount_sd(self):
+        pass
+
     def check_for_usb_drive(self):
         try:
             usb_device = pyudev.Devices.from_path(context=self.context,
-                                                 path=self.config.get('Devices', 'usb'))
+                                                  path=self.config.get('Devices', 'usb'))
 
             if usb_device in self.context.list_devices():
                 return True
@@ -60,6 +63,9 @@ class DriveManager:
 
         except DeviceNotFoundAtPathError:
             return False
+
+    def mount_usb(self):
+        pass
 
     def check_for_hard_drive(self):
         try:
@@ -73,6 +79,9 @@ class DriveManager:
 
         except DeviceNotFoundAtPathError:
             return False
+
+    def mount_hd(self):
+        pass
 
 
 if __name__ == '__main__':
