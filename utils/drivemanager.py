@@ -16,9 +16,9 @@ class DriveManager:
     context = pyudev.Context()
 
     # Drive Paths from config.ini
-    hd_path = config.get('Paths', 'hd')
-    usb_path = config.get('Paths', 'usb')
-    sd_path = config.get('Paths', 'sd')
+    sd_path = config.get('Paths', 'sd_dir')
+    hd_path = config.get('Paths', 'hd_dir')
+    usb_path = config.get('Paths', 'usb_dir')
 
     # def __init__(self):
     #     # Initialize DriveManager by updating remaining capacity
