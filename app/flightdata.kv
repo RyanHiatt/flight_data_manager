@@ -45,7 +45,8 @@ HomeScreen:
                 DataTransferButton:
                     id: upload_button
                     text: 'Upload'
-                    on_touch_up: self.upload_data()
+                    disabled: True
+                    on_release: self.upload_data()
 
         BoxLayout:
             orientation: 'vertical'
@@ -63,7 +64,8 @@ HomeScreen:
                 DataTransferButton:
                     id: download_button
                     text: 'Download'
-                    on_touch_up: self.download_data()
+                    disabled: True
+                    on_release: self.download_data()
 
 
 <DataTransferButton>:
