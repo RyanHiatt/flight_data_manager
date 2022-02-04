@@ -1,7 +1,6 @@
 import os
 import shutil
 import configparser
-from threading import Thread
 import time
 
 import pyudev
@@ -17,6 +16,8 @@ class DriveManager:
     hd = config.get('Drives', 'hd')
     usb = config.get('Drives', 'usb')
     sd = config.get('Drives', 'sd')
+
+    context = pyudev.Context()
 
     def __init__(self):
         # Initialize DriveManager by updating remaining capacity
@@ -34,12 +35,12 @@ class DriveManager:
         return free // 1048576
 
     def check_for_sd_card(self):
-        context = pyudev.Context()
-        monitor = pyudev.Monitor.from_netlink(context=context)
-        monitor.filter_by()
+        print(pyudev.Devices.from_name(self.context, 'block', 'sda'))
+        return True
 
     def check_for_usb_drive(self):
-        pass
+        print('usb')
+        return False
 
     def check_for_hard_drive(self):
         pass

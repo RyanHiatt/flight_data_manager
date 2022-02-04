@@ -43,8 +43,9 @@ HomeScreen:
                 anchor_x: 'center'
                 anchor_y: 'top'
                 DataTransferButton:
+                    id: upload_button
                     text: 'Upload'
-#                    disabled: not self.upload_enabled
+#                    disabled: root.upload_enabled
                     on_release: self.upload_data()
 
         BoxLayout:
@@ -61,8 +62,9 @@ HomeScreen:
                 anchor_x: 'center'
                 anchor_y: 'top'
                 DataTransferButton:
+                    id: download_button
                     text: 'Download'
-#                    disabled: not self.download_enabled
+#                    disabled: root.download_enabled
                     on_release: self.download_data()
 
 

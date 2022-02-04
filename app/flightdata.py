@@ -3,12 +3,12 @@ import configparser
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.clock import Clock
+from kivy.properties import StringProperty
+from kivy.properties import BooleanProperty
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image
-from kivy.properties import StringProperty
-
 
 from utils.datamanager import DataManager
 from utils.drivemanager import DriveManager
@@ -23,14 +23,18 @@ drive_manager = DriveManager()
 
 
 class HomeScreen(GridLayout):
-    pass
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Clock.schedule_interval(self.device_update, 1)
+
+    def device_update(self, dt):
+
+        self.ids.upload_button.disabled = not drive_manager.check_for_sd_card()
+        self.ids.download_button.disabled = not drive_manager.check_for_usb_drive()
 
 
 class DataTransferButton(Button):
-
-
-    def drive_check(self):
-        print('check')
 
     def upload_data(self):
         print('Upload Pressed')
@@ -55,7 +59,7 @@ class VersionLabel(Label):
     app_version = StringProperty(config.get('Version', 'app_version'))
 
     def __init__(self, **kwargs):
-        super(VersionLabel, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.text = ' Version ' + self.app_version
 
 
