@@ -12,16 +12,19 @@ class DriveManager:
     config = configparser.ConfigParser()
     config.read('config.ini')
 
-    # Drive Paths from config.ini
-    hd = config.get('Drives', 'hd')
-    usb = config.get('Drives', 'usb')
-    sd = config.get('Drives', 'sd')
-
     context = pyudev.Context()
+    sd_device = pyudev.Devices.from_name(context, config.get('SD', 'subsystem'), config.get('SD', 'sys_name'))
+    hd_device = pyudev.Devices.from_name(context, config.get('HD', 'subsystem'), config.get('HD', 'sys_name'))
+    usb_device = pyudev.Devices.from_name(context, config.get('USB', 'subsystem'), config.get('USB', 'sys_name'))
 
-    def __init__(self):
-        # Initialize DriveManager by updating remaining capacity
-        self.hd_remaining_cap = self.check_drive_capacity(self.hd)  # In GiB
+    # Drive Paths from config.ini
+    hd_path = config.get('Paths', 'hd')
+    usb_path = config.get('Paths', 'usb')
+    sd_path = config.get('Paths', 'sd')
+
+    # def __init__(self):
+    #     # Initialize DriveManager by updating remaining capacity
+    #     self.hd_remaining_cap = self.check_drive_capacity(self.hd)  # In GiB
 
     @staticmethod
     def check_drive_capacity(drive):
@@ -35,18 +38,22 @@ class DriveManager:
         return free // 1048576
 
     def check_for_sd_card(self):
-        print(pyudev.Devices.from_name(self.context, 'block', 'sda'))
-        return True
+        if self.sd_device in self.context.list_devices():
+            return True
+        else:
+            return False
 
     def check_for_usb_drive(self):
-        print('usb')
-        return False
+        if self.usb_device in self.context.list_devices():
+            return True
+        else:
+            return False
 
     def check_for_hard_drive(self):
-        pass
-
-
-
+        if self.hd_device in self.context.list_devices():
+            return True
+        else:
+            return False
 
 
 if __name__ == '__main__':
