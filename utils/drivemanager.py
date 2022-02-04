@@ -20,9 +20,9 @@ class DriveManager:
     hd_path = config.get('Paths', 'hd_dir')
     usb_path = config.get('Paths', 'usb_dir')
 
-    def __init__(self):
-        # Initialize DriveManager by updating remaining capacity
-        self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
+    # def __init__(self):
+    #     # Initialize DriveManager by updating remaining capacity
+    #     self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
 
     @staticmethod
     def check_drive_capacity(drive):
