@@ -3,7 +3,7 @@ import shutil
 import configparser
 
 import pyudev
-from pyudev._errors import DeviceNotFoundAtPathError
+from pyudev._errors import DeviceNotFoundByNameError
 
 
 class DeviceManager:
@@ -68,16 +68,16 @@ class DeviceManager:
     def check_for_device(self, device: str, path: str):
 
         try:
-            target_device = pyudev.Devices.from_path(self.context, device)
+            target_device = pyudev.Devices.from_name(context=self.context, subsystem='block', sys_name=device)
 
-            if target_device in self.context.list_devices():
+            if target_device in self.context.list_devices(subsystem='block'):
                 self.mount_device(target_device, device, path)
-                print(f"Found: {target_device.sys_name}")
+                print(f"Found: {target_device.get('DEVNAME')}")
                 return True
             else:
                 return False
 
-        except DeviceNotFoundAtPathError:
+        except DeviceNotFoundByNameError:
             return False
 
     @staticmethod
@@ -86,7 +86,7 @@ class DeviceManager:
             if os.path.ismount(path):
                 pass
             else:
-                os.system(f"sudo mount {device} {path}")
+                os.system(f"sudo mount {target_device.get('DEVNAME')} {path}")
                 if os.path.ismount(path):
                     print(f"{target_device.sys_name} mounted at {path}")
                 else:
@@ -97,7 +97,7 @@ class DeviceManager:
     @staticmethod
     def unmount_device(path: str):
         try:
-            os.system(f'umount -l {path}')
+            os.system(f'sudo umount -l {path}')
             print(f"Device unmounted from {path}")
         except PermissionError as e:
             print(f"Mounting error: {e}")

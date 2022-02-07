@@ -26,7 +26,7 @@ class HomeScreen(GridLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Clock.schedule_interval(self.device_update, 2)
+        Clock.schedule_interval(self.device_update, 1)
 
     def device_update(self, dt):
 
