@@ -27,7 +27,7 @@ class DeviceManager:
     def __init__(self):
         # Initialize DriveManager
         self.check_mount_points()
-        self.mount_device(self.hd_device, self.hd_path)
+        self.mount_hd()
         self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
         pass
 
@@ -41,6 +41,19 @@ class DeviceManager:
         print(f"\tFree: {free // 1048576} MiB")
 
         return free // 1048576
+
+    def mount_hd(self):
+        try:
+            if os.path.ismount(self.hd_path):
+                pass
+            else:
+                os.system(f"sudo mount /dev/{self.hd_device} {self.hd_path}")
+                if os.path.ismount(self.hd_path):
+                    print(f"{self.hd_device} mounted at {self.hd_path}")
+                else:
+                    print(f"Failed to mount: {self.hd_device}")
+        except PermissionError as e:
+            print(f"Mounting error: {e}")
 
     def check_mount_points(self):
         """
