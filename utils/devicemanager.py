@@ -51,19 +51,19 @@ class DeviceManager:
         if os.path.exists(self.sd_path):
             pass
         else:  # Create SD Card mount point
-            os.mkdirs(self.sd_path)
+            os.makedirs(self.sd_path)
 
         # Check if Hard Drive mount point exists
         if os.path.exists(self.hd_path):
             pass
         else:  # Create Hard Drive mount point
-            os.mkdirs(self.hd_path)
+            os.makedirs(self.hd_path)
 
         # Check if USB Drive mount point exists
         if os.path.exists(self.usb_path):
             pass
         else:  # Create USB Drive mount point
-            os.mkdirs(self.usb_path)
+            os.makedirs(self.usb_path)
 
     def check_for_device(self, device: str, path: str):
 
