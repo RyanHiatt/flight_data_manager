@@ -28,7 +28,7 @@ class DeviceManager:
         # Initialize DriveManager
         # self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
         self.check_mount_points()
-        # self.mount_device(self.hd_device, self.hd_path)
+        self.mount_device(self.hd_device, self.hd_path)
         pass
 
     @staticmethod
@@ -71,7 +71,7 @@ class DeviceManager:
             target_device = pyudev.Devices.from_name(context=self.context, subsystem='block', sys_name=device)
 
             if target_device in self.context.list_devices(subsystem='block'):
-                self.mount_device(target_device, device, path)
+                self.mount_device(target_device, path)
                 print(f"Found: {target_device.get('DEVNAME')}")
                 return True
             else:
@@ -81,7 +81,7 @@ class DeviceManager:
             return False
 
     @staticmethod
-    def mount_device(target_device, device: str, path: str):
+    def mount_device(target_device, path: str):
         try:
             if os.path.ismount(path):
                 pass
