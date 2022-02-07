@@ -17,9 +17,9 @@ class DataManager:
     config.read('config.ini')
 
     # Drive Paths
-    sd = config.get('Paths', 'sd')
-    hd = config.get('Paths', 'hd')
-    usb = config.get('Paths', 'usb')
+    sd_path = config.get('Paths', 'sd')
+    hd_path = config.get('Paths', 'hd')
+    usb_path = config.get('Paths', 'usb')
 
     # File parsing variables
     target = config.get('File Parsing', 'sd_target')
@@ -29,10 +29,11 @@ class DataManager:
     @staticmethod
     def dir_exists(dst: str, reference: str) -> bool:
         """
-
-        :param dst:
-        :param reference:
-        :return:
+        Given a top level directory, this method simply looks if a specific reference directory
+        exists within the tree.
+        :param dst: {str} A top level directory to search through
+        :param reference: {str} The reference directory being searched for
+        :return: {bool} True if the reference dir exists, False if it does not exist
         """
         try:
             # Walk through all directories
@@ -49,10 +50,10 @@ class DataManager:
     @staticmethod
     def verify_copy(src: str, dst: str) -> bool:
         """
-
-        :param src:
-        :param dst:
-        :return:
+        This method compares two directories and determines if there are any differences
+        :param src: {str} The source directory being compared against
+        :param dst: {dst} The destination directory beging compared
+        :return: {bool} True if the directories match, False if they do not match
         """
         # Instantiate a dircmp object and extract differing files
         dir_comp = filecmp.dircmp(src, dst).diff_files
@@ -64,9 +65,9 @@ class DataManager:
 
     def _parse_airframe_info_xml(self, xml_file: str) -> tuple:
         """
-
-        :param xml_file:
-        :return:
+        This method takes a xml file to parse and finds the two parameters specified in the config.ini
+        :param xml_file: {str} The path to the desired xml file
+        :return: {tuple} Returns (parameter 1 value, parameter 2 value)
         """
         # Get the xml tree structure
         tree = ET.parse(xml_file)
@@ -78,15 +79,17 @@ class DataManager:
 
         return param1, param2
 
-    def _get_file_path(self, file: str) -> tuple:
+    @staticmethod
+    def _get_file_path(path: str, file: str) -> tuple:
         """
-
-        :param file:
+        This method gets the absolute path for a given file in a given directory
+        :param path: {str} The path at which to begin the search
+        :param file: {str} The file being searched for
         :return:
         """
         try:
             # Walk through all the files on the sd card
-            for root, dirs, files in os.walk(self.sd):
+            for root, dirs, files in os.walk(path):
                 # If one of the files is equal to the param file
                 if file in files:
                     # Return the full path of the found file
@@ -104,7 +107,7 @@ class DataManager:
         :return:
         """
         # Check if the target exists -> return bool and path
-        result, target_path = self._get_file_path(file=self.target)
+        result, target_path = self._get_file_path(path=self.sd_path, file=self.target)
 
         if result:  # Continue with target file
 
@@ -118,10 +121,10 @@ class DataManager:
             new_dir_name = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
             # Copy sd file structure to new directory
-            shutil.copytree(src=self.sd, dst=os.path.join(self.hd, dst_dir_name, new_dir_name))
+            shutil.copytree(src=self.sd_path, dst=os.path.join(self.hd_path, dst_dir_name, new_dir_name))
 
             # Verify that the copied files match the original
-            if self.verify_copy(src=self.sd, dst=os.path.join(self.hd, dst_dir_name, new_dir_name)):
+            if self.verify_copy(src=self.sd_path, dst=os.path.join(self.hd_path, dst_dir_name, new_dir_name)):
                 print(f'Successful Copied: {dst_dir_name}/{new_dir_name}')
                 return True
             else:
@@ -141,7 +144,7 @@ class DataManager:
         pass
 
     def test(self):
-        print(self.sd, self.hd)
+        print(self.sd_path, self.hd_path)
 
     @staticmethod
     def copy_files(self, src, dst) -> bool:

@@ -11,7 +11,7 @@ from kivy.uix.label import Label
 from kivy.uix.image import Image
 
 from utils.datamanager import DataManager
-from utils.drivemanager import DriveManager
+from utils.devicemanager import DeviceManager
 
 # Instantiate configparser and read the config
 config = configparser.ConfigParser()
@@ -19,7 +19,7 @@ config.read('config.ini')
 
 # Instantiate the manager utils
 data_manager = DataManager()
-drive_manager = DriveManager()
+device_manager = DeviceManager()
 
 
 class HomeScreen(GridLayout):
@@ -30,28 +30,26 @@ class HomeScreen(GridLayout):
 
     def device_update(self, dt):
 
-        self.ids.upload_button.disabled = not drive_manager.check_for_device(drive_manager.sd_device,
-                                                                             drive_manager.sd_path)
-        self.ids.download_button.disabled = not drive_manager.check_for_device(drive_manager.usb_device,
-                                                                               drive_manager.usb_path)
+        # Check for SD Card
+        self.ids.upload_button.disabled = not device_manager.check_for_device(device_manager.sd_device,
+                                                                              device_manager.sd_path)
+        # Check for USB Drive
+        self.ids.download_button.disabled = not device_manager.check_for_device(device_manager.usb_device,
+                                                                                device_manager.usb_path)
 
 
 class DataTransferButton(Button):
 
     def upload_data(self):
         print('Upload Pressed')
-        drive_manager.unmount_device(drive_manager.sd_path)
+        device_manager.unmount_device(device_manager.sd_path)
 
     def download_data(self):
         print('Download Pressed')
-        drive_manager.unmount_device(drive_manager.usb_path)
+        device_manager.unmount_device(device_manager.usb_path)
 
 
 class DataTransferLabel(Label):
-    pass
-
-
-class SettingsButton(Button):
     pass
 
 
@@ -69,6 +67,7 @@ class VersionLabel(Label):
 
 class FlightDataApp(App):
     Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
+    # Window.fullscreen = True
 
 
 if __name__ == '__main__':

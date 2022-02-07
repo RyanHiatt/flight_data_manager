@@ -19,12 +19,8 @@ HomeScreen:
 
         OsuLogo:
 
-        AnchorLayout:
-            padding: [0, 40, 40, 0]
-            anchor_y: 'top'
-            anchor_x: 'right'
+        Label:
 
-            SettingsButton:
 
     GridLayout:
         cols: 2
@@ -80,14 +76,6 @@ HomeScreen:
     text: 'undefined'
     font_size: 48
     color: 0.22, 0.22, 0.22, 1
-
-<SettingsButton>:
-    size_hint: None, None
-    size: dp(50), dp(50)
-    background_normal: 'static/images-kivy/settings_dark_48dp.png'
-    background_down: 'static/images-kivy/settings_light_48dp.png'
-    on_release: print('Settings Pressed')
-    on_release: app.open_settings()
 
 <OsuLogo>:
     source: 'static/images-kivy/osu_logo.png'

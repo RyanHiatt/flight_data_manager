@@ -6,7 +6,7 @@ import pyudev
 from pyudev._errors import DeviceNotFoundAtPathError
 
 
-class DriveManager:
+class DeviceManager:
 
     # Instantiate config parser and read config.ini
     config = configparser.ConfigParser()
@@ -14,38 +14,65 @@ class DriveManager:
 
     context = pyudev.Context()
 
-    # Drive Paths from config.ini
+    # Drive paths from config.ini
     sd_path = config.get('Paths', 'sd')
     hd_path = config.get('Paths', 'hd')
     usb_path = config.get('Paths', 'usb')
 
+    # Device names from config.ini
     sd_device = config.get('Devices', 'sd')
     hd_device = config.get('Devices', 'hd')
     usb_device = config.get('Devices', 'usb')
 
     def __init__(self):
-        # Initialize DriveManager by updating remaining capacity
+        # Initialize DriveManager
         # self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
-
+        self.check_mount_points()
         self.mount_device(self.hd_device, self.hd_path)
+        pass
 
     @staticmethod
-    def check_drive_capacity(drive):
+    def check_drive_capacity(drive: str):
         total, used, free = shutil.disk_usage(drive)
 
-        print('Hard Drive Capacity Check:')
+        print(f"{drive} Capacity Check:")
         print(f"\tTotal: {total // 1048576} MiB")
         print(f"\tUsed: {used // 1048576} MiB")
         print(f"\tFree: {free // 1048576} MiB")
 
         return free // 1048576
 
-    def check_for_device(self, device, path):
-        try:
-            sd_device = pyudev.Devices.from_path(self.context, device)
+    def check_mount_points(self):
+        """
 
-            if sd_device in self.context.list_devices():
-                self.mount_device(device, path)
+        :return:
+        """
+        # Check if SD Card mount point exists
+        if os.path.exists(self.sd_path):
+            pass
+        else:  # Create SD Card mount point
+            os.mkdir(self.sd_path)
+
+        # Check if Hard Drive mount point exists
+        if os.path.exists(self.hd_path):
+            pass
+        else:  # Create Hard Drive mount point
+            os.mkdir(self.hd_path)
+
+        # Check if USB Drive mount point exists
+        if os.path.exists(self.usb_path):
+            pass
+        else:  # Create USB Drive mount point
+            os.mkdir(self.usb_path)
+
+    def check_for_device(self, device: str, path: str):
+
+        try:
+            target_device = pyudev.Devices.from_path(self.context, device)
+
+            if target_device in self.context.list_devices():
+                self.mount_device(target_device, device, path)
+                print(f"Found: {target_device.sys_name}")
                 return True
             else:
                 return False
@@ -54,18 +81,18 @@ class DriveManager:
             return False
 
     @staticmethod
-    def mount_device(device, path):
+    def mount_device(target_device, device: str, path: str):
         try:
             if os.path.ismount(path):
                 pass
             else:
                 os.system(f"mount {device} {path}")
-                print(f"Device mounted at {path}")
+                print(f"{target_device.sys_name} mounted at {path}")
         except PermissionError as e:
             print(f"Mounting error: {e}")
 
     @staticmethod
-    def unmount_device(path):
+    def unmount_device(path: str):
         try:
             os.system(f'umount -l {path}')
             print(f"Device unmounted from {path}")
@@ -74,4 +101,4 @@ class DriveManager:
 
 
 if __name__ == '__main__':
-    manager = DriveManager()
+    manager = DeviceManager()

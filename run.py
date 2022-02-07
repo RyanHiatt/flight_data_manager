@@ -1,21 +1,11 @@
-import filecmp
 import os
 import sys
 import configparser
 
 from app.flightdata import FlightDataApp
 
-# TESTING TESTING
-from utils.datamanager import DataManager
-
-# manager = DataManager()
-# manager.upload_sd_data_to_hd()
-# ---------------
-
 
 def setup():
-    # Clear file comparison cache
-    filecmp.clear_cache()
 
     # Initialize and read the config
     config = configparser.ConfigParser()
