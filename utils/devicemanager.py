@@ -28,7 +28,7 @@ class DeviceManager:
         # Initialize DriveManager
         # self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
         self.check_mount_points()
-        self.mount_device(self.hd_device, self.hd_path)
+        # self.mount_device(self.hd_device, self.hd_path)
         pass
 
     @staticmethod
