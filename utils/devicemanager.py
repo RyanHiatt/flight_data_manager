@@ -86,7 +86,7 @@ class DeviceManager:
             if os.path.ismount(path):
                 pass
             else:
-                os.system(f"mount {device} {path}")
+                os.system(f"sudo mount {device} {path}")
                 print(f"{target_device.sys_name} mounted at {path}")
         except PermissionError as e:
             print(f"Mounting error: {e}")
