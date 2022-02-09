@@ -15,6 +15,7 @@
 - [Creating Raspberry Pi Backup Images]
   - [Linux]
   - [macOS]
+- Drive Formatting, Partitioning, File Systems
 
 ___
 
@@ -208,14 +209,14 @@ ability to build a sd card reader into the device enclosure. I opted for a sd ca
 
 | SD Card Module  |     Raspberry Pi 4B     |   
 |:---------------:|:-----------------------:|
-|       GND       |         Ground          |
-|       3V3       |        3V3 power        |
+|       GND       |      Not Connected      |
+|       3V3       |   Pin 17 - 3V3 power    |
 |       5V        |      Not Connected      |
 |       CS        |  Pin 24 - GPIO 8 (CE0)  |
 |      MOSI       | Pin 19 - GPIO 10 (MOSI) |
 |       SCK       | Pin 23 - GPIO 11 (SCLK) |
 |      MISO       | Pin 21 - GPIO 9 (MISO)  |
-|       GND       |      Not Connected      |
+|       GND       |      Pin 25 - GRND      |
 
 
 > Note: Use either 3V3 or 5V the module supports either one but not both. Only one ground connection is required.
@@ -353,11 +354,76 @@ sd card and and place it back in the raspberry pi.
 
 ___
 
+## Drive Formatting, Partitioning, File Systems
 
+1. Before making a partition, list available storage devices and partitions. This action helps identify the storage 
+device you want to partition. Run the following command with sudo to list storage devices and partitions:
+```shell
+sudo parted -l
+```
 
+2. Open the storage disk that you intend to partition by running the following command:
+```shell
+sudo parted /dev/sda
+```
 
+3. Create a partition table before partitioning the disk. A partition table is located at the start of a hard drive 
+and it stores data about the size and location of each partition. Partition table types are: 
+aix, amiga, bsd, dvh, gpt, mac, ms-dos, pc98, sun, and loop. The create a partition table, enter the following:
+```shell
+mklabel msdos
+```
 
+4. Run the print command to review the partition table. The output displays information about the storage device:
+```shell
+Model: ASMT 2115 (scsi)
+Disk /dev/sda: 250GB
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags: 
 
+Number  Start  End  Size  Type  File system  Flags
+```
 
+5. Now let’s make a new partition using the ntfs file system. The assigned disk start shall be 0% and the disk end is 
+at 100%. To create a new partition, enter the following:
+```shell
+mkpart primary ntfs o% 100%
+```
+After that, run the print command to review information on the newly created partition. The information is 
+displayed under the Disk Flags section:
+```shell
+(parted) print                                                            
+Model: ASMT 2115 (scsi)
+Disk /dev/sda: 250GB
+Sector size (logical/physical): 512B/512B
+Partition Table: msdos
+Disk Flags: 
 
-pip install kivy
+Number  Start   End    Size   Type     File system  Flags
+ 1      33.6MB  250GB  250GB  primary
+```
+
+6. To save your actions and quit, enter the quit command. Changes are saved automatically with this command:
+```shell
+quit
+```
+
+7. The drive has been formatted and a partition was made, lastly we need to create a filesystem in that partition:
+```shell
+sudo mkfs.ntfs /dev/sda1
+```
+
+8. Finally, the project script will mount this drive automatically when run, but if you want to mount it
+manually enter the following:
+```shell
+sudo mkdir -p /home/pi/flight_data_manager/mount_points/hard_drive
+sudo mount -t auto /dev/sda1 /home/pi/flight_data_manager/mount_points/hard_drive
+```
+
+9. Check the file system was mounted using `lsblk` which should output the following:
+```shell
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda           8:0    0 232.9G  0 disk 
+└─sda1        8:1    0 232.8G  0 part /home/pi/flight_data_manager/mount_points/hard_drive
+```
