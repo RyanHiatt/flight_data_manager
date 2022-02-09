@@ -4,18 +4,19 @@
 
 ### Table of Contents
 
-- [Installing Kivy 2.0.0 on Raspberry Pi]
-- [Geekworm X735 V2.5 Shield Installation](https://github.com/RyanHiatt/flight_data_manager)
-  - [Installation]
-  - [Software]
-- [Connecting the Official Raspberry Pi 7in Touchscreen]
+- [Installing Kivy 2.0.0 on Raspberry Pi](https://github.com/RyanHiatt/flight_data_manager#installing-kivy-200-on-raspberry-pi-headless)
+  - [Enable Using Official RPi Touch Display](https://github.com/RyanHiatt/flight_data_manager#enable-using-official-rpi-touch-display)
+- [Geekworm X735 V2.5 Shield Installation](https://github.com/RyanHiatt/flight_data_manager#geekworm-x735-v25-shield-installation)
+  - [Installation](https://github.com/RyanHiatt/flight_data_manager#installation)
+  - [Software](https://github.com/RyanHiatt/flight_data_manager#software)
+- [Connecting the Official Raspberry Pi 7in Touchscreen](https://github.com/RyanHiatt/flight_data_manager#connecting-the-official-raspberry-pi-7in-touchscreen)
 - [Interfacing the SD Card Module](https://github.com/RyanHiatt/flight_data_manager#interfacing-the-sd-card-module)
   - [Wiring](https://github.com/RyanHiatt/flight_data_manager#wiring)
   - [Software Setup](https://github.com/RyanHiatt/flight_data_manager#software-setup)
-- [Creating Raspberry Pi Backup Images]
-  - [Linux]
-  - [macOS]
-- Drive Formatting, Partitioning, File Systems
+- [Creating Raspberry Pi Backup Images](https://github.com/RyanHiatt/flight_data_manager#creating-raspberry-pi-backup-images)
+  - [Linux](https://github.com/RyanHiatt/flight_data_manager#linux)
+  - [macOS](https://github.com/RyanHiatt/flight_data_manager#macos)
+- [Drive Formatting, Partitioning, File Systems](https://github.com/RyanHiatt/flight_data_manager#drive-formatting-partitioning-file-systems)
 
 ___
 
