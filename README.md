@@ -193,6 +193,20 @@ ___
 
 ## Connecting the Official Raspberry Pi 7in Touchscreen
 
+Connecting the official Raspberry Pi is simple and easy, just 4 wires and the SDI screen ribbon cable
+
+### Wiring
+
+First connect the Raspberry Pi SDI output display ribbon cable to the DSI input on the RPi display. Then connect the
+following wires:
+
+| RPi Touchscreen |   Raspberry Pi 4B    |   
+|:---------------:|:--------------------:|
+|       5V        |      Pin 4 - 5V      |
+|       INT       |    Not Connected     |
+|       SDA       | Pin 3 - GPIO 2 (SDA) |
+|       SCL       | Pin 5 - GPIO 3 (SCL) |
+|       GND       |    Pin 6 - Ground    |
 
 ___
 
@@ -217,7 +231,7 @@ ability to build a sd card reader into the device enclosure. I opted for a sd ca
 |      MOSI       | Pin 19 - GPIO 10 (MOSI) |
 |       SCK       | Pin 23 - GPIO 11 (SCLK) |
 |      MISO       | Pin 21 - GPIO 9 (MISO)  |
-|       GND       |      Pin 25 - GRND      |
+|       GND       |     Pin 25 - Ground     |
 
 
 > Note: Use either 3V3 or 5V the module supports either one but not both. Only one ground connection is required.
