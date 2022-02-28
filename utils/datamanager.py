@@ -6,7 +6,6 @@ import secrets
 from xml.etree import ElementTree as ET
 from datetime import datetime
 
-
 from utils.exceptions import MismatchFileError
 
 

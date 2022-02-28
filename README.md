@@ -22,7 +22,7 @@ ___
 
 ## Installing Kivy 2.0.0 on Raspberry Pi Headless
 
-The following are the origional documentation for the process of installing and running Kivy on a Raspberry Pi:
+The following are the original documentation for the process of installing and running Kivy on a Raspberry Pi:
 - [Installing Kivy](https://kivy.org/doc/stable/gettingstarted/installation.html#kivy-source-install)
 - [Kivy Installation on Raspberry Pi](https://kivy.org/doc/stable/installation/installation-rpi.html)
 
@@ -149,31 +149,23 @@ sudo apt update && sudo apt upgrade
 2. Next, the following can be run line by line to install the required packages, 
 clone the repository(I cloned mine in the 'home' repository), and give permissions:
 ```shell
-python3 -m pip install smbus2
-sudo apt-get install -y pigpio python-pigpio python3-pigpio git
-git clone https://github.com/geekworm-com/x735-v2.5
+sudo apt install python3 python3-smbus python3-pigpio
+sudo apt install pigpio
+sudo apt install git
+git clone https://github.com/thorkseng/x735-v2.5/
 cd x735-v2.5
 sudo chmod +x *.sh
 sudo bash install.sh
-echo "alias x735off='sudo x735softsd.sh'" >> ~/.bashrc
 sudo reboot
 ```
 
-3. To have the script run automatically when the device is restarted, it will have to be added to the bashrc profile:
+3. To have the script run automatically when the device is restarted, the service shell script will need to be installed:
 ```shell
-nano ~/.bashrc 
+bash install_service.sh
 ```
-and copy the following to the bottom of the file:
-```shell
-python /home/pi/x735-v2.5/pwm_fan_control.py & 
-```
-> Note: You may have to change the file path depending on your OS or where you initially cloned the repository.
 
 4. Last step is to test it is working properly using the following:
-   1. `x735off` is safe shutdown command, you can run this command to safe shutdown.
-   2. Press onboard button 1-2 seconds to reboot
-   3. Press onboard button 3 seconds to safe shutdown,
-   4. Press onboard button 7-8 seconds to force shutdown.
+   se
 
 6. Extra: this script allows for live readings of the pwm fan rpm, this can be done by running `python3 x735-v2.5/read_fan_speed.py`.
 This however can be a bit tedious especially if you are starting from a different directory, therefore I like to add
