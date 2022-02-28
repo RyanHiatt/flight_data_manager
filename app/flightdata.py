@@ -25,27 +25,28 @@ class HomeScreen(GridLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Clock.schedule_interval(self.device_update, 1)
+        # Clock.schedule_interval(self.device_update, 1)
 
     def device_update(self, dt):
 
         # Check for SD Card
-        self.ids.upload_button.disabled = not device_manager.check_for_device(device_manager.sd_device,
-                                                                              device_manager.sd_path)
+        # self.ids.upload_button.disabled = not device_manager.check_for_device(device_manager.sd_device,
+        #                                                                       device_manager.sd_path)
         # Check for USB Drive
-        self.ids.download_button.disabled = not device_manager.check_for_device(device_manager.usb_device,
-                                                                                device_manager.usb_path)
+        # self.ids.download_button.disabled = not device_manager.check_for_device(device_manager.usb_device,
+        #                                                                         device_manager.usb_path)
+        pass
 
 
 class DataTransferButton(Button):
 
     def upload_data(self):
         print('Upload Pressed')
-        device_manager.unmount_device(device_manager.sd_path)
+        # device_manager.unmount_device(device_manager.sd_path)
 
     def download_data(self):
         print('Download Pressed')
-        device_manager.unmount_device(device_manager.usb_path)
+        # device_manager.unmount_device(device_manager.usb_path)
 
 
 class DataTransferLabel(Label):

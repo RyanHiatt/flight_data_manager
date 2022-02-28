@@ -26,9 +26,9 @@ class DeviceManager:
 
     def __init__(self):
         # Initialize DriveManager
-        self.check_mount_points()
-        self.mount_hd()
-        self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
+        # self.check_mount_points()
+        # self.mount_hd()
+        # self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
         pass
 
     @staticmethod
