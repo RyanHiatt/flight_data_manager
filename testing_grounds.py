@@ -1,7 +1,13 @@
 import pyudev
+import psutil
 
 context = pyudev.Context()
 
-
-for device in context.list_devices(subsystem='block'):
-    print('{0} ({1})'.format(device.device_node, device.device_type))
+removable = [device for device in context.list_devices(subsystem='block', DEVTYPE='disk') if device.attributes.asstring('removable') == "1"]
+for device in removable:
+    partitions = [device.device_node for device in context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
+    print("All removable partitions: {}".format(", ".join(partitions)))
+    print("Mounted removable partitions:")
+    for p in psutil.disk_partitions():
+        if p.device in partitions:
+            print("  {}: {}".format(p.device, p.mountpoint))
