@@ -16,6 +16,7 @@ while True:
             print("USB drive detected")
         else:
             print("no new devices")
+    time.sleep(1)
 
 # for device in devices:
 #     print(device.device_node)
