@@ -8,9 +8,9 @@ context = pyudev.Context()
 while True:
     devices = [device for device in context.list_devices(subsystem="block", DEVTYPE="partition")]
     for device in devices:
-        if "sda" in device.device_node:
-            print("Hard drive detected")
-        elif "mmcblk" in device.device_node and "0" not in device.device_node:
+        # if "sda" in device.device_node:
+        #     print("Hard drive detected")
+        if "mmcblk" in device.device_node and "0" not in device.device_node:
             print("SD card detected")
         elif "sdb" in device.device_node:
             print("USB drive detected")
