@@ -10,7 +10,7 @@ for device in devices:
     print(device.device_node)
 
 for part in psutil.disk_partitions():
-    print(part)
+    print(part.device)
 
 
 # removable = [device for device in context.list_devices(subsystem='block', DEVTYPE='disk')]
