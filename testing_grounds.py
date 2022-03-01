@@ -14,6 +14,8 @@ while True:
             print("SD card detected")
         elif "sdb" in device.device_node:
             print("USB drive detected")
+        else:
+            print("no new devices")
 
 # for device in devices:
 #     print(device.device_node)
