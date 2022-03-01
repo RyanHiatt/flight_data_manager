@@ -7,7 +7,7 @@ context = pyudev.Context()
 devices = [device for device in context.list_devices(subsystem="block", DEVTYPE="partition")]
 
 for device in devices:
-    print(device.properties)
+    print(device)
 
 
 
