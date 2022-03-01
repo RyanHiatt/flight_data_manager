@@ -1,16 +1,31 @@
 import pyudev
 import psutil
+import time
 
 context = pyudev.Context()
 
 
-devices = [device for device in context.list_devices(subsystem="block", DEVTYPE="partition")]
+while True:
+    devices = [device for device in context.list_devices(subsystem="block", DEVTYPE="partition")]
+    for device in devices:
+        if "sda" in device.device_node:
+            print("Hard drive detected")
+        elif "mmcblk" in device.device_node and "0" not in device.device_node:
+            print("SD card detected")
+        elif "sdb" in device.device_node:
+            print("USB drive detected")
 
-for device in devices:
-    print(device.device_node)
+# for device in devices:
+#     print(device.device_node)
+#
+# for part in psutil.disk_partitions():
+#     print(part.mountpoint)
 
-for part in psutil.disk_partitions():
-    print(part.device)
+
+
+
+
+
 
 
 # removable = [device for device in context.list_devices(subsystem='block', DEVTYPE='disk')]
