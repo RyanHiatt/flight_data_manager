@@ -23,6 +23,8 @@ def setup():
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
 
+    print(config.get('Paths', 'base_path'))
+
     # Insert base_path into system memory for efficient importing
     sys.path.insert(0, base_path)
 
