@@ -75,15 +75,13 @@ class DeviceManager:
         return remaining_capacity  # In GiB
 
     def make_mount_points(self):
-        try:
-            for device in ["hd", "usb", "sd"]:
-                dev_path = self.config.get("Paths", "base_path") + "/mounts/" + device
-                if not os.path.exists(dev_path):
-                    os.makedirs(dev_path, exist_ok=True)
-                # Path(dev_path).mkdir(parents=True, exist_ok=True)
-                    self.config.set("Paths", device, dev_path)
-        except FileExistsError:
-            pass
+        os.umask(0)
+
+        for device in ["hd", "usb", "sd"]:
+            dev_path = self.config.get("Paths", "base_path") + "/mounts/" + device
+            os.chmod(dev_path, mode=0o777)
+            Path(dev_path).mkdir(parents=True, exist_ok=True)
+            self.config.set("Paths", device, dev_path)
 
         with open('config.ini', 'w') as configfile:
             self.config.write(configfile)
