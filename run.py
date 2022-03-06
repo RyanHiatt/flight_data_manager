@@ -3,8 +3,6 @@ import sys
 import configparser
 import time
 
-from app.flightdata import FlightDataApp
-
 
 def setup():
 
@@ -29,6 +27,9 @@ def setup():
     sys.path.insert(0, base_path)
 
     print(f'App started in {base_path}')
+
+
+from app.flightdata import FlightDataApp
 
 
 if __name__ == '__main__':
