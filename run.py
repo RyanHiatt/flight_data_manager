@@ -29,9 +29,7 @@ def setup():
     print(f'App started in {base_path}')
 
 
-from app.flightdata import FlightDataApp
-
-
 if __name__ == '__main__':
     setup()
+    from app.flightdata import FlightDataApp
     FlightDataApp().run()
