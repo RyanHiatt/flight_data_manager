@@ -1,6 +1,7 @@
 import os
 import sys
 import configparser
+import time
 
 from app.flightdata import FlightDataApp
 
@@ -13,6 +14,8 @@ def setup():
 
     # Find the base_path of the app
     base_path = os.getcwd()
+    print(base_path)
+    time.sleep(3)
 
     # Update the config with the base path of the app
     config.set('Paths', 'base_path', base_path)
