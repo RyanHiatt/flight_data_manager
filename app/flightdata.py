@@ -32,9 +32,9 @@ class HomeScreen(GridLayout):
 
     def device_update(self, dt):
         # Check for USB Drive and SD Card
-        usb_status, sd_card_status = device_manager.check_for_devices()
+        usb_drive_status, sd_card_status = device_manager.check_for_devices()
 
-        self.ids.download_button.disabled = not usb_status
+        self.ids.download_button.disabled = not usb_drive_status
         self.ids.upload_button.disabled = not sd_card_status
 
 
@@ -88,7 +88,7 @@ class StorageLabel(Label):
         Clock.schedule_interval(self.update_capacity, 60)
 
     def update_capacity(self, dt):
-        self.remaining_storage = device_manager.update_hd_capacity()
+        self.remaining_storage = str(device_manager.update_hd_capacity())
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
 
 
