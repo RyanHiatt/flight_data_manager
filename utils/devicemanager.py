@@ -79,7 +79,7 @@ class DeviceManager:
 
         for device in ["hd", "usb", "sd"]:
             dev_path = self.config.get("Paths", "base_path") + "/mounts/" + device
-            os.chmod(dev_path, mode=0o777)
+            os.chmod(self.config.get("Paths", "base_path"), mode=0o777)
             Path(dev_path).mkdir(parents=True, exist_ok=True)
             self.config.set("Paths", device, dev_path)
 
