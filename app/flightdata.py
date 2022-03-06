@@ -13,7 +13,7 @@ from kivy.uix.image import Image
 from utils.datamanager import DataManager
 from utils.devicemanager import DeviceManager
 
-Window.fullscreen = True
+# Window.fullscreen = True
 
 # Instantiate configparser and read the config
 config = configparser.ConfigParser()
