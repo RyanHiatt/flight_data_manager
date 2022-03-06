@@ -88,7 +88,7 @@ class DeviceManager:
         devices = [device for device in psutil.disk_partitions()]
 
         result = next((device for device in devices if self.config.get('Devices', 'hd') in device.device), False)
-
+        print(result.device)
         if result:
             print("Hard drive found")
             if self.hd_status:
