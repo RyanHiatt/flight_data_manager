@@ -91,8 +91,8 @@ class StorageLabel(Label):
 
 
 class FlightDataApp(App):
-    Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
-    # Window.fullscreen = True
+    # Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
+    Window.fullscreen = True
 
 
 if __name__ == '__main__':
