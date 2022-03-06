@@ -87,6 +87,9 @@ class DeviceManager:
     def locate_hd(self):
         devices = [device for device in psutil.disk_partitions()]
 
+        for device in devices:
+            print(device.device)
+
         result = next((device for device in devices if self.config.get('Devices', 'hd') in device.device), False)
         print(result)
         if result:
