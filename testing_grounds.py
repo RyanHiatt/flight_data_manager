@@ -11,6 +11,7 @@ def check_for_devices():
     devices = [device for device in psutil.disk_partitions()]
 
     for device in devices:
+        print(device.device)
         if "sda" in device.device:
             hd_path = device.mountpoint
             print(f"Hard drive found: {hd_path}")
