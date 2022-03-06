@@ -12,6 +12,7 @@ class DeviceManager:
 
     def __init__(self):
         # Initialize DriveManager
+        self.locate_hd()
         self.check_for_devices()
         self.update_hd_capacity()  # In GiB
         pass
