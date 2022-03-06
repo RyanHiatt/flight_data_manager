@@ -1,9 +1,7 @@
 import os
 import shutil
+import psutil
 import configparser
-
-import pyudev
-from pyudev._errors import DeviceNotFoundByNameError
 
 
 class DeviceManager:
@@ -12,98 +10,104 @@ class DeviceManager:
     config = configparser.ConfigParser()
     config.read('config.ini')
 
-    context = pyudev.Context()
-
-    # Drive paths from config.ini
-    sd_path = config.get('Paths', 'sd')
-    hd_path = config.get('Paths', 'hd')
-    usb_path = config.get('Paths', 'usb')
-
-    # Device names from config.ini
-    sd_device = config.get('Devices', 'sd')
-    hd_device = config.get('Devices', 'hd')
-    usb_device = config.get('Devices', 'usb')
-
     def __init__(self):
         # Initialize DriveManager
-        # self.check_mount_points()
-        # self.mount_hd()
-        # self.hd_remaining_cap = self.check_drive_capacity(self.hd_path)  # In GiB
+        self.check_for_devices()
+        self.update_hd_capacity()  # In GiB
         pass
 
     @staticmethod
-    def check_drive_capacity(drive: str):
-        total, used, free = shutil.disk_usage(drive)
+    def check_device_capacity(path, name):
+        total, used, free = shutil.disk_usage(path)
 
-        print(f"{drive} Capacity Check:")
-        print(f"\tTotal: {total // 1048576} MiB")
-        print(f"\tUsed: {used // 1048576} MiB")
-        print(f"\tFree: {free // 1048576} MiB")
+        print(f"{name} Drive Capacity Check:")
+        print(f"\tTotal: {total // 1073741824} GiB")
+        print(f"\tUsed: {used // 1073741824} GiB")
+        print(f"\tFree: {free // 1073741824} GiB")
 
-        return free // 1048576
+        return free // 1073741824  # In GiB
 
-    def mount_hd(self):
+    def update_hd_capacity(self):
+        remaining_capacity = self.check_device_capacity(self.config.get('Paths', 'hd'), name='Hard Drive')
+
+        self.config.set('Capacity', 'hd', str(remaining_capacity))
+        with open('config.ini', 'w') as configfile:
+            self.config.write(configfile)
+
+        return str(remaining_capacity)  # In GiB
+
+    def check_usb_capacity(self):
+        remaining_capacity = self.check_device_capacity(self.config.get('Paths', 'usb'), name='USB Drive')
+
+        return remaining_capacity  # In GiB
+
+    def locate_hd(self):
+        devices = [device for device in psutil.disk_partitions()]
+
+        hard_drive_status = False
+
+        for device in devices:
+            if self.config.get('Devices', 'hd') in device.device:
+                self.config.set('Paths', 'hd', device.mountpoint)
+                hard_drive_status = True
+                print("Hard drive found")
+
+        with open('config.ini', 'w') as configfile:
+            self.config.write(configfile)
+
+        return hard_drive_status
+
+    def check_for_devices(self):
+        devices = [device for device in psutil.disk_partitions()]
+
+        usb_drive_status = False
+        sd_card_status = False
+
+        for device in devices:
+            if self.config.get('Devices', 'usb') in device.device:
+                self.config.set('Paths', 'usb', device.mountpoint)
+                usb_drive_status = True
+                print("USB drive found")
+
+            if self.config.get('Devices', 'sd') in device.device and "0" not in device.device:
+                self.config.set('Paths', 'sd', device.mountpoint)
+                sd_card_status = True
+                print("SD card found")
+
+        with open('config.ini', 'w') as configfile:
+            self.config.write(configfile)
+
+        return usb_drive_status, sd_card_status
+
+    def eject_usb(self):
         try:
-            if os.path.ismount(self.hd_path):
-                pass
-            else:
-                os.system(f"sudo mount /dev/{self.hd_device} {self.hd_path}")
-                if os.path.ismount(self.hd_path):
-                    print(f"{self.hd_device} mounted at {self.hd_path}")
-                else:
-                    print(f"Failed to mount: {self.hd_device}")
+            os.system(f"sudo umount -l {self.config.get('Paths', 'usb')}")
+            print(f"Device unmounted from {self.config.get('Paths', 'usb')}")
+            return True
         except PermissionError as e:
             print(f"Mounting error: {e}")
+            return False
 
-    def check_mount_points(self):
-        """
-
-        :return:
-        """
-        # Check if SD Card mount point exists
-        if os.path.exists(self.sd_path):
-            pass
-        else:  # Create SD Card mount point
-            os.makedirs(self.sd_path)
-
-        # Check if Hard Drive mount point exists
-        if os.path.exists(self.hd_path):
-            pass
-        else:  # Create Hard Drive mount point
-            os.makedirs(self.hd_path)
-
-        # Check if USB Drive mount point exists
-        if os.path.exists(self.usb_path):
-            pass
-        else:  # Create USB Drive mount point
-            os.makedirs(self.usb_path)
-
-    def check_for_device(self, device: str, path: str):
-
+    def eject_sd(self):
         try:
-            target_device = pyudev.Devices.from_name(context=self.context, subsystem='block', sys_name=device)
-
-            if target_device in self.context.list_devices(subsystem='block'):
-                self.mount_device(target_device, path)
-                print(f"Found: {target_device.get('DEVNAME')}")
-                return True
-            else:
-                return False
-
-        except DeviceNotFoundByNameError:
+            os.system(f"sudo umount -l {self.config.get('Paths', 'sd')}")
+            print(f"Device unmounted from {self.config.get('Paths', 'sd')}")
+            return True
+        except PermissionError as e:
+            print(f"Mounting error: {e}")
             return False
 
     @staticmethod
-    def mount_device(target_device, path: str):
+    def mount_device(device, path: str):
         try:
             if os.path.ismount(path):
                 pass
             else:
-                os.system(f"sudo mount {target_device.get('DEVNAME')} {path}")
+                os.system(f"sudo mount {device} {path}")
                 if os.path.ismount(path):
-                    print(f"{target_device.sys_name} mounted at {path}")
+                    print(f"{device} mounted at {path}")
                 else:
-                    print(f"Failed to mount: {target_device.sys_name}")
+                    print(f"Failed to mount: {device.sys_name}")
         except PermissionError as e:
             print(f"Mounting error: {e}")
 
@@ -118,3 +122,7 @@ class DeviceManager:
 
 if __name__ == '__main__':
     manager = DeviceManager()
+
+    usb_drive, sd_card = manager.check_for_devices()
+
+    print(f"USB: {usb_drive}, SD: {sd_card}")

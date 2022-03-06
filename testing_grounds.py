@@ -1,41 +1,28 @@
-import pyudev
 import psutil
 import time
 
-context = pyudev.Context()
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 
-while True:
-    devices = [device for device in context.list_devices(subsystem="block", DEVTYPE="partition")]
+def check_for_devices():
+    devices = [device for device in psutil.disk_partitions()]
+
     for device in devices:
-        # if "sda" in device.device_node:
-        #     print("Hard drive detected")
-        if "mmcblk" in device.device_node and "0" not in device.device_node:
-            print("SD card detected")
-        elif "sdb" in device.device_node:
-            print("USB drive detected")
-        else:
-            print("no new devices")
-    time.sleep(1)
+        if "sda" in device.device:
+            hd_path = device.mountpoint
+            print(f"Hard drive found: {hd_path}")
 
-# for device in devices:
-#     print(device.device_node)
-#
-# for part in psutil.disk_partitions():
-#     print(part.mountpoint)
+        if "sdb" in device.device:
+            usb_path = device.mountpoint
+            print(f"USB drive found: {usb_path}")
+
+        if "mmcblk" in device.device and "0" not in device.device:
+            sd_path = device.mountpoint
+            print(f"SD card found: {sd_path}")
 
 
-
-
-
-
-
-
-# removable = [device for device in context.list_devices(subsystem='block', DEVTYPE='disk')]
-# for device in removable:
-#     partitions = [device.device_node for device in context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
-#     print("All removable partitions: {}".format(", ".join(partitions)))
-#     print("Mounted removable partitions:")
-#     for p in psutil.disk_partitions():
-#         if p.device in partitions:
-#             print("  {}: {}".format(p.device, p.mountpoint))
+if __name__ == '__main__':
+    check_for_devices()

@@ -15,15 +15,10 @@ class DataManager:
     config = configparser.ConfigParser()
     config.read('config.ini')
 
-    # Drive Paths
-    sd_path = config.get('Paths', 'sd')
-    hd_path = config.get('Paths', 'hd')
-    usb_path = config.get('Paths', 'usb')
-
     # File parsing variables
-    target = config.get('File Parsing', 'sd_target')
-    name_conv_par1 = config.get('File Parsing', 'param_1')
-    name_conv_par2 = config.get('File Parsing', 'param_2')
+    target = config.get('Xml Parsing', 'file_target')
+    name_conv_par1 = config.get('Xml Parsing', 'param_1')
+    name_conv_par2 = config.get('Xml Parsing', 'param_2')
 
     @staticmethod
     def dir_exists(dst: str, reference: str) -> bool:
@@ -62,14 +57,14 @@ class DataManager:
         else:  # if no differing files, return true
             return True
 
-    def _parse_airframe_info_xml(self, xml_file: str) -> tuple:
+    def _parse_airframe_info_xml(self, xml_file_path: str) -> tuple:
         """
         This method takes a xml file to parse and finds the two parameters specified in the config.ini
         :param xml_file: {str} The path to the desired xml file
         :return: {tuple} Returns (parameter 1 value, parameter 2 value)
         """
         # Get the xml tree structure
-        tree = ET.parse(xml_file)
+        tree = ET.parse(xml_file_path)
         # extract the root element of the tree
         root = tree.getroot()
         # Find the defined children of the root
@@ -99,6 +94,35 @@ class DataManager:
         except IOError or PermissionError or OSError as e:
             print(f"SD Card Error: {e}")
 
+    def _select_files(self, path: str):
+        """
+
+        :param path:
+        :return:
+        """
+        target_dirs = self.config.get('File Selection', 'directories').split(sep=',')
+        target_files = self.config.get('File Selection', 'files').split(sep=',')
+
+        dir_selection = []
+        file_selection = []
+
+        try:
+            # Walk through all the files on the sd card
+            for root, dirs, files in os.walk(path):
+                for directory in dirs:
+                    for target_dir in target_dirs:
+                        if target_dir in directory:
+                            dir_selection.append(os.path.join(root, directory))
+                for file in files:
+                    for target_file in target_files:
+                        if target_file in file:
+                            file_selection.append(os.path.join(root, file))
+
+            return dir_selection, file_selection
+
+        except IOError or PermissionError or OSError as e:
+            print(f"SD Card Error: {e}")
+
     def upload_sd_data_to_hd(self):
         """
 
@@ -106,29 +130,39 @@ class DataManager:
         :return:
         """
         # Check if the target exists -> return bool and path
-        result, target_path = self._get_file_path(path=self.sd_path, file=self.target)
+        result, target_path = self._get_file_path(path=self.config.get('Paths', 'sd'), file=self.target)
 
         if result:  # Continue with target file
 
             # parse the target file to find naming parameters
-            param1, param2 = self._parse_airframe_info_xml(xml_file=target_path)
+            param1, param2 = self._parse_airframe_info_xml(xml_file_path=target_path)
 
             # Generate the directory name based on the two xml parameters
             dst_dir_name = param1 + '-' + param2
 
             # Generate directory with ISO 8601 stamp
-            new_dir_name = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
+            new_entry = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
-            # Copy sd file structure to new directory
-            shutil.copytree(src=self.sd_path, dst=os.path.join(self.hd_path, dst_dir_name, new_dir_name))
+            # Select files for copy
+            directories, files = self._select_files(path=self.config.get('Paths', 'sd'))
 
-            # Verify that the copied files match the original
-            if self.verify_copy(src=self.sd_path, dst=os.path.join(self.hd_path, dst_dir_name, new_dir_name)):
-                print(f'Successful Copied: {dst_dir_name}/{new_dir_name}')
-                return True
-            else:
-                print(f'Mismatched File: {dst_dir_name}/{new_dir_name}')
-                raise MismatchFileError
+            # Copy relevant directories to hard drive
+            for directory in directories:
+                shutil.copytree(directory, dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry))
+                if self.verify_copy(src=directory,
+                                    dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry)):
+                    print(f"Successful copied {directory.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
+                else:
+                    print(f"Mismatched file {directory.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
+
+            # Copy relevant files to hard drive
+            for file in files:
+                shutil.copy2(file, dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry))
+                if self.verify_copy(src=file,
+                                    dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry)):
+                    print(f"Successful copied {file.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
+                else:
+                    print(f"Mismatched file {file.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
 
         else:  # Target does not exist,
             return False
@@ -141,9 +175,6 @@ class DataManager:
 
     def clear_hd(self):
         pass
-
-    def test(self):
-        print(self.sd_path, self.hd_path)
 
     @staticmethod
     def copy_files(self, src, dst) -> bool:

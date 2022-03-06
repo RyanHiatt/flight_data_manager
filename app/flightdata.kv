@@ -15,7 +15,11 @@ HomeScreen:
     GridLayout:
         cols: 3
 
-        VersionLabel:
+        BoxLayout:
+            orientation: 'vertical'
+            VersionLabel:
+                size_hint_y: 0.1
+            StorageLabel:
 
         OsuLogo:
 
@@ -84,6 +88,13 @@ HomeScreen:
     size: dp(410), dp(213)
 
 <VersionLabel>:
+    font_size: 28
+    color: 0.22, 0.22, 0.22, 1
+    text_size: self.size
+    halign: 'left'
+    valign: 'top'
+
+<StorageLabel>:
     font_size: 28
     color: 0.22, 0.22, 0.22, 1
     text_size: self.size
