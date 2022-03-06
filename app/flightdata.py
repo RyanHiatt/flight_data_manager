@@ -13,6 +13,8 @@ from kivy.uix.image import Image
 from utils.datamanager import DataManager
 from utils.devicemanager import DeviceManager
 
+Window.fullscreen = True
+
 # Instantiate configparser and read the config
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -92,7 +94,7 @@ class StorageLabel(Label):
 
 class FlightDataApp(App):
     # Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
-    Window.fullscreen = True
+    pass
 
 
 if __name__ == '__main__':
