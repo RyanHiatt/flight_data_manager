@@ -17,7 +17,7 @@ class DeviceManager:
 
     def __init__(self):
         # Initialize DriveManager
-        self.make_mount_points()
+        # self.make_mount_points()
         self.locate_hd()
         self.check_for_devices()
         self.update_hd_capacity()  # In GiB
@@ -61,13 +61,16 @@ class DeviceManager:
             return False
 
     def update_hd_capacity(self):
-        remaining_capacity = self.check_device_capacity(self.config.get('Paths', 'hd'), name='Hard Drive')
+        if self.hd_status:
+            remaining_capacity = self.check_device_capacity(self.config.get('Paths', 'hd'), name='Hard Drive')
 
-        self.config.set('Capacity', 'hd', str(remaining_capacity))
-        with open('config.ini', 'w') as configfile:
-            self.config.write(configfile)
+            self.config.set('Capacity', 'hd', str(remaining_capacity))
+            with open('config.ini', 'w') as configfile:
+                self.config.write(configfile)
 
-        return remaining_capacity  # In GiB
+            return remaining_capacity  # In GiB
+        else:
+            pass
 
     def check_usb_capacity(self):
         remaining_capacity = self.check_device_capacity(self.config.get('Paths', 'usb'), name='USB Drive')
@@ -88,17 +91,11 @@ class DeviceManager:
         devices = [device for device in psutil.disk_partitions()]
 
         result = next((device for device in devices if self.config.get('Devices', 'hd') in device.device), False)
-        print(result)
+
         if result:
-            print("Hard drive found")
-            if self.hd_status:
-                pass
-            else:
-                if self.mount_hd(device=result.device):  # Mount the Hard Drive
-                    self.hd_status = True
-                    print("Hard drive mounted")
-                else:
-                    print("Failed to mount hard drive")
+            self.hd_status = True
+            print(f"Hard drive found: {result.device}")
+
         else:
             self.hd_status = False
             print("Hard drive not found")
@@ -115,47 +112,24 @@ class DeviceManager:
         sd_result = next((device for device in devices if self.config.get('Devices', 'sd') in device.device and "0" not in device.device), False)
 
         if usb_result:
-            print("USB drive found")
-            if self.usb_status:
-                pass
-            else:
-                if self.mount_usb(device=usb_result.device):
-                    self.usb_status = True
-                    print("USB drive mounted")
-                else:
-                    print("USB drive failed to mount")
+            self.usb_status = True
+            self.config.set("Paths", "usb", usb_result.mountpoint)
+            print(f"USB drive found: {usb_result.device}")
+
         else:
             self.eject_usb()
             self.usb_status = False
             print("USB drive not found")
 
         if sd_result:
-            print("SD card found")
-            if self.sd_status:
-                pass
-            else:
-                if self.mount_sd(device=sd_result.device):
-                    self.sd_status = True
-                    print("SD card mounted")
-                else:
-                    print("sd card failed to mount")
+            self.sd_status = True
+            self.config.set("Paths", "sd", sd_result.mountpoint)
+            print(f"SD card found: {sd_result.device}")
+
         else:
             self.eject_sd()
             self.sd_status = False
             print("SD card not found")
-
-        # for device in devices:
-        #     if self.config.get('Devices', 'usb') in device.device:
-        #         # Mount the USB Drive
-        #         self.mount_usb(device=device.device)
-        #         self.usb_status = True
-        #         print("USB drive found")
-        #
-        #     if self.config.get('Devices', 'sd') in device.device and "0" not in device.device:
-        #         # Mount the SD Card
-        #         self.mount_sd(device=device.device)
-        #         self.sd_status = True
-        #         print("SD card found")
 
         return self.usb_status, self.sd_status
 
