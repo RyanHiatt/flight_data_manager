@@ -75,12 +75,12 @@ class DeviceManager:
         return remaining_capacity  # In GiB
 
     def make_mount_points(self):
-        os.umask(0)
+        # os.umask(0)
 
         for device in ["hd", "usb", "sd"]:
             dev_path = self.config.get("Paths", "base_path") + "/mounts/" + device
             print(dev_path)
-            os.chmod(self.config.get("Paths", "base_path"), mode=0o777)
+            # os.chmod(self.config.get("Paths", "base_path"), mode=0o777)
             Path(dev_path).mkdir(parents=True, exist_ok=True)
             self.config.set("Paths", device, dev_path)
 

@@ -12,7 +12,7 @@ def setup():
     config.read('config.ini')
 
     # Find the base_path of the app
-    base_path = os.path.dirname(os.path.abspath(__file__))
+    base_path = os.getcwd()
 
     # Update the config with the base path of the app
     config.set('Paths', 'base_path', base_path)
