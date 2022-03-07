@@ -26,11 +26,5 @@ def check_for_devices():
             print(f"SD card found: {sd_path}")
 
 
-def list_device():
-
-    result = os.system('lsblk')
-    print(result)
-
-
 if __name__ == '__main__':
-    list_device()
+    check_for_devices()
