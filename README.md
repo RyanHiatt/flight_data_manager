@@ -30,8 +30,8 @@ The following are the original documentation for the process of installing and r
 ```shell
 sudo apt update && sudo apt upgrade
 sudo apt install python3-setuptools git-core python3-dev
-sudo apt install python-pip
-python -m pip install --upgrade pip setuptools virtualenv
+sudo apt install python3-pip
+python3 -m pip install --upgrade pip setuptools virtualenv
 ```
 
 2. First install Kivy using pip:
