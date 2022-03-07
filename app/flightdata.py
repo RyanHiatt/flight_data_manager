@@ -1,5 +1,6 @@
 import configparser
 import time
+import logging
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -13,11 +14,29 @@ from kivy.uix.image import Image
 from utils.datamanager import DataManager
 from utils.devicemanager import DeviceManager
 
-# Window.fullscreen = True
 
 # Instantiate configparser and read the config
 config = configparser.ConfigParser()
 config.read('config.ini')
+
+
+# Instantiate logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# Create file handler and set level
+file_handler = logging.FileHandler(filename="/logs/data_mananger.log")
+file_handler.setLevel(logging.DEBUG)
+
+# Create formatter
+formatter = logging.Formatter("[%(levelname)s] %(asctime)s: %(message)s")
+
+# Add formatter to file handler
+file_handler.setFormatter(formatter)
+
+# Add file handler to logger
+logger.addHandler(file_handler)
+
 
 # Instantiate the manager utils
 data_manager = DataManager()
@@ -42,25 +61,25 @@ class DataTransferButton(Button):
 
     def upload_data(self):
         start_time = time.time()
-        print('Upload Pressed')
+        logger.info('Upload Pressed')
 
         # Transfer data from SD Card to Hard Drive
 
         # Eject SD card
         device_manager.eject_sd()
 
-        print(f"Upload Completed: {time.time() - start_time}")
+        logger.info(f"Upload Completed: {time.time() - start_time}")
 
     def download_data(self):
         start_time = time.time()
-        print('Download Pressed')
+        logger.info('Download Pressed')
 
         # Transfer data from Hard Drive to USB Drive
 
         # Eject USB Drive
         device_manager.eject_usb()
 
-        print(f"Download Completed: {time.time() - start_time}")
+        logger.info(f"Download Completed: {time.time() - start_time}")
 
 
 class DataTransferLabel(Label):
@@ -77,6 +96,7 @@ class VersionLabel(Label):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.text = ' Version ' + self.app_version
+        logger.info(f"Application version set: {self.app_version}")
 
 
 class StorageLabel(Label):
@@ -90,6 +110,7 @@ class StorageLabel(Label):
     def update_capacity(self, dt):
         self.remaining_storage = str(device_manager.update_hd_capacity())
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
+        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage}")
 
 
 class FlightDataApp(App):

@@ -3,10 +3,29 @@ import shutil
 import configparser
 import filecmp
 import secrets
+import logging
 from xml.etree import ElementTree as ET
 from datetime import datetime
 
 from utils.exceptions import MismatchFileError
+
+
+# Instantiate logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# Create file handler and set level
+file_handler = logging.FileHandler(filename="/logs/data_mananger.log")
+file_handler.setLevel(logging.DEBUG)
+
+# Create formatter
+formatter = logging.Formatter("[%(levelname)s] %(asctime)s: %(message)s")
+
+# Add formatter to file handler
+file_handler.setFormatter(formatter)
+
+# Add file handler to logger
+logger.addHandler(file_handler)
 
 
 class DataManager:
@@ -39,7 +58,7 @@ class DataManager:
                     return False
 
         except IOError or PermissionError or OSError as e:
-            print(f"Existing Directory Error: {e}")
+            logger.error(f"Existing Directory Error: {e}")
 
     @staticmethod
     def verify_copy(src: str, dst: str) -> bool:
@@ -92,7 +111,7 @@ class DataManager:
                     return False, root
 
         except IOError or PermissionError or OSError as e:
-            print(f"SD Card Error: {e}")
+            logger.error(f"SD Card Error: {e}")
 
     def _select_files(self, path: str):
         """
@@ -121,9 +140,9 @@ class DataManager:
             return dir_selection, file_selection
 
         except IOError or PermissionError or OSError as e:
-            print(f"SD Card Error: {e}")
+            logger.error(f"SD Card Error: {e}")
 
-    def upload_sd_data_to_hd(self):
+    def upload_flight_data(self):
         """
 
 
@@ -151,33 +170,45 @@ class DataManager:
                 shutil.copytree(directory, dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry))
                 if self.verify_copy(src=directory,
                                     dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry)):
-                    print(f"Successful copied {directory.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
+                    logger.info(f"Successful copied {directory.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
                 else:
-                    print(f"Mismatched file {directory.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
+                    logger.warning(f"Mismatched file {directory.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
 
             # Copy relevant files to hard drive
             for file in files:
                 shutil.copy2(file, dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry))
                 if self.verify_copy(src=file,
                                     dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry)):
-                    print(f"Successful copied {file.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
+                    logger.info(f"Successful copied {file.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
                 else:
-                    print(f"Mismatched file {file.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
+                    logger.warning(f"Mismatched file {file.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
+
+            return True
 
         else:  # Target does not exist,
             return False
 
     def clear_sd_card(self):
-        pass
+        for file in os.listdir(self.config.get('Paths', 'sd')):
+            try:
+                shutil.rmtree(os.path.join(self.config.get('Paths', 'sd'), file))
+            except OSError:
+                os.remove(os.path.join(self.config.get('Paths', 'sd'), file))
+        logger.info("SD card cleared")
 
     def download_flight_data(self):
         pass
 
     def clear_hd(self):
-        pass
+        for file in os.listdir(self.config.get('Paths', 'hd')):
+            try:
+                shutil.rmtree(os.path.join(self.config.get('Paths', 'hd'), file))
+            except OSError:
+                os.remove(os.path.join(self.config.get('Paths', 'hd'), file))
+        logger.info("Hard drive cleared")
 
     @staticmethod
-    def copy_files(self, src, dst) -> bool:
+    def copy_files(src, dst) -> bool:
         """
         This method simply recursively copies all files from source(PATH) to destination(PATH)
         and then verifies that the original files and new files are identical using verify_copy().
@@ -217,4 +248,4 @@ class DataManager:
 if __name__ == '__main__':
 
     manager = DataManager()
-    manager.upload_sd_data_to_hd()
+    manager.upload_flight_data()
