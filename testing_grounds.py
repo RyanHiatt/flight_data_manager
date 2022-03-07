@@ -26,5 +26,6 @@ def check_for_devices():
             print(f"SD card found: {sd_path}")
 
 
+
 if __name__ == '__main__':
     check_for_devices()
