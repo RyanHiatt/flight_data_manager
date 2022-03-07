@@ -27,4 +27,4 @@ def check_for_devices():
 
 
 if __name__ == '__main__':
-    print(psutil.disk_partitions())
+    check_for_devices()
