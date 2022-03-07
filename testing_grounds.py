@@ -1,5 +1,6 @@
 import psutil
 import time
+import os
 
 import configparser
 
@@ -25,5 +26,11 @@ def check_for_devices():
             print(f"SD card found: {sd_path}")
 
 
+def list_device():
+
+    result = os.system('lsblk')
+    print(result)
+
+
 if __name__ == '__main__':
-    check_for_devices()
+    list_device()

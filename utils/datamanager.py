@@ -236,16 +236,16 @@ class DataManager:
 
                     if filecmp.cmp(os.path.join(root, file), os.path.join(dst, file)):
 
-                        print(f"Copied file '{file}'")
+                        logger.info(f"Copied file '{file}'")
 
                     else:
-                        print(f"Mismatched file '{file}'")
+                        logger.warning(f"Mismatched file '{file}'")
                         raise MismatchFileError
 
             return True
 
         except IOError or PermissionError or OSError as e:
-            print(f"Copy Error: {e}")
+            logger.error(f"Copy Error: {e}")
 
             return False
 

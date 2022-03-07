@@ -65,6 +65,10 @@ class DataTransferButton(Button):
 
         # Transfer data from SD Card to Hard Drive
 
+        # Erase sd card
+        if bool(config.get('Options', 'erase_sd')):
+            data_manager.clear_sd_card()
+
         # Eject SD card
         device_manager.eject_sd()
 
