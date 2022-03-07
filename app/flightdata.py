@@ -19,28 +19,28 @@ from utils.devicemanager import DeviceManager
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-
-# Instantiate logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-
-# Create file handler and set level
-file_handler = logging.FileHandler(filename="/logs/data_mananger.log")
-file_handler.setLevel(logging.DEBUG)
-
-# Create formatter
-formatter = logging.Formatter("[%(levelname)s] %(asctime)s: %(message)s")
-
-# Add formatter to file handler
-file_handler.setFormatter(formatter)
-
-# Add file handler to logger
-logger.addHandler(file_handler)
-
-
 # Instantiate the manager utils
 data_manager = DataManager()
 device_manager = DeviceManager()
+
+
+# Instantiate logging
+logger = logging.getLogger(name=__name__)
+logger.setLevel(level=logging.DEBUG)
+
+# Create file handler and set level
+file_handler = logging.FileHandler(filename=config.get("Paths", "base_path") + "/logs/flight_data_app.log",
+                                   mode='w', encoding='utf-8')
+file_handler.setLevel(level=logging.DEBUG)
+
+# Create formatter
+formatter = logging.Formatter(fmt="[%(levelname)s]\t%(asctime)s:\t%(message)s", datefmt='%Y-%m-%d %H:%M:%S')
+
+# Add formatter to file handler
+file_handler.setFormatter(fmt=formatter)
+
+# Add file handler to logger
+logger.addHandler(hdlr=file_handler)
 
 
 class HomeScreen(GridLayout):
@@ -114,7 +114,7 @@ class StorageLabel(Label):
 
 
 class FlightDataApp(App):
-    # Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
+    Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
     pass
 
 

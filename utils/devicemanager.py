@@ -5,30 +5,30 @@ import configparser
 import logging
 from pathlib import Path
 
+# Instantiate config parser and read config.ini
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 # Instantiate logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger(name=__name__)
+logger.setLevel(level=logging.DEBUG)
 
 # Create file handler and set level
-file_handler = logging.FileHandler(filename="/logs/data_mananger.log")
-file_handler.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler(filename=config.get("Paths", "base_path") + "/logs/device_manager.log",
+                                   mode='w', encoding='utf-8')
+file_handler.setLevel(level=logging.DEBUG)
 
 # Create formatter
-formatter = logging.Formatter("[%(levelname)s] %(asctime)s: %(message)s")
+formatter = logging.Formatter(fmt="[%(levelname)s]\t%(asctime)s:\t%(message)s", datefmt='%Y-%m-%d %H:%M:%S')
 
 # Add formatter to file handler
-file_handler.setFormatter(formatter)
+file_handler.setFormatter(fmt=formatter)
 
 # Add file handler to logger
-logger.addHandler(file_handler)
+logger.addHandler(hdlr=file_handler)
 
 
 class DeviceManager:
-
-    # Instantiate config parser and read config.ini
-    config = configparser.ConfigParser()
-    config.read('config.ini')
 
     hd_status = False
     usb_status = False
@@ -79,40 +79,41 @@ class DeviceManager:
 
     def update_hd_capacity(self):
         if self.hd_status:
-            remaining_capacity = self.check_device_capacity(self.config.get('Paths', 'hd'), name='Hard Drive')
+            remaining_capacity = self.check_device_capacity(config.get('Paths', 'hd'), name='Hard Drive')
 
-            self.config.set('Capacity', 'hd', str(remaining_capacity))
+            config.set('Capacity', 'hd', str(remaining_capacity))
             with open('config.ini', 'w') as configfile:
-                self.config.write(configfile)
+                config.write(configfile)
 
             return remaining_capacity  # In GiB
         else:
             pass
 
     def check_usb_capacity(self):
-        remaining_capacity = self.check_device_capacity(self.config.get('Paths', 'usb'), name='USB Drive')
+        remaining_capacity = self.check_device_capacity(config.get('Paths', 'usb'), name='USB Drive')
 
         return remaining_capacity  # In GiB
 
-    def make_mount_points(self):
+    @staticmethod
+    def make_mount_points():
 
         for device in ["hd", "usb", "sd"]:
-            dev_path = self.config.get("Paths", "base_path") + "/mounts/" + device
+            dev_path = config.get("Paths", "base_path") + "/mounts/" + device
             Path(dev_path).mkdir(parents=True, exist_ok=True)
-            self.config.set("Paths", device, dev_path)
+            config.set("Paths", device, dev_path)
             logger.info(f"Mount point: {dev_path} created")
 
         with open('config.ini', 'w') as configfile:
-            self.config.write(configfile)
+            config.write(configfile)
 
     def locate_hd(self):
         devices = [device for device in psutil.disk_partitions()]
 
-        result = next((device for device in devices if self.config.get('Devices', 'hd') in device.device), False)
+        result = next((device for device in devices if config.get('Devices', 'hd') in device.device), False)
 
         if result:
             self.hd_status = True
-            self.config.set('Paths', 'hd', result.mountpoint)
+            config.set('Paths', 'hd', result.mountpoint)
             logger.info(f"Hard drive found: {result.device}")
 
         else:
@@ -122,12 +123,13 @@ class DeviceManager:
         return self.hd_status
 
     def mount_hd(self, device: str):
-        return self.mount_device(device, self.config.get('Paths', 'hd'))
+        return self.mount_device(device, config.get('Paths', 'hd'))
 
-    def eject_hd(self):
+    @staticmethod
+    def eject_hd():
         try:
-            os.system(f"sudo umount -l {self.config.get('Paths', 'hd')}")
-            logger.info(f"Device unmounted from {self.config.get('Paths', 'hd')}")
+            os.system(f"sudo umount -l {config.get('Paths', 'hd')}")
+            logger.info(f"Device unmounted from {config.get('Paths', 'hd')}")
             return True
         except PermissionError as e:
             logger.error(f"Mounting error: {e}")
@@ -136,15 +138,16 @@ class DeviceManager:
     def check_for_devices(self):
         devices = [device for device in psutil.disk_partitions()]
 
-        usb_result = next((device for device in devices if self.config.get('Devices', 'usb') in device.device), False)
-        sd_result = next((device for device in devices if self.config.get('Devices', 'sd') in device.device and "0" not in device.device), False)
+        usb_result = next((device for device in devices if config.get('Devices', 'usb') in device.device), False)
+        sd_result = next((device for device in devices if config.get('Devices', 'sd') in device.device and
+                          "0" not in device.device), False)
 
         if usb_result:
             if self.usb_status:
                 pass
             else:
                 self.usb_status = True
-                self.config.set("Paths", "usb", usb_result.mountpoint)
+                config.set("Paths", "usb", usb_result.mountpoint)
                 logger.info(f"USB drive found: {usb_result.device}")
         else:
             self.eject_usb()
@@ -156,7 +159,7 @@ class DeviceManager:
                 pass
             else:
                 self.sd_status = True
-                self.config.set("Paths", "sd", sd_result.mountpoint)
+                config.set("Paths", "sd", sd_result.mountpoint)
                 logger.info(f"SD card found: {sd_result.device}")
         else:
             self.eject_sd()
@@ -167,12 +170,13 @@ class DeviceManager:
 
     # Unused
     def mount_usb(self, device: str):
-        return self.mount_device(device, self.config.get('Paths', 'usb'))
+        return self.mount_device(device, config.get('Paths', 'usb'))
 
-    def eject_usb(self):
+    @staticmethod
+    def eject_usb():
         try:
-            os.system(f"sudo umount -l {self.config.get('Paths', 'usb')}")
-            logger.info(f"Device unmounted from {self.config.get('Paths', 'usb')}")
+            os.system(f"sudo umount -l {config.get('Paths', 'usb')}")
+            logger.debug(f"Device unmounted from {config.get('Paths', 'usb')}")
             return True
         except PermissionError as e:
             logger.error(f"Mounting error: {e}")
@@ -180,12 +184,13 @@ class DeviceManager:
 
     # Unused
     def mount_sd(self, device: str):
-        return self.mount_device(device, self.config.get('Paths', 'sd'))
+        return self.mount_device(device, config.get('Paths', 'sd'))
 
-    def eject_sd(self):
+    @staticmethod
+    def eject_sd():
         try:
-            os.system(f"sudo umount -l {self.config.get('Paths', 'sd')}")
-            logger.info(f"Device unmounted from {self.config.get('Paths', 'sd')}")
+            os.system(f"sudo umount -l {config.get('Paths', 'sd')}")
+            logger.debug(f"Device unmounted from {config.get('Paths', 'sd')}")
             return True
         except PermissionError as e:
             logger.error(f"Mounting error: {e}")

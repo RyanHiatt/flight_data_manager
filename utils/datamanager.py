@@ -4,35 +4,37 @@ import configparser
 import filecmp
 import secrets
 import logging
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree
 from datetime import datetime
 
 from utils.exceptions import MismatchFileError
 
 
+# Instantiate configparser and read config
+config = configparser.ConfigParser()
+config.read('config.ini')
+
+
 # Instantiate logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger(name=__name__)
+logger.setLevel(level=logging.DEBUG)
 
 # Create file handler and set level
-file_handler = logging.FileHandler(filename="/logs/data_mananger.log")
-file_handler.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler(filename=config.get("Paths", "base_path") + "/logs/data_manager.log",
+                                   mode='w', encoding='utf-8')
+file_handler.setLevel(level=logging.DEBUG)
 
 # Create formatter
-formatter = logging.Formatter("[%(levelname)s] %(asctime)s: %(message)s")
+formatter = logging.Formatter(fmt="[%(levelname)s]\t%(asctime)s:\t%(message)s", datefmt='%Y-%m-%d %H:%M:%S')
 
 # Add formatter to file handler
-file_handler.setFormatter(formatter)
+file_handler.setFormatter(fmt=formatter)
 
 # Add file handler to logger
-logger.addHandler(file_handler)
+logger.addHandler(hdlr=file_handler)
 
 
 class DataManager:
-
-    # Instantiate configparser and read config
-    config = configparser.ConfigParser()
-    config.read('config.ini')
 
     # File parsing variables
     target = config.get('Xml Parsing', 'file_target')
@@ -79,11 +81,11 @@ class DataManager:
     def _parse_airframe_info_xml(self, xml_file_path: str) -> tuple:
         """
         This method takes a xml file to parse and finds the two parameters specified in the config.ini
-        :param xml_file: {str} The path to the desired xml file
+        :param xml_file_path: {str} The path to the desired xml file
         :return: {tuple} Returns (parameter 1 value, parameter 2 value)
         """
         # Get the xml tree structure
-        tree = ET.parse(xml_file_path)
+        tree = ElementTree.parse(xml_file_path)
         # extract the root element of the tree
         root = tree.getroot()
         # Find the defined children of the root
@@ -113,14 +115,15 @@ class DataManager:
         except IOError or PermissionError or OSError as e:
             logger.error(f"SD Card Error: {e}")
 
-    def _select_files(self, path: str):
+    @staticmethod
+    def _select_files(path: str):
         """
 
         :param path:
         :return:
         """
-        target_dirs = self.config.get('File Selection', 'directories').split(sep=',')
-        target_files = self.config.get('File Selection', 'files').split(sep=',')
+        target_dirs = config.get('File Selection', 'directories').split(sep=',')
+        target_files = config.get('File Selection', 'files').split(sep=',')
 
         dir_selection = []
         file_selection = []
@@ -149,7 +152,7 @@ class DataManager:
         :return:
         """
         # Check if the target exists -> return bool and path
-        result, target_path = self._get_file_path(path=self.config.get('Paths', 'sd'), file=self.target)
+        result, target_path = self._get_file_path(path=config.get('Paths', 'sd'), file=self.target)
 
         if result:  # Continue with target file
 
@@ -163,22 +166,22 @@ class DataManager:
             new_entry = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
             # Select files for copy
-            directories, files = self._select_files(path=self.config.get('Paths', 'sd'))
+            directories, files = self._select_files(path=config.get('Paths', 'sd'))
 
             # Copy relevant directories to hard drive
             for directory in directories:
-                shutil.copytree(directory, dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry))
+                shutil.copytree(directory, dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry))
                 if self.verify_copy(src=directory,
-                                    dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry)):
+                                    dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry)):
                     logger.info(f"Successful copied {directory.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
                 else:
                     logger.warning(f"Mismatched file {directory.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
 
             # Copy relevant files to hard drive
             for file in files:
-                shutil.copy2(file, dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry))
+                shutil.copy2(file, dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry))
                 if self.verify_copy(src=file,
-                                    dst=os.path.join(self.config.get('Paths', 'hd'), dst_dir_name, new_entry)):
+                                    dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry)):
                     logger.info(f"Successful copied {file.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
                 else:
                     logger.warning(f"Mismatched file {file.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
@@ -188,23 +191,25 @@ class DataManager:
         else:  # Target does not exist,
             return False
 
-    def clear_sd_card(self):
-        for file in os.listdir(self.config.get('Paths', 'sd')):
+    @staticmethod
+    def clear_sd_card():
+        for file in os.listdir(config.get('Paths', 'sd')):
             try:
-                shutil.rmtree(os.path.join(self.config.get('Paths', 'sd'), file))
+                shutil.rmtree(os.path.join(config.get('Paths', 'sd'), file))
             except OSError:
-                os.remove(os.path.join(self.config.get('Paths', 'sd'), file))
+                os.remove(os.path.join(config.get('Paths', 'sd'), file))
         logger.info("SD card cleared")
 
     def download_flight_data(self):
         pass
 
-    def clear_hd(self):
-        for file in os.listdir(self.config.get('Paths', 'hd')):
+    @staticmethod
+    def clear_hd():
+        for file in os.listdir(config.get('Paths', 'hd')):
             try:
-                shutil.rmtree(os.path.join(self.config.get('Paths', 'hd'), file))
+                shutil.rmtree(os.path.join(config.get('Paths', 'hd'), file))
             except OSError:
-                os.remove(os.path.join(self.config.get('Paths', 'hd'), file))
+                os.remove(os.path.join(config.get('Paths', 'hd'), file))
         logger.info("Hard drive cleared")
 
     @staticmethod

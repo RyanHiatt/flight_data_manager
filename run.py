@@ -1,7 +1,6 @@
 import os
 import sys
 import configparser
-import time
 
 
 def setup():
@@ -16,10 +15,9 @@ def setup():
     # Update the config with the base path of the app
     config.set('Paths', 'base_path', base_path)
 
+    # Save base_path to config file
     with open('config.ini', 'w') as configfile:
         config.write(configfile)
-
-    print(config.get('Paths', 'base_path'))
 
     # Insert base_path into system memory for efficient importing
     sys.path.insert(0, base_path)
