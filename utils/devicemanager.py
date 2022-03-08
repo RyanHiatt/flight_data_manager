@@ -51,7 +51,7 @@ class DeviceManager:
         return free // 1073741824  # In GiB
 
     @staticmethod
-    def mount_device(device: str, path: str):
+    def mount_device(device: str, path: str):  # Unused
         try:
             if os.path.ismount(path):
                 pass
@@ -68,7 +68,7 @@ class DeviceManager:
             pass
 
     @staticmethod
-    def unmount_device(path: str):
+    def unmount_device(path: str):  # Unused
         try:
             os.system(f'sudo umount -l {path}')
             logger.info(f"Device unmounted from {path}")
@@ -114,15 +114,18 @@ class DeviceManager:
         if result:
             self.hd_status = True
             config.set('Paths', 'hd', result.mountpoint)
-            logger.info(f"Hard drive found: {result.device}")
+            logger.info(f"Hard drive found: {result.device}, location: {result.mountpoint}")
+
+            with open('config.ini', 'w') as configfile:
+                config.write(configfile)
 
         else:
             self.hd_status = False
-            logger.debug("Hard drive not found")
+            logger.warning("Hard drive not found")
 
         return self.hd_status
 
-    def mount_hd(self, device: str):
+    def mount_hd(self, device: str):  # Unused
         return self.mount_device(device, config.get('Paths', 'hd'))
 
     @staticmethod
@@ -153,9 +156,11 @@ class DeviceManager:
                 with open('config.ini', 'w') as configfile:
                     config.write(configfile)
         else:
-            self.eject_usb()
-            self.usb_status = False
-            logger.debug("USB drive not found")
+            if self.sd_status:
+                self.eject_usb()
+                self.usb_status = False
+            else:
+                logger.debug("USB drive not found")
 
         if sd_result:
             if self.sd_status:
@@ -168,9 +173,11 @@ class DeviceManager:
                 with open('config.ini', 'w') as configfile:
                     config.write(configfile)
         else:
-            self.eject_sd()
-            self.sd_status = False
-            logger.debug("SD card not found")
+            if self.sd_status:
+                self.eject_sd()
+                self.sd_status = False
+            else:
+                logger.debug("SD card not found")
 
         return self.usb_status, self.sd_status
 

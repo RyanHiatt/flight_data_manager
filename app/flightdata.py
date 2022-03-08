@@ -51,18 +51,17 @@ class HomeScreen(GridLayout):
 
     def device_update(self, dt):
         # Check for USB Drive and SD Card
-        # usb_drive_status, sd_card_status = device_manager.check_for_devices()
+        usb_drive_status, sd_card_status = device_manager.check_for_devices()
 
-        # self.ids.download_button.disabled = not usb_drive_status
-        # self.ids.upload_button.disabled = not sd_card_status
-        pass
+        self.ids.download_button.disabled = not usb_drive_status
+        self.ids.upload_button.disabled = not sd_card_status
 
 
 class DataTransferButton(Button):
 
     def upload_data(self):
         start_time = time.time()
-        logger.info('Upload Pressed')
+        logger.debug('Upload Pressed')
 
         # Transfer data from SD Card to Hard Drive
 
@@ -73,11 +72,11 @@ class DataTransferButton(Button):
         # Eject SD card
         device_manager.eject_sd()
 
-        logger.info(f"Upload Completed: {time.time() - start_time}")
+        logger.info(f"Upload Completed: {time.time() - start_time} seconds")
 
     def download_data(self):
         start_time = time.time()
-        logger.info('Download Pressed')
+        logger.debug('Download Pressed')
 
         # Transfer data from Hard Drive to USB Drive
 
