@@ -188,11 +188,16 @@ class DeviceManager:
     @staticmethod
     def eject_usb():
         try:
-            os.system(f"sudo umount -l {config.get('Paths', 'usb')}")
-            logger.debug(f"Device unmounted from {config.get('Paths', 'usb')}")
-            return True
+            path = config.get('Paths', 'usb')
+            if path == "/":
+                logger.error(f"Eject usb fail, path is '/'")
+                return False
+            else:
+                os.system(f"sudo umount -l {path}")
+                logger.debug(f"Device unmounted from {path}")
+                return True
         except PermissionError as e:
-            logger.error(f"Mounting error: {e}")
+            logger.error(f"USB ejection error: {e}")
             return False
 
     # Unused
@@ -202,11 +207,16 @@ class DeviceManager:
     @staticmethod
     def eject_sd():
         try:
-            os.system(f"sudo umount -l {config.get('Paths', 'sd')}")
-            logger.debug(f"Device unmounted from {config.get('Paths', 'sd')}")
-            return True
+            path = config.get('Paths', 'sd')
+            if path == "/":
+                logger.error(f"Eject sd fail, path is '/'")
+                return False
+            else:
+                os.system(f"sudo umount -l {path}")
+                logger.debug(f"Device unmounted from {path}")
+                return True
         except PermissionError as e:
-            logger.error(f"Mounting error: {e}")
+            logger.error(f"SD ejection error: {e}")
             return False
 
 
