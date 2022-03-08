@@ -51,10 +51,11 @@ class HomeScreen(GridLayout):
 
     def device_update(self, dt):
         # Check for USB Drive and SD Card
-        usb_drive_status, sd_card_status = device_manager.check_for_devices()
+        # usb_drive_status, sd_card_status = device_manager.check_for_devices()
 
-        self.ids.download_button.disabled = not usb_drive_status
-        self.ids.upload_button.disabled = not sd_card_status
+        # self.ids.download_button.disabled = not usb_drive_status
+        # self.ids.upload_button.disabled = not sd_card_status
+        pass
 
 
 class DataTransferButton(Button):
