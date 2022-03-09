@@ -156,7 +156,7 @@ class DeviceManager:
                 with open('config.ini', 'w') as configfile:
                     config.write(configfile)
         else:
-            if self.sd_status:
+            if self.usb_status:
                 self.eject_usb()
                 self.usb_status = False
             else:

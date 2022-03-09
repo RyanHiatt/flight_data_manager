@@ -43,6 +43,9 @@ file_handler.setFormatter(fmt=formatter)
 logger.addHandler(hdlr=file_handler)
 
 
+clear_sd = False
+
+
 class HomeScreen(GridLayout):
 
     def __init__(self, **kwargs):
@@ -67,7 +70,7 @@ class DataTransferButton(Button):
         # Transfer data from SD Card to Hard Drive
 
         # Erase sd card
-        if bool(config.get('Options', 'erase_sd')):
+        if clear_sd:
             data_manager.clear_sd_card()
 
         # Eject SD card
@@ -120,7 +123,7 @@ class StorageLabel(Label):
 
 
 class FlightDataApp(App):
-    Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
+    # Window.size = (800, 480)  # RPi 7 inch touchscreen (For Testing)
     pass
 
 

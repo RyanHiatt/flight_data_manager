@@ -193,6 +193,7 @@ class DataManager:
 
     @staticmethod
     def clear_sd_card():
+        logger.debug("Clear sd card called")
         for file in os.listdir(config.get('Paths', 'sd')):
             try:
                 shutil.rmtree(os.path.join(config.get('Paths', 'sd'), file))
@@ -205,6 +206,7 @@ class DataManager:
 
     @staticmethod
     def clear_hd():
+        logger.debug("Clear hard drive called")
         for file in os.listdir(config.get('Paths', 'hd')):
             try:
                 shutil.rmtree(os.path.join(config.get('Paths', 'hd'), file))
