@@ -48,6 +48,7 @@ class HomeScreen(GridLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Clock.schedule_interval(self.device_update, 1)
+        logger.info("Device update loop initialized")
 
     def device_update(self, dt):
         # Check for USB Drive and SD Card
@@ -109,6 +110,7 @@ class StorageLabel(Label):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
+        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage}")
         Clock.schedule_interval(self.update_capacity, 60)
 
     def update_capacity(self, dt):
