@@ -1,6 +1,0 @@
-
-
-[App]
-Settings:
-    Toggle Option for sd card deletion
-    nested storage (Ex: separate each upload into its own unique directory)

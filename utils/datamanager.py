@@ -193,6 +193,7 @@ class DataManager:
 
     @staticmethod
     def clear_sd_card():
+        # TODO does not work
         logger.debug("Clear sd card called")
         for file in os.listdir(config.get('Paths', 'sd')):
             try:
@@ -206,6 +207,7 @@ class DataManager:
 
     @staticmethod
     def clear_hd():
+        # TODO does not work
         logger.debug("Clear hard drive called")
         for file in os.listdir(config.get('Paths', 'hd')):
             try:
