@@ -57,6 +57,7 @@ class HomeScreen(GridLayout):
         # Check for USB Drive and SD Card
         usb_drive_status, sd_card_status = device_manager.check_for_devices()
 
+        # Set the interface button disabled status
         self.ids.download_button.disabled = not usb_drive_status
         self.ids.upload_button.disabled = not sd_card_status
 
@@ -68,6 +69,7 @@ class DataTransferButton(Button):
         logger.debug('Upload Pressed')
 
         # Transfer data from SD Card to Hard Drive
+        data_manager.upload_flight_data()
 
         # Erase sd card
         if clear_sd:
@@ -83,6 +85,7 @@ class DataTransferButton(Button):
         logger.debug('Download Pressed')
 
         # Transfer data from Hard Drive to USB Drive
+        # data_manager.download_flight_data()
 
         # Eject USB Drive
         device_manager.eject_usb()

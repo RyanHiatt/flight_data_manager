@@ -63,7 +63,7 @@ class DataManager:
             logger.error(f"Existing Directory Error: {e}")
 
     @staticmethod
-    def verify_copy(src: str, dst: str) -> bool:
+    def verify_dir_copy(src: str, dst: str) -> bool:
         """
         This method compares two directories and determines if there are any differences
         :param src: {str} The source directory being compared against
@@ -77,6 +77,22 @@ class DataManager:
             return False
         else:  # if no differing files, return true
             return True
+
+    @staticmethod
+    def verify_file_copy(src: str, dst: str) -> bool:
+        """
+        This method compares two files and determines if there are any differences
+        :param src: {str} The source file being compared against
+        :param dst: {dst} The destination file beging compared
+        :return: {bool} True if the files match, False if they do not match
+        """
+        # Instantiate a dircmp object and extract differing files
+        dir_comp = filecmp.cmp(src, dst)
+
+        if dir_comp:  # if the same
+            return True
+        else:  # if different
+            return False
 
     def _parse_airframe_info_xml(self, xml_file_path: str) -> tuple:
         """
@@ -171,8 +187,8 @@ class DataManager:
             # Copy relevant directories to hard drive
             for directory in directories:
                 shutil.copytree(directory, dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry))
-                if self.verify_copy(src=directory,
-                                    dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry)):
+                if self.verify_dir_copy(src=directory,
+                                        dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry)):
                     logger.info(f"Successful copied {directory.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
                 else:
                     logger.warning(f"Mismatched file {directory.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
@@ -180,27 +196,37 @@ class DataManager:
             # Copy relevant files to hard drive
             for file in files:
                 shutil.copy2(file, dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry))
-                if self.verify_copy(src=file,
-                                    dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry)):
+                if self.verify_file_copy(src=file,
+                                         dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry)):
                     logger.info(f"Successful copied {file.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
                 else:
                     logger.warning(f"Mismatched file {file.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
 
             return True
 
-        else:  # Target does not exist,
+        else:  # Target does not exist
             return False
 
     @staticmethod
     def clear_sd_card():
-        # TODO does not work
-        logger.debug("Clear sd card called")
-        for file in os.listdir(config.get('Paths', 'sd')):
+
+        for filename in os.listdir(config.get('Paths', 'sd')):
+            file_path = os.path.join(config.get('Paths', 'sd'), filename)
             try:
-                shutil.rmtree(os.path.join(config.get('Paths', 'sd'), file))
-            except OSError:
-                os.remove(os.path.join(config.get('Paths', 'sd'), file))
-        logger.info("SD card cleared")
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print(f"Failed to clear sd card {file_path}. Reason: {e}")
+
+        # logger.debug("Clear sd card called")
+        # for file in os.listdir(config.get('Paths', 'sd')):
+        #     try:
+        #         shutil.rmtree(os.path.join(config.get('Paths', 'sd'), file))
+        #     except OSError:
+        #         os.remove(os.path.join(config.get('Paths', 'sd'), file))
+        # logger.info("SD card cleared")
 
     def download_flight_data(self):
         pass

@@ -1,7 +1,7 @@
 import os
 import sys
 import configparser
-import pytest
+# import pytest
 
 
 def setup():
@@ -32,10 +32,15 @@ if __name__ == '__main__':
 
     from utils.devicemanager import DeviceManager
     # Instantiate device manager and check for devices to set paths
-    device_manager = DeviceManager()
-    device_manager.check_for_devices()
+    # device_manager = DeviceManager()
+    # device_manager.check_for_devices()
 
     from tests.test_functions import generate_simulated_hd
-    generate_simulated_hd()
+    # generate_simulated_hd()
+
+    from utils.datamanager import DataManager
+    data_manager = DataManager()
+    data_manager.upload_flight_data()
+    data_manager.clear_sd_card()
 
 

@@ -114,7 +114,7 @@ def generate_simulated_hd(path: str, num_entries: int):
 
         # Create the generated directories
         if not os.path.isdir(f"{path}/{plane_dir}/{entry_dir}"):
-            os.makedirs(f"{path}/{plane_dir}/{entry_dir}/data_log", exist_ok=True)
+            os.makedirs(f"{path}/{plane_dir}/{entry_dir}", exist_ok=True)
 
         # Generate rpt_.csv
         with open(f"{path}/{plane_dir}/{entry_dir}/rpt_{secrets.token_hex(4)}.csv", "w") as rpt_csv:
@@ -122,10 +122,10 @@ def generate_simulated_hd(path: str, num_entries: int):
 
         # Generate sample data files
         for j in range(0, random.randint(2, 8)):
-            with open(f"{path}/{plane_dir}/{entry_dir}/data_log/log_{secrets.token_hex(4)}.csv", "w") as data_csv:
+            with open(f"{path}/{plane_dir}/{entry_dir}/log_{secrets.token_hex(4)}.csv", "w") as data_csv:
                 pass
 
 
 if __name__ == '__main__':
-    # generate_simulated_sd(path="/Users/ryanhiatt/Downloads", clean=True)
-    generate_simulated_hd(path="/Users/ryanhiatt/Downloads", num_entries=100)
+    # generate_simulated_sd(path="/Users/ryanhiatt/dev/projects/flight_data_manager/tests/test_sd", clean=True)
+    generate_simulated_hd(path="/Users/ryanhiatt/dev/projects/flight_data_manager/tests/test_hd", num_entries=100)
