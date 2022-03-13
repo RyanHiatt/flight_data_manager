@@ -220,9 +220,10 @@ class DataManager:
             else:
                 logger.warning(f"Mismatched file {config.get('Paths', 'sd')} and "
                                f"{os.path.join(config.get('Paths', 'usb'), 'FlightData')}")
-
+            return True
         except Exception as e:
             logger.warning(f"SD to USB transfer error: {e}")
+            return False
 
     @staticmethod
     def clear_sd_card():
@@ -234,8 +235,9 @@ class DataManager:
                     os.unlink(file_path)
                 elif os.path.isdir(file_path):
                     shutil.rmtree(file_path)
+
             except Exception as e:
-                print(f"Failed to clear sd card {file_path}. Reason: {e}")
+                logger.warning(f"Failed to clear sd card {file_path}. Reason: {e}")
 
     def download_flight_data(self):
         pass

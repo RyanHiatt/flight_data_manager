@@ -106,19 +106,7 @@ class UploadPopup(Popup):
         Clock.schedule_once(self.dismiss_popup, 30)
         Clock.schedule_interval(self.device_update, 1)
 
-    def call_dismiss(self):
-        self.dismiss()
-        self.dismiss()
-
-        # Erase sd card
-        if clear_sd:
-            data_manager.clear_sd_card()
-
-        # Eject SD card
-        device_manager.eject_sd()
-
     def dismiss_popup(self, dt):
-        self.dismiss()
         self.dismiss()
 
         # Erase sd card
@@ -131,8 +119,20 @@ class UploadPopup(Popup):
     def device_update(self, dt):
         self.ids.copy_button.disabled = not device_manager.usb_status
 
+    def call_dismiss(self):
+        self.dismiss()
+
+        # Erase sd card
+        if clear_sd:
+            data_manager.clear_sd_card()
+
+        # Eject SD card
+        device_manager.eject_sd()
+
     def copy_data(self):
-        data_manager.copy_sd_to_usb()
+        if data_manager.copy_sd_to_usb():
+            self.call_dismiss()
+
 
 
 class DownloadPopup(Popup):
