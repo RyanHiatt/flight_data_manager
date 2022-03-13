@@ -121,7 +121,6 @@ class DataManager:
         try:
             # Walk through all the files on the sd card
             for root, dirs, files in os.walk(path):
-                print(root)
                 # If one of the files is equal to the param file
                 if file in files:
                     # Return the full path of the found file
@@ -160,6 +159,7 @@ class DataManager:
             return dir_selection, file_selection
 
         except IOError or PermissionError or OSError as e:
+            print("errrrrroorrrrr")
             logger.error(f"SD Card Error: {e}")
 
     def upload_flight_data(self):
