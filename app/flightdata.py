@@ -72,6 +72,7 @@ class DataTransferButton(Button):
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
 
+        # Open the post-transfer popup
         popup = UploadPopup(title='Upload Complete')
         popup.open()
 
@@ -103,9 +104,16 @@ class UploadPopup(Popup):
         super(UploadPopup, self).__init__(**kwargs)
         # call dismiss_popup in 2 seconds
         Clock.schedule_once(self.dismiss_popup, 30)
+        Clock.schedule_interval(self.device_update, 1)
 
     def dismiss_popup(self, dt):
         self.dismiss()
+
+    def device_update(self, dt):
+        self.ids.copy_button.disabled = not device_manager.usb_status
+
+    def copy_data(self):
+        data_manager.copy_sd_to_usb()
 
 
 class DownloadPopup(Popup):

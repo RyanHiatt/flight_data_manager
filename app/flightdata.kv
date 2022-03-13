@@ -67,6 +67,40 @@ HomeScreen:
                     disabled: True
                     on_release: self.download_data()
 
+<UploadPopup>:
+    size_hint: None, None
+    size: (400, 400)
+
+    GridLayout:
+        rows: 2
+        cols: 1
+
+        Label:
+            text: "Upload Complete"
+
+        GridLayout
+            cols: 5
+
+            Label:
+
+            Button:
+                text: "Close"
+                on_release: root.dismiss()
+
+            Label:
+
+            Button:
+                id: copy_button
+                text:"Copy"
+                disabled: True
+                on_release: self.copy_data()
+
+            Label:
+
+
+<DownloadPopup>:
+
+
 
 <DataTransferButton>:
     background_normal: 'static/images-kivy/dark_button.png'
@@ -101,8 +135,4 @@ HomeScreen:
     halign: 'left'
     valign: 'top'
 
-<UploadPopup>:
-
-
-<DownloadPopup>:
 

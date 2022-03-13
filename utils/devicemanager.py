@@ -179,6 +179,53 @@ class DeviceManager:
 
         return self.usb_status, self.sd_status
 
+    def check_for_usb(self):
+        devices = [device for device in psutil.disk_partitions()]
+
+        usb_result = next((device for device in devices if config.get('Devices', 'usb') in device.device), False)
+
+        if usb_result:
+            if self.usb_status:
+                pass
+            else:
+                self.usb_status = True
+                config.set("Paths", "usb", usb_result.mountpoint)
+                logger.info(f"USB drive found: {usb_result.device}")
+
+                with open('config.ini', 'w') as configfile:
+                    config.write(configfile)
+        else:
+            if self.usb_status:
+                self.eject_usb()
+            else:
+                logger.debug("USB drive not found")
+
+        return self.usb_status
+
+    def check_for_sd(self):
+        devices = [device for device in psutil.disk_partitions()]
+
+        sd_result = next((device for device in devices if config.get('Devices', 'sd') in device.device and
+                          "0" not in device.device), False)
+
+        if sd_result:
+            if self.sd_status:
+                pass
+            else:
+                self.sd_status = True
+                config.set("Paths", "sd", sd_result.mountpoint)
+                logger.info(f"SD card found: {sd_result.device}")
+
+                with open('config.ini', 'w') as configfile:
+                    config.write(configfile)
+        else:
+            if self.sd_status:
+                self.eject_sd()
+            else:
+                logger.debug("SD card not found")
+
+        return self.sd_status
+
     # Unused
     def mount_usb(self, device: str):
         return self.mount_device(device, config.get('Paths', 'usb'))

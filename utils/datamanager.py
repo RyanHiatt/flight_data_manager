@@ -111,7 +111,7 @@ class DataManager:
         return param1, param2
 
     @staticmethod
-    def _get_file_path(path: str, file: str) -> tuple:
+    def _find_target(path: str, file: str) -> bool:
         """
         This method gets the absolute path for a given file in a given directory
         :param path: {str} The path at which to begin the search
@@ -168,10 +168,10 @@ class DataManager:
         :return:
         """
         # Check if the target exists -> return bool and path
-        result = self._get_file_path(path=config.get('Paths', 'sd'), file=self.target)
-        target_path = os.path.join(config.get('Paths', 'sd'), self.target)
+        result = self._find_target(path=config.get('Paths', 'sd'), file=self.target)
 
         if result:  # Continue with target file
+            target_path = os.path.join(config.get('Paths', 'sd'), self.target)
 
             # parse the target file to find naming parameters
             param1, param2 = self._parse_airframe_info_xml(xml_file_path=target_path)
