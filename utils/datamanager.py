@@ -211,14 +211,14 @@ class DataManager:
     def copy_sd_to_usb(self):
         try:
             shutil.copytree(src=config.get('Paths', 'sd'),
-                            dst=os.path.join(config.get('Paths', 'usb'), '/FlightData'))
+                            dst=os.path.join(config.get('Paths', 'usb'), 'FlightData'))
             if self.verify_dir_copy(src=config.get('Paths', 'sd'),
-                                    dst=os.path.join(config.get('Paths', 'usb'), '/FlightData')):
+                                    dst=os.path.join(config.get('Paths', 'usb'), 'FlightData')):
                 logger.info(f"Successful copied {config.get('Paths', 'sd')} to "
-                            f"{os.path.join(config.get('Paths', 'usb'), '/FlightData')}")
+                            f"{os.path.join(config.get('Paths', 'usb'), 'FlightData')}")
             else:
                 logger.warning(f"Mismatched file {config.get('Paths', 'sd')} and "
-                               f"{os.path.join(config.get('Paths', 'usb'), '/FlightData')}")
+                               f"{os.path.join(config.get('Paths', 'usb'), 'FlightData')}")
 
         except Exception as e:
             logger.warning(f"SD to USB transfer error: {e}")
