@@ -192,7 +192,7 @@ class DataManager:
                                         dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry)):
                     logger.info(f"Successful copied {directory.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
                 else:
-                    logger.warning(f"Mismatched file {directory.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
+                    logger.warning(f"Mismatched dir {directory.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
 
             # Copy relevant files to hard drive
             for file in files:
@@ -211,9 +211,9 @@ class DataManager:
     def copy_sd_to_usb(self):
         try:
             shutil.copytree(src=config.get('Paths', 'sd'),
-                            dst=os.path.join(config.get('Paths', 'usb'), 'FlightData'))
+                            dst=f"{config.get('Paths', 'usb')}/FlightData")
             if self.verify_dir_copy(src=config.get('Paths', 'sd'),
-                                    dst=os.path.join(config.get('Paths', 'usb'), 'FlightData')):
+                                    dst=f"{config.get('Paths', 'usb')}/FlightData"):
                 logger.info(f"Successful copied {config.get('Paths', 'sd')} to "
                             f"{os.path.join(config.get('Paths', 'usb'), 'FlightData')}")
             else:
