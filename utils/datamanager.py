@@ -207,6 +207,21 @@ class DataManager:
         else:  # Target does not exist
             return False
 
+    def copy_sd_to_usb(self):
+        try:
+            shutil.copytree(src=config.get('Paths', 'sd'),
+                            dst=os.path.join(config.get('Paths', 'usb'), '/FlightData'))
+            if self.verify_dir_copy(src=config.get('Paths', 'sd'),
+                                    dst=os.path.join(config.get('Paths', 'usb'), '/FlightData')):
+                logger.info(f"Successful copied {config.get('Paths', 'sd')} to "
+                            f"{os.path.join(config.get('Paths', 'usb'), '/FlightData')}")
+            else:
+                logger.warning(f"Mismatched file {config.get('Paths', 'sd')} and "
+                               f"{os.path.join(config.get('Paths', 'usb'), '/FlightData')}")
+
+        except Exception as e:
+            logger.warning(f"SD to USB transfer error: {e}")
+
     @staticmethod
     def clear_sd_card():
 
@@ -220,27 +235,21 @@ class DataManager:
             except Exception as e:
                 print(f"Failed to clear sd card {file_path}. Reason: {e}")
 
-        # logger.debug("Clear sd card called")
-        # for file in os.listdir(config.get('Paths', 'sd')):
-        #     try:
-        #         shutil.rmtree(os.path.join(config.get('Paths', 'sd'), file))
-        #     except OSError:
-        #         os.remove(os.path.join(config.get('Paths', 'sd'), file))
-        # logger.info("SD card cleared")
-
     def download_flight_data(self):
         pass
 
     @staticmethod
     def clear_hd():
-        # TODO does not work
-        logger.debug("Clear hard drive called")
-        for file in os.listdir(config.get('Paths', 'hd')):
+
+        for filename in os.listdir(config.get('Paths', 'hd')):
+            file_path = os.path.join(config.get('Paths', 'hd'), filename)
             try:
-                shutil.rmtree(os.path.join(config.get('Paths', 'hd'), file))
-            except OSError:
-                os.remove(os.path.join(config.get('Paths', 'hd'), file))
-        logger.info("Hard drive cleared")
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print(f"Failed to clear sd card {file_path}. Reason: {e}")
 
     @staticmethod
     def copy_files(src, dst) -> bool:

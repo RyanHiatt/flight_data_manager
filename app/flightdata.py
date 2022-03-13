@@ -10,6 +10,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image
+from kivy.uix.popup import Popup
 
 from utils.datamanager import DataManager
 from utils.devicemanager import DeviceManager
@@ -71,6 +72,9 @@ class DataTransferButton(Button):
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
 
+        popup = UploadPopup
+        popup.open(title='Upload Complete')
+
         # Erase sd card
         if clear_sd:
             data_manager.clear_sd_card()
@@ -91,6 +95,21 @@ class DataTransferButton(Button):
         device_manager.eject_usb()
 
         logger.info(f"Download Completed: {time.time() - start_time}")
+
+
+class UploadPopup(Popup):
+
+    def __init__(self, **kwargs):
+        super(UploadPopup, self).__init__(**kwargs)
+        # call dismiss_popup in 2 seconds
+        Clock.schedule_once(self.dismiss_popup, 30)
+
+    def dismiss_popup(self, dt):
+        self.dismiss()
+
+
+class DownloadPopup(Popup):
+    pass
 
 
 class DataTransferLabel(Label):
