@@ -35,12 +35,13 @@ if __name__ == '__main__':
     # device_manager = DeviceManager()
     # device_manager.check_for_devices()
 
-    from tests.test_functions import generate_simulated_hd
+    from tests.test_functions import generate_simulated_hd, generate_simulated_sd
     # generate_simulated_hd()
+    generate_simulated_sd(path='/Users/ryanhiatt/dev/projects/flight_data_manager/tests/test_sd')
 
     from utils.datamanager import DataManager
     data_manager = DataManager()
     data_manager.upload_flight_data()
-    data_manager.clear_sd_card()
+    # data_manager.clear_sd_card()
 
 

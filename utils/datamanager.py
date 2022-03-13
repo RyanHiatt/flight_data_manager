@@ -122,11 +122,8 @@ class DataManager:
             # Walk through all the files on the sd card
             for root, dirs, files in os.walk(path):
                 # If one of the files is equal to the param file
-                print(root, dirs, files)
                 if file in files:
-                    print("found file")
                     # Return the full path of the found file
-                    print(os.path.join(root, file))
                     return True, os.path.join(root, file)
                 else:
                     return False, root
