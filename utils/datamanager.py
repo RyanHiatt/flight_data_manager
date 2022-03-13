@@ -187,7 +187,8 @@ class DataManager:
 
             # Copy relevant directories to hard drive
             for directory in directories:
-                shutil.copytree(directory, dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry))
+                shutil.copytree(directory, dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry),
+                                dirs_exist_ok=True)
                 if self.verify_dir_copy(src=directory,
                                         dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry)):
                     logger.info(f"Successful copied {directory.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
