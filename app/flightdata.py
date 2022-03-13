@@ -70,9 +70,9 @@ class DataTransferButton(Button):
         logger.debug('Upload Pressed')
 
         # Transfer data from SD Card to Hard Drive
-        data_manager.upload_flight_data()
+        await data_manager.upload_flight_data()
 
-        popup = UploadPopup
+        popup = UploadPopup()
         popup.open(title='Upload Complete')
 
         # Erase sd card
@@ -135,13 +135,13 @@ class StorageLabel(Label):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage}")
+        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
         Clock.schedule_interval(self.update_capacity, 60)
 
     def update_capacity(self, dt):
         self.remaining_storage = str(device_manager.update_hd_capacity())
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage}")
+        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
 
 
 class FlightDataApp(App):
