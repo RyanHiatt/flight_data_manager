@@ -106,6 +106,9 @@ class UploadPopup(Popup):
         Clock.schedule_once(self.dismiss_popup, 30)
         Clock.schedule_interval(self.device_update, 1)
 
+    def call_dismiss(self):
+        self.dismiss_popup()
+
     def dismiss_popup(self, dt):
         self.dismiss()
         self.dismiss()

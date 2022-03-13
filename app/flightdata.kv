@@ -84,14 +84,14 @@ HomeScreen:
 
             Button:
                 text: "Close"
-                on_release: root.dismiss()
+                on_release: root.call_dismiss()
 
             Button:
                 id: copy_button
                 text:"Copy"
                 disabled: True
                 on_release: root.copy_data()
-                on_release: root.dismiss_popup()
+                on_release: root.call_dismiss()
 
 <DownloadPopup>:
 
