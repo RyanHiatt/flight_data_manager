@@ -129,6 +129,7 @@ class DataManager:
                     return False, root
 
         except IOError or PermissionError or OSError as e:
+            print("errrrrroorrrrr")
             logger.error(f"SD Card Error: {e}")
 
     @staticmethod
@@ -159,7 +160,6 @@ class DataManager:
             return dir_selection, file_selection
 
         except IOError or PermissionError or OSError as e:
-            print("errrrrroorrrrr")
             logger.error(f"SD Card Error: {e}")
 
     def upload_flight_data(self):
