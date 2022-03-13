@@ -134,7 +134,6 @@ class UploadPopup(Popup):
             self.call_dismiss()
 
 
-
 class DownloadPopup(Popup):
     pass
 
