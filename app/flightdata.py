@@ -107,7 +107,15 @@ class UploadPopup(Popup):
         Clock.schedule_interval(self.device_update, 1)
 
     def call_dismiss(self):
-        self.dismiss_popup()
+        self.dismiss()
+        self.dismiss()
+
+        # Erase sd card
+        if clear_sd:
+            data_manager.clear_sd_card()
+
+        # Eject SD card
+        device_manager.eject_sd()
 
     def dismiss_popup(self, dt):
         self.dismiss()
