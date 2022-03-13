@@ -72,8 +72,8 @@ class DataTransferButton(Button):
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
 
-        popup = UploadPopup()
-        popup.open(title='Upload Complete')
+        popup = UploadPopup(title='Upload Complete')
+        popup.open()
 
         # Erase sd card
         if clear_sd:
