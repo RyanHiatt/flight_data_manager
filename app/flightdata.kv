@@ -68,6 +68,7 @@ HomeScreen:
                     on_release: self.download_data()
 
 <UploadPopup>:
+    auto_dismiss: False
     size_hint: None, None
     size: (400, 400)
 
@@ -79,24 +80,17 @@ HomeScreen:
             text: "Upload Complete"
 
         GridLayout
-            cols: 5
-
-            Label:
+            cols: 2
 
             Button:
                 text: "Close"
-                on_release: self.dismiss()
-
-            Label:
+                on_release: root.dismiss()
 
             Button:
                 id: copy_button
                 text:"Copy"
                 disabled: True
                 on_release: self.copy_data()
-
-            Label:
-
 
 <DownloadPopup>:
 
