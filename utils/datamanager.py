@@ -124,9 +124,9 @@ class DataManager:
                 # If one of the files is equal to the param file
                 if file in files:
                     # Return the full path of the found file
-                    return True, os.path.join(root, file)
+                    return True
                 else:
-                    return False, root
+                    return False
 
         except IOError or PermissionError or OSError as e:
             logger.error(f"SD Card Error: {e}")
@@ -168,7 +168,8 @@ class DataManager:
         :return:
         """
         # Check if the target exists -> return bool and path
-        result, target_path = self._get_file_path(path=config.get('Paths', 'sd'), file=self.target)
+        result = self._get_file_path(path=config.get('Paths', 'sd'), file=self.target)
+        target_path = os.path.join(config.get('Paths', 'sd'), self.target)
 
         if result:  # Continue with target file
 
