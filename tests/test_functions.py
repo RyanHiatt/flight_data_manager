@@ -128,4 +128,4 @@ def generate_simulated_hd(path: str, num_entries: int):
 
 if __name__ == '__main__':
     generate_simulated_sd(path="/Users/ryanhiatt/dev/projects/flight_data_manager/tests/test_sd", clean=True)
-    # generate_simulated_hd(path="/Users/ryanhiatt/Downloads", num_entries=1000)
+    generate_simulated_hd(path="/Users/ryanhiatt/Downloads", num_entries=1000)
