@@ -1,0 +1,20 @@
+
+TO DO:
+| | Complete upload popup, add message, fix copy from sd to usb
+| | Create download password protection popup
+        Password Pin: 1234
+| | Create download selection popup
+        Options:
+            Past Day
+            Past Week
+            Past Month
+            Past 3 Months
+            Past 6 Months
+            Past Year
+            All
+            By Aircraft
+                airframe-systemid
+                airframe-systemid
+                airframe-systemid
+                airframe-systemid
+| | Create download completion popup

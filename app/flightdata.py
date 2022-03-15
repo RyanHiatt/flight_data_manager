@@ -19,6 +19,7 @@ from utils.devicemanager import DeviceManager
 # Instantiate configparser and read the config
 config = configparser.ConfigParser()
 config.read('config.ini')
+clear_sd = bool(int(config.get('Options', 'erase_sd')))
 
 # Instantiate the manager utils
 data_manager = DataManager()
@@ -42,9 +43,6 @@ file_handler.setFormatter(fmt=formatter)
 
 # Add file handler to logger
 logger.addHandler(hdlr=file_handler)
-
-
-clear_sd = False
 
 
 class HomeScreen(GridLayout):
@@ -102,7 +100,7 @@ class UploadPopup(Popup):
 
     def __init__(self, **kwargs):
         super(UploadPopup, self).__init__(**kwargs)
-        # call dismiss_popup in 2 seconds
+        # call dismiss_popup in 30 seconds
         Clock.schedule_once(self.dismiss_popup, 30)
         Clock.schedule_interval(self.device_update, 1)
 
@@ -119,9 +117,6 @@ class UploadPopup(Popup):
     def device_update(self, dt):
         self.ids.copy_button.disabled = not device_manager.usb_status
 
-    def call_dismiss(self):
-        self.dismiss()
-
         # Erase sd card
         if clear_sd:
             data_manager.clear_sd_card()
@@ -131,10 +126,53 @@ class UploadPopup(Popup):
 
     def copy_data(self):
         if data_manager.copy_sd_to_usb():
-            self.call_dismiss()
+            self.dismiss()
 
 
-class DownloadPopup(Popup):
+class PasswordPopup(Popup):
+    current_key = ''
+
+    def __init__(self, **kwargs):
+        super(PasswordPopup, self).__init__(**kwargs)
+        # call dismiss_popup in 60 seconds
+        Clock.schedule_once(self.dismiss_popup, 60)
+
+    def dismiss_popup(self, dt):
+        self.dismiss()
+
+    def btn_press(self, instance):
+        self.current_key += str(instance.text)
+        self.ids.passkey.text = self.ids.passkey.text + '*'
+        self.ids.nope_label.text = ''
+
+    def clear_text(self):
+        self.ids.passkey.text = ''
+        self.current_key = ''
+        self.nope_label.text = ''
+
+    def submit(self):
+        if self.current_key == config.get('Encryption', 'passkey'):
+            self.clear_text()
+            # TODO Go to the next popup
+
+            self.dismiss()
+
+        # If the key is incorrect, the else statement runs
+        else:
+            self.ids.passkey.text = ''
+            self.current_key = ''
+            self.nope_label.text = 'Invalid Pass Key!'
+
+
+class DateSelectionPopup(Popup):
+    pass
+
+
+class AircraftSelectionPopup(Popup):
+    pass
+
+
+class DownloadCompletePopup(Popup):
     pass
 
 

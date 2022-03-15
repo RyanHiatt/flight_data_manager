@@ -239,6 +239,15 @@ class DataManager:
             except Exception as e:
                 logger.warning(f"Failed to clear sd card {file_path}. Reason: {e}")
 
+    def parse_hd_date(self):
+        pass
+
+    def retrieve_aircraft_names(self):
+        pass
+
+    def parse_hd_aircraft(self):
+        pass
+
     def download_flight_data(self):
         pass
 

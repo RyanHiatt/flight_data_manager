@@ -84,7 +84,7 @@ HomeScreen:
 
             Button:
                 text: "Close"
-                on_release: root.call_dismiss()
+                on_release: root.dismiss()
 
             Button:
                 id: copy_button
@@ -92,13 +92,96 @@ HomeScreen:
                 disabled: True
                 on_release: root.copy_data()
 
-<DownloadPopup>:
+<PasswordPopup>:
+    GridLayout:
+        cols: 3
 
+        Label:
 
+        GridLayout:
+            rows: 4
+
+            Label:
+                id: nope_label
+                bold: True
+                color: [1, 0, 0, 1]
+                font_size: 20
+                size_hint_y: 0.1
+
+            TextInput:
+                id: passkey
+                size_hint_y: 0.2
+                font_size: 75
+                multiline: False
+
+            GridLayout:
+                cols: 3
+                rows: 4
+                size_hint_x: 0.75
+
+                ## First Row
+                Button:
+                    text: '1'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+                Button:
+                    text: '2'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+                Button:
+                    text: '3'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+
+                ## Second Row
+                Button:
+                    text: '4'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+                Button:
+                    text: '5'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+                Button:
+                    text: '6'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+
+                ## Third Row
+                Button:
+                    text: '7'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+                Button:
+                    text: '8'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+                Button:
+                    text: '9'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+
+                ## Fourth Row
+                Button:
+                    text: 'Clear'
+                    font_size: 20
+                    on_release: root.clear_text()
+                Button:
+                    text: '0'
+                    font_size: 80
+                    on_release: root.btn_press(self)
+                Button:
+                    text: 'Submit'
+                    font_size: 20
+                    on_release: root.submit()
+
+            Button:
+                text: 'Exit'
+                size_hint_y: 0.1
+
+        Label:
 
 <DataTransferButton>:
-    background_normal: 'static/images-kivy/dark_button.png'
-    background_down: 'static/images-kivy/light_button.png'
     text: 'undefined'
     font_size: 56
     size_hint: None, None
