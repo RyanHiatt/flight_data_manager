@@ -238,7 +238,7 @@ class DeviceManager:
             path = config.get('Paths', 'usb')
             if path == "/":
                 logger.error(f"Eject usb fail, path is '/'")
-                self.sd_status = False
+                self.usb_status = False
                 return False
             else:
                 os.system(f"sudo umount -l {path}")
