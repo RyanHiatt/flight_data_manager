@@ -6,7 +6,10 @@ from kivy.app import App
 from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.properties import StringProperty
+from kivy.properties import DictProperty
+from kivy.properties import NumericProperty
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image
@@ -90,6 +93,10 @@ class DataTransferButton(Button):
         # Transfer data from Hard Drive to USB Drive
         # data_manager.download_flight_data()
 
+        # Open the post-transfer popup
+        popup = PasswordPopup(title='Please Enter the PassKey')
+        popup.open()
+
         # Eject USB Drive
         device_manager.eject_usb()
 
@@ -153,7 +160,8 @@ class PasswordPopup(Popup):
     def submit(self):
         if self.current_key == config.get('Encryption', 'passkey'):
             self.clear_text()
-            # TODO Go to the next popup
+            popup = DateSelectionPopup()
+            popup.open()
 
             self.dismiss()
 
@@ -165,14 +173,106 @@ class PasswordPopup(Popup):
 
 
 class DateSelectionPopup(Popup):
-    pass
+
+    date_list = DictProperty()
+    usb_capacity = NumericProperty()
+
+    def on_open(self):
+        self.update_capacities()
+        self.update_directory_list()
+        self.update_buttons()
+
+    def update_usb_capacity(self):
+        self.usb_capacity = device_manager.check_usb_capacity()
+
+    def update_directory_list(self):
+        self.date_list = data_manager.parse_hd_dates()
+
+    def update_buttons(self):
+        self.ids.btn0.text = f"{self.date_list[0]}\n{self.date_list[0][1]}"
+        if self.date_list[0][1] > self.usb_capacity:
+            self.ids.btn0.disabled = True
+
+        self.ids.btn1.text = f"{self.date_list[1]}\n{self.date_list[1][1]}"
+        if self.date_list[1][1] > self.usb_capacity:
+            self.ids.btn1.disabled = True
+
+        self.ids.btn2.text = f"{self.date_list[2]}\n{self.date_list[2][1]}"
+        if self.date_list[2][1] > self.usb_capacity:
+            self.ids.btn2.disabled = True
+
+        self.ids.btn3.text = f"{self.date_list[3]}\n{self.date_list[3][1]}"
+        if self.date_list[3][1] > self.usb_capacity:
+            self.ids.btn3.disabled = True
+
+        self.ids.btn4.text = f"{self.date_list[4]}\n{self.date_list[4][1]}"
+        if self.date_list[4][1] > self.usb_capacity:
+            self.ids.btn4.disabled = True
+
+        self.ids.btn5.text = f"{self.date_list[5]}\n{self.date_list[5][1]}"
+        if self.date_list[5][1] > self.usb_capacity:
+            self.ids.btn5.disabled = True
+
+        self.ids.btn6.text = f"{self.date_list[6]}\n{self.date_list[6][1]}"
+        if self.date_list[6][1] > self.usb_capacity:
+            self.ids.btn6.disabled = True
+
+    def btn_press(self, instance):
+        selection = instance.text
+
+        for i in range(7):
+            if selection == self.date_list[i]:
+                data_manager.download_flight_data(directories=self.date_list[i][0])
+                popup = DownloadCompletePopup()
+                popup.open()
+                self.dismiss()
+
+        if selection == "By Aircraft":
+            popup = AircraftSelectionPopup()
+            popup.open()
+            self.dismiss()
 
 
 class AircraftSelectionPopup(Popup):
-    pass
+
+    aircraft_dict = DictProperty()
+    usb_capacity = NumericProperty()
+
+    def on_open(self):
+        self.update_usb_capacity()
+        self.update_aircraft_dict()
+        self.generate_buttons()
+
+    def update_usb_capacity(self):
+        self.usb_capacity = device_manager.check_usb_capacity()
+
+    def update_aircraft_dict(self):
+        self.aircraft_dict = data_manager.parse_hd_aircraft()
+
+    def generate_buttons(self):
+
+        layout = StackLayout(cols=4, spacing=10, size_hint_y=None)
+        layout.bind(minimum_height=layout.setter('height'))
+        for i in range(len(self.aircraft_dict)):
+            btn = Button(text=f"{self.aircraft_dict[i]}\n{self.aircraft_dict[i][1]}",
+                         size_hint_y=None, height=40)
+            btn.bind(on_release=self.btn_press)
+            layout.add_widget()
+        self.ids.scroll_view.add_widget(layout)
+
+    def btn_press(self, instance):
+        selection = instance.text
+
+        for i in range(len(self.aircraft_dict)):
+            if selection == self.aircraft_dict[i]:
+                data_manager.download_flight_data(directories=self.aircraft_list[i][0])
+                popup = DownloadCompletePopup()
+                popup.open()
+                self.dismiss()
 
 
 class DownloadCompletePopup(Popup):
+    # Simple confirmation popup
     pass
 
 
@@ -199,13 +299,13 @@ class StorageLabel(Label):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
+        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} MiB")
         Clock.schedule_interval(self.update_capacity, 60)
 
     def update_capacity(self, dt):
         self.remaining_storage = str(device_manager.update_hd_capacity())
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
+        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} MiB")
 
 
 class FlightDataApp(App):

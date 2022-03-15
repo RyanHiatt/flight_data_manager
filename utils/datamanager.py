@@ -5,14 +5,15 @@ import filecmp
 import secrets
 import logging
 from xml.etree import ElementTree
-from datetime import datetime
+import datetime
 
 from utils.exceptions import MismatchFileError
 
 
 # Instantiate configparser and read config
 config = configparser.ConfigParser()
-config.read('config.ini')
+# config.read('config.ini')
+config.read('/home/ryanhiatt/dev/projects/flight_data_manager/config.ini')
 
 
 # Instantiate logging
@@ -180,7 +181,7 @@ class DataManager:
             dst_dir_name = param1 + '-' + param2
 
             # Generate directory with ISO 8601 stamp
-            new_entry = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
+            new_entry = datetime.datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
             # Select files for copy
             directories, files = self._select_files(path=config.get('Paths', 'sd'))
@@ -239,16 +240,132 @@ class DataManager:
             except Exception as e:
                 logger.warning(f"Failed to clear sd card {file_path}. Reason: {e}")
 
-    def parse_hd_date(self):
-        pass
+    @staticmethod
+    def get_total_size(path_list: list) -> list:
+        sizes = []
+        for dir_list in path_list:
+            list_size = 0
+            for directory in dir_list:
+                dir_size = 0
+                for root, dirs, files in os.walk(directory):
+                    for f in files:
+                        fp = os.path.join(root, f)
+                        # skip if it is symbolic link
+                        if not os.path.islink(fp):
+                            dir_size += os.path.getsize(fp)
+                list_size += dir_size
+            sizes.append(round(list_size / 1048576, 2))  # In MiB
 
-    def retrieve_aircraft_names(self):
-        pass
+        return sizes
+
+    def parse_hd_dates(self):
+
+        past_day = []
+        past_week = []
+        past_month = []
+        past_three_months = []
+        past_six_months = []
+        past_year = []
+        all_directories = []
+
+        for root, dirs, _ in os.walk(config.get('Paths', 'hd')):
+            for directory in dirs:
+                try:
+                    dir_date = datetime.datetime.strptime(directory, '%Y-%m-%dT%H-%M-%S')
+
+                    # Past day
+                    if dir_date > datetime.datetime.today() - datetime.timedelta(days=1):
+                        past_day.append(os.path.join(root, directory))
+
+                    # Past Week
+                    if dir_date > datetime.datetime.today() - datetime.timedelta(days=7):
+                        past_week.append(os.path.join(root, directory))
+
+                    # Past Month
+                    if dir_date > datetime.datetime.today() - datetime.timedelta(days=30):
+                        past_month.append(os.path.join(root, directory))
+
+                    # Past 3 Months
+                    if dir_date > datetime.datetime.today() - datetime.timedelta(days=90):
+                        past_three_months.append(os.path.join(root, directory))
+
+                    # Past 6 Months
+                    if dir_date > datetime.datetime.today() - datetime.timedelta(days=180):
+                        past_six_months.append(os.path.join(root, directory))
+
+                    # Past Year
+                    if dir_date > datetime.datetime.today() - datetime.timedelta(days=360):
+                        past_year.append(os.path.join(root, directory))
+
+                    # All Directories
+                    all_directories.append(os.path.join(root, directory))
+
+                except ValueError:
+                    pass
+
+        category_sizes = self.get_total_size(path_list=[past_day, past_week, past_month, past_three_months,
+                                                        past_six_months, past_year, all_directories])
+
+        compiled_results = {
+            "Past Day": {
+                "dir list": past_day,
+                "size": category_sizes[0]
+            },
+            "Past Week": {
+                "dir_list": past_week,
+                "size": category_sizes[1]
+            },
+            "Past Month": {
+                "dir_list": past_month,
+                "size": category_sizes[2]
+            },
+            "Past 3 Months": {
+                "dir_list": past_three_months,
+                "size": category_sizes[3]
+            },
+            "Past 6 Months": {
+                "dir_list": past_six_months,
+                "size": category_sizes[4]
+            },
+            "Past Year": {
+                "dir_list": past_year,
+                "size": category_sizes[5]
+            },
+            "All": {
+                "dir_list": all_directories,
+                "size": category_sizes[6]
+            },
+        }
+
+        return compiled_results
 
     def parse_hd_aircraft(self):
-        pass
 
-    def download_flight_data(self):
+        aircraft_lists = []
+        aircraft = {}
+
+        for root, dirs, _ in os.walk(config.get('Paths', 'hd')):
+            for directory in dirs:
+                try:
+                    datetime.datetime.strptime(directory, '%Y-%m-%dT%H-%M-%S')
+                except ValueError:
+                    aircraft[directory] = {}
+                    dir_list = []
+                    for root2, dirs2, _ in os.walk(os.path.join(root, directory)):
+                        for directory2 in dirs2:
+                            dir_list.append(os.path.join(root2, directory2))
+
+                    aircraft[directory]["dir_list"] = dir_list
+                    aircraft_lists.append(dir_list)
+
+        category_sizes = self.get_total_size(path_list=aircraft_lists)
+
+        for index, plane in enumerate(aircraft):
+            aircraft[plane]["size"] = category_sizes[index]
+
+        return aircraft
+
+    def download_flight_data(self, directories):
         pass
 
     @staticmethod
@@ -305,4 +422,7 @@ class DataManager:
 if __name__ == '__main__':
 
     manager = DataManager()
-    manager.upload_flight_data()
+    # manager.clear_hd()
+    # print(manager.parse_hd_dates())
+    print(manager.parse_hd_aircraft())
+

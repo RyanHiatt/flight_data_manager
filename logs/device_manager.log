@@ -1,0 +1,13 @@
+[INFO]	2022-03-15 12:59:24:	Hard drive found: /dev/sda1, location: /media/gamelibrary
+[INFO]	2022-03-15 12:59:24:	Hard Drive Drive Capacity Check:
+	Total: 457 GiB
+	Used: 175 GiB
+	Free: 258 GiB
+[DEBUG]	2022-03-15 12:59:24:	USB drive not found
+[DEBUG]	2022-03-15 12:59:24:	SD card not found
+[DEBUG]	2022-03-15 12:59:25:	USB drive not found
+[DEBUG]	2022-03-15 12:59:25:	SD card not found
+[DEBUG]	2022-03-15 12:59:26:	USB drive not found
+[DEBUG]	2022-03-15 12:59:26:	SD card not found
+[DEBUG]	2022-03-15 12:59:27:	USB drive not found
+[DEBUG]	2022-03-15 12:59:27:	SD card not found

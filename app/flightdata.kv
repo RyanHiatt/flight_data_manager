@@ -181,6 +181,60 @@ HomeScreen:
 
         Label:
 
+<DateSelectionPopup>:
+    GridLayout:
+        rows: 3
+
+        Label:
+
+        GridLayout:
+            rows: 2
+            cols: 3
+
+            Button:
+                id: btn0
+                font_size: 60
+                on_release: root.btn_press(self)
+            Button:
+                id: btn1
+                font_size: 60
+                on_release: root.btn_press(self)
+            Button:
+                id: btn2
+                font_size: 60
+                on_release: root.btn_press(self)
+            Button:
+                id: btn3
+                font_size: 60
+                on_release: root.btn_press(self)
+            Button:
+                id: btn4
+                font_size: 60
+                on_release: root.btn_press(self)
+            Button:
+                id: btn5
+                font_size: 60
+                on_release: root.btn_press(self)
+            Button:
+                id: btn6
+                font_size: 60
+                on_release: root.btn_press(self)
+            Button:
+                text: 'By Aircraft'
+                font_size: 60
+                on_release: root.btn_press(self)
+
+        Label:
+
+<AircraftSelectionPopup>:
+
+    ScrollView:
+        id: scroll_view
+        do_scroll_x: False
+        do_scroll_y: True
+        size_hint: (1, None)
+        size: (root.width, root.height)
+
 <DataTransferButton>:
     text: 'undefined'
     font_size: 56

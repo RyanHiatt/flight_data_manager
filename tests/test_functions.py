@@ -99,7 +99,7 @@ def generate_simulated_hd(path: str, num_entries: int):
     airframe_names = ['Cessna 172S', 'Cirrus SR20', 'Cessna 165A', 'Cirrus SR22', 'Cessna 208C']
     system_ids = ['A4230C5A35', 'C7A12097DA', '38A7FC7085', 'FDF51CCBAD', '392EE09698']
     d1 = datetime.datetime.strptime('2021-01-01T01-00-00', '%Y-%m-%dT%H-%M-%S')
-    d2 = datetime.datetime.strptime('2022-12-31T23-59-59', '%Y-%m-%dT%H-%M-%S')
+    d2 = datetime.datetime.now()
 
     for i in range(num_entries):
         # Generate a random plane
@@ -127,5 +127,5 @@ def generate_simulated_hd(path: str, num_entries: int):
 
 
 if __name__ == '__main__':
-    generate_simulated_sd(path="/Users/ryanhiatt/dev/projects/flight_data_manager/tests/test_sd", clean=True)
-    generate_simulated_hd(path="/Users/ryanhiatt/Downloads", num_entries=1000)
+    # generate_simulated_sd(path="/Users/ryanhiatt/dev/projects/flight_data_manager/tests/test_sd", clean=True)
+    generate_simulated_hd(path="/home/ryanhiatt/dev/projects/flight_data_manager/tests/test_hd", num_entries=10)

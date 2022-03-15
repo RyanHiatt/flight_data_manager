@@ -34,6 +34,9 @@ class DeviceManager:
     usb_status = False
     sd_status = False
 
+    hd_capacity = 0
+    usb_capacity = 0
+
     def __init__(self):
         # Initialize DriveManager
         self.locate_hd()
@@ -48,7 +51,7 @@ class DeviceManager:
                     f"\tUsed: {used // 1073741824} GiB\n"
                     f"\tFree: {free // 1073741824} GiB")
 
-        return free // 1073741824  # In GiB
+        return free  # In Bytes
 
     @staticmethod
     def mount_device(device: str, path: str):  # Unused
@@ -85,14 +88,14 @@ class DeviceManager:
             with open('config.ini', 'w') as configfile:
                 config.write(configfile)
 
-            return remaining_capacity  # In GiB
+            return remaining_capacity // 1048576  # In MiB
         else:
             pass
 
     def check_usb_capacity(self):
         remaining_capacity = self.check_device_capacity(config.get('Paths', 'usb'), name='USB Drive')
 
-        return remaining_capacity  # In GiB
+        return remaining_capacity // 1048576  # In MiB
 
     @staticmethod
     def make_mount_points():
