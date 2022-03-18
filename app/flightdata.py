@@ -160,7 +160,7 @@ class PasswordPopup(Popup):
     def submit(self):
         if self.current_key == config.get('Encryption', 'passkey'):
             self.clear_text()
-            popup = DateSelectionPopup()
+            popup = DateSelectionPopup(title="Select Date Criteria")
             popup.open()
 
             self.dismiss()
@@ -223,12 +223,12 @@ class DateSelectionPopup(Popup):
         for i in range(7):
             if selection == self.date_list[i]:
                 data_manager.download_flight_data(directories=self.date_list[i][0])
-                popup = DownloadCompletePopup()
+                popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
 
         if selection == "By Aircraft":
-            popup = AircraftSelectionPopup()
+            popup = AircraftSelectionPopup(title="Select Aircraft Criteria")
             popup.open()
             self.dismiss()
 
@@ -266,7 +266,7 @@ class AircraftSelectionPopup(Popup):
         for i in range(len(self.aircraft_dict)):
             if selection == self.aircraft_dict[i]:
                 data_manager.download_flight_data(directories=self.aircraft_list[i][0])
-                popup = DownloadCompletePopup()
+                popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
 

@@ -235,6 +235,20 @@ HomeScreen:
         size_hint: (1, None)
         size: (root.width, root.height)
 
+<DownloadCompletePopup>:
+    GridLayout:
+        rows: 2
+        cols: 3
+        Label:
+        Label:
+            text: "Download Complete"
+        Label:
+        Label:
+        Button:
+            text: "Exit"
+            on_release: root.dismiss()
+        Label:
+
 <DataTransferButton>:
     text: 'undefined'
     font_size: 56
