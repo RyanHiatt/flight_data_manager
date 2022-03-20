@@ -147,7 +147,7 @@ class PasswordPopup(Popup):
     def clear_text(self):
         self.ids.passkey.text = ''
         self.current_key = ''
-        self.nope_label.text = ''
+        self.ids.nope_label.text = ''
 
     def submit(self):
         if self.current_key == config.get('Encryption', 'passkey'):
@@ -161,7 +161,7 @@ class PasswordPopup(Popup):
         else:
             self.ids.passkey.text = ''
             self.current_key = ''
-            self.nope_label.text = 'Invalid Pass Key!'
+            self.ids.nope_label.text = 'Invalid Pass Key!'
 
 
 class DateSelectionPopup(Popup):
