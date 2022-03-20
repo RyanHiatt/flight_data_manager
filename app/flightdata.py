@@ -286,10 +286,11 @@ class VersionLabel(Label):
 
 
 class StorageLabel(Label):
-    remaining_storage = StringProperty(str(int(config.get('Capacity', 'hd')) // 1024))
+    remaining_storage = StringProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.remaining_storage = str(int(config.get('Capacity', 'hd')) // 1024)
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
         logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} MiB")
         Clock.schedule_interval(self.update_capacity, 60)

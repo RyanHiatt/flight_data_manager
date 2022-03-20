@@ -196,14 +196,14 @@ class DataManager:
                 else:
                     logger.warning(f"Mismatched dir {directory.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
 
-            # Copy relevant files to hard drive
-            for file in files:
-                shutil.copy2(file, dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry))
-                if self.verify_file_copy(src=file,
-                                         dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry, file)):
-                    logger.info(f"Successful copied {file.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
-                else:
-                    logger.warning(f"Mismatched file {file.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
+            # # Copy relevant files to hard drive
+            # for file in files:
+            #     shutil.copy2(file, dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry))
+            #     if self.verify_file_copy(src=file,
+            #                              dst=os.path.join(config.get('Paths', 'hd'), dst_dir_name, new_entry, file)):
+            #         logger.info(f"Successful copied {file.split(sep='/')[-1]} to {dst_dir_name}/{new_entry}")
+            #     else:
+            #         logger.warning(f"Mismatched file {file.split(sep='/')[-1]} and {dst_dir_name}/{new_entry}")
 
             return True
 
