@@ -212,6 +212,11 @@ class DataManager:
 
     def copy_sd_to_usb(self):
         try:
+            try:
+                os.mkdir(f"{config.get('Paths', 'usb')}/FlightData")
+            except FileExistsError:
+                pass
+
             shutil.copytree(src=config.get('Paths', 'sd'),
                             dst=f"{config.get('Paths', 'usb')}/FlightData")
             if self.verify_dir_copy(src=config.get('Paths', 'sd'),
