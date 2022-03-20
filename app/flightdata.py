@@ -170,7 +170,7 @@ class DateSelectionPopup(Popup):
     usb_capacity = NumericProperty()
 
     def on_open(self):
-        self.update_capacities()
+        self.update_usb_capacity()
         self.update_directory_list()
         self.update_buttons()
 
