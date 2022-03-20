@@ -128,7 +128,6 @@ class UploadPopup(Popup):
 
 class PasswordPopup(Popup):
     current_key = ''
-    new_pop = None
 
     def __init__(self, **kwargs):
         super(PasswordPopup, self).__init__(**kwargs)
@@ -151,9 +150,8 @@ class PasswordPopup(Popup):
     def submit(self):
         if self.current_key == config.get('Encryption', 'passkey'):
             self.clear_text()
-
-            self.new_pop = DateSelectionPopup(title="Select Date Criteria")
-            Clock.schedule_once(self.next_popup, 2)
+            popup = DateSelectionPopup(title="Select Date Criteria")
+            popup.open()
 
             self.dismiss()
 
@@ -162,9 +160,6 @@ class PasswordPopup(Popup):
             self.ids.passkey.text = ''
             self.current_key = ''
             self.ids.nope_label.text = 'Invalid Pass Key!'
-
-    def next_popup(self, dt):
-        self.new_pop.open()
 
 
 class DateSelectionPopup(Popup):
