@@ -179,7 +179,7 @@ class DateSelectionPopup(Popup):
         self.date_list = data_manager.parse_hd_dates()
 
     def update_buttons(self):
-        self.ids.btn0.text = f"{self.date_list['Past Day']}\n{self.date_list['Past Day']['size']}"
+        self.ids.btn0.text = f"Past Day\n{self.date_list['Past Day']['size']}"
         if self.date_list['Past Day']['size'] > self.usb_capacity:
             self.ids.btn0.disabled = True
 
