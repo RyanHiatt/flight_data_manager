@@ -47,7 +47,9 @@ file_handler.setFormatter(fmt=formatter)
 # Add file handler to logger
 logger.addHandler(hdlr=file_handler)
 
-Window.fullscreen = 'auto'
+# Window.fullscreen = 'auto'
+Window.fullscreen = True
+Window.maximize()
 
 
 class HomeScreen(GridLayout):
