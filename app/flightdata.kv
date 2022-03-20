@@ -68,7 +68,6 @@ HomeScreen:
                     on_release: self.download_data()
 
 <UploadPopup>:
-    auto_dismiss: False
     size_hint: None, None
     size: (400, 400)
 
@@ -84,7 +83,7 @@ HomeScreen:
 
             Button:
                 text: "Close"
-                on_release: root.dismiss()
+                on_release: root.exit_popup()
 
             Button:
                 id: copy_button

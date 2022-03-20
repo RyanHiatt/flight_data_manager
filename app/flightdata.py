@@ -77,13 +77,6 @@ class DataTransferButton(Button):
         popup = UploadPopup(title='Upload Complete')
         popup.open()
 
-        # # Erase sd card
-        # if clear_sd:
-        #     data_manager.clear_sd_card()
-        #
-        # # Eject SD card
-        # device_manager.eject_sd()
-
         logger.info(f"Upload Completed: {time.time() - start_time} seconds")
 
     def download_data(self):
@@ -107,19 +100,7 @@ class UploadPopup(Popup):
 
     def __init__(self, **kwargs):
         super(UploadPopup, self).__init__(**kwargs)
-        # call dismiss_popup in 30 seconds
-        Clock.schedule_once(self.dismiss_popup, 30)
         Clock.schedule_interval(self.device_update, 1)
-
-    def dismiss_popup(self, dt):
-        self.dismiss()
-
-        # Erase sd card
-        if clear_sd:
-            data_manager.clear_sd_card()
-
-        # Eject SD card
-        device_manager.eject_sd()
 
     def device_update(self, dt):
         self.ids.copy_button.disabled = not device_manager.usb_status
@@ -135,6 +116,16 @@ class UploadPopup(Popup):
             device_manager.eject_sd()
 
             self.dismiss()
+
+    def exit_popup(self):
+        # Erase sd card
+        if clear_sd:
+            data_manager.clear_sd_card()
+
+        # Eject SD card
+        device_manager.eject_sd()
+
+        self.dismiss()
 
 
 class PasswordPopup(Popup):
