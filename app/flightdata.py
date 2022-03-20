@@ -124,15 +124,16 @@ class UploadPopup(Popup):
     def device_update(self, dt):
         self.ids.copy_button.disabled = not device_manager.usb_status
 
-        # Erase sd card
-        if clear_sd:
-            data_manager.clear_sd_card()
-
-        # Eject SD card
-        device_manager.eject_sd()
-
     def copy_data(self):
         if data_manager.copy_sd_to_usb():
+
+            # Erase sd card
+            if clear_sd:
+                data_manager.clear_sd_card()
+
+            # Eject SD card
+            device_manager.eject_sd()
+
             self.dismiss()
 
 
@@ -294,7 +295,7 @@ class VersionLabel(Label):
 
 
 class StorageLabel(Label):
-    remaining_storage = StringProperty(config.get('Capacity', 'hd'))
+    remaining_storage = StringProperty(str(int(config.get('Capacity', 'hd')) // 1024))
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -303,7 +304,7 @@ class StorageLabel(Label):
         Clock.schedule_interval(self.update_capacity, 60)
 
     def update_capacity(self, dt):
-        self.remaining_storage = str(device_manager.update_hd_capacity())
+        self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
         logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} MiB")
 
