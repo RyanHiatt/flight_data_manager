@@ -170,7 +170,7 @@ class DateSelectionPopup(Popup):
     def on_open(self):
         self.update_usb_capacity()
         self.update_directory_list()
-        self.update_buttons()
+        # self.update_buttons()
 
     def update_usb_capacity(self):
         self.usb_capacity = device_manager.check_usb_capacity()
