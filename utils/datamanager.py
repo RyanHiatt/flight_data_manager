@@ -218,7 +218,8 @@ class DataManager:
                 pass
 
             shutil.copytree(src=config.get('Paths', 'sd'),
-                            dst=f"{config.get('Paths', 'usb')}/FlightData")
+                            dst=os.path.join(config.get('Paths', 'usb'), "FlightData"),
+                            dirs_exist_ok=True)
             if self.verify_dir_copy(src=config.get('Paths', 'sd'),
                                     dst=f"{config.get('Paths', 'usb')}/FlightData"):
                 logger.info(f"Successful copied {config.get('Paths', 'sd')} to "
