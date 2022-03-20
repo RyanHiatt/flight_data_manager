@@ -150,8 +150,9 @@ class PasswordPopup(Popup):
     def submit(self):
         if self.current_key == config.get('Encryption', 'passkey'):
             self.clear_text()
+
             popup = DateSelectionPopup(title="Select Date Criteria")
-            popup.open()
+            Clock.schedule_once(self.next_popup(popup), 2)
 
             self.dismiss()
 
@@ -160,6 +161,9 @@ class PasswordPopup(Popup):
             self.ids.passkey.text = ''
             self.current_key = ''
             self.ids.nope_label.text = 'Invalid Pass Key!'
+
+    def next_popup(self, popup, dt):
+        popup.open()
 
 
 class DateSelectionPopup(Popup):
@@ -179,7 +183,7 @@ class DateSelectionPopup(Popup):
         self.date_list = data_manager.parse_hd_dates()
 
     def update_buttons(self):
-        self.ids.btn0.text = f"Past Day\n{self.date_list['Past Day']['size']}"
+        self.ids.btn0.text = f"Past Day\n{self.date_list['Past Day']['size']} Mb"
         if self.date_list['Past Day']['size'] > self.usb_capacity:
             self.ids.btn0.disabled = True
 
