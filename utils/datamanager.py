@@ -12,8 +12,8 @@ from utils.exceptions import MismatchFileError
 
 # Instantiate configparser and read config
 config = configparser.ConfigParser()
-# config.read('config.ini')
-config.read('/home/ryanhiatt/dev/projects/flight_data_manager/config.ini')
+config.read('config.ini')
+# config.read('/home/ryanhiatt/dev/projects/flight_data_manager/config.ini')
 
 
 # Instantiate logging
