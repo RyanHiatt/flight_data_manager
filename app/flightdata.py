@@ -83,15 +83,9 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Download Pressed')
 
-        # Transfer data from Hard Drive to USB Drive
-        # data_manager.download_flight_data()
-
         # Open the post-transfer popup
         popup = PasswordPopup(title='Please Enter the PassKey')
         popup.open()
-
-        # Eject USB Drive
-        device_manager.eject_usb()
 
         logger.info(f"Download Completed: {time.time() - start_time}")
 
