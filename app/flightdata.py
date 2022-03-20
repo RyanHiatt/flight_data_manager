@@ -243,8 +243,8 @@ class AircraftSelectionPopup(Popup):
 
         layout = StackLayout(cols=4, spacing=10, size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
-        for i in range(len(self.aircraft_dict)):
-            btn = Button(text=f"{self.aircraft_dict[i]}\n{self.aircraft_dict[i][1]}",
+        for key in self.aircraft_dict.keys:
+            btn = Button(text=f"{self.aircraft_dict[key]}\n{self.aircraft_dict[key]['size']}",
                          size_hint_y=None, height=40)
             btn.bind(on_release=self.btn_press)
             layout.add_widget()
