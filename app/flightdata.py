@@ -206,7 +206,7 @@ class DateSelectionPopup(Popup):
     def btn_press(self, instance):
         selection = instance.text
 
-        for i in range(7):
+        for i in self.date_list.items():
             if selection == self.date_list[i]:
                 data_manager.download_flight_data(directories=self.date_list[i][0])
                 popup = DownloadCompletePopup(title="Download Complete")
