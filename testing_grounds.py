@@ -27,4 +27,23 @@ def check_for_devices():
 
 
 if __name__ == '__main__':
-    check_for_devices()
+    nested_dict = {
+        "one": {
+            "a": "1a",
+            "b": "1b"
+        },
+        "two": {
+            "a": "2a",
+            "b": "2b"
+        },
+        "three": {
+            "a": "3a",
+            "b": "3b"
+        },
+        "four": {
+            "a": "4a",
+            "b": "4b"
+        },
+    }
+
+    print(nested_dict[1][1])

@@ -175,32 +175,32 @@ class DateSelectionPopup(Popup):
         self.date_list = data_manager.parse_hd_dates()
 
     def update_buttons(self):
-        self.ids.btn0.text = f"{self.date_list[0]}\n{self.date_list[0][1]}"
-        if self.date_list[0][1] > self.usb_capacity:
+        self.ids.btn0.text = f"{self.date_list['Past Day']}\n{self.date_list['Past Day']['size']}"
+        if self.date_list['Past Day']['size'] > self.usb_capacity:
             self.ids.btn0.disabled = True
 
-        self.ids.btn1.text = f"{self.date_list[1]}\n{self.date_list[1][1]}"
-        if self.date_list[1][1] > self.usb_capacity:
+        self.ids.btn1.text = f"{self.date_list['Past Week']}\n{self.date_list['Past Week']['size']}"
+        if self.date_list['Past Week']['size'] > self.usb_capacity:
             self.ids.btn1.disabled = True
 
-        self.ids.btn2.text = f"{self.date_list[2]}\n{self.date_list[2][1]}"
-        if self.date_list[2][1] > self.usb_capacity:
+        self.ids.btn2.text = f"{self.date_list['Past Month']}\n{self.date_list['Past Month']['size']}"
+        if self.date_list['Past Month']['size'] > self.usb_capacity:
             self.ids.btn2.disabled = True
 
-        self.ids.btn3.text = f"{self.date_list[3]}\n{self.date_list[3][1]}"
-        if self.date_list[3][1] > self.usb_capacity:
+        self.ids.btn3.text = f"{self.date_list['Past 3 Months']}\n{self.date_list['Past 3 Months']['size']}"
+        if self.date_list['Past 3 Months']['size'] > self.usb_capacity:
             self.ids.btn3.disabled = True
 
-        self.ids.btn4.text = f"{self.date_list[4]}\n{self.date_list[4][1]}"
-        if self.date_list[4][1] > self.usb_capacity:
+        self.ids.btn4.text = f"{self.date_list['Past 6 Months']}\n{self.date_list['Past 6 Months']['size']}"
+        if self.date_list['Past 6 Months']['size'] > self.usb_capacity:
             self.ids.btn4.disabled = True
 
-        self.ids.btn5.text = f"{self.date_list[5]}\n{self.date_list[5][1]}"
-        if self.date_list[5][1] > self.usb_capacity:
+        self.ids.btn5.text = f"{self.date_list['Past Year']}\n{self.date_list['Past Year']['size']}"
+        if self.date_list['Past Year']['size'] > self.usb_capacity:
             self.ids.btn5.disabled = True
 
-        self.ids.btn6.text = f"{self.date_list[6]}\n{self.date_list[6][1]}"
-        if self.date_list[6][1] > self.usb_capacity:
+        self.ids.btn6.text = f"{self.date_list['All']}\n{self.date_list['All']['size']}"
+        if self.date_list['All']['size'] > self.usb_capacity:
             self.ids.btn6.disabled = True
 
     def btn_press(self, instance):
@@ -284,15 +284,18 @@ class StorageLabel(Label):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.remaining_storage = str(int(config.get('Capacity', 'hd')) // 1024)
-        self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} MiB")
+        self.initial_cap_update()
         Clock.schedule_interval(self.update_capacity, 60)
+
+    def initial_cap_update(self):
+        self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
+        self.text = ' ' + self.remaining_storage + ' Gb Remaining'
+        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
 
     def update_capacity(self, dt):
         self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} MiB")
+        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
 
 
 class FlightDataApp(App):
