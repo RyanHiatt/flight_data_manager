@@ -170,7 +170,7 @@ class DateSelectionPopup(Popup):
     def on_open(self):
         self.update_usb_capacity()
         self.update_directory_list()
-        self.update_buttons()
+        Clock.schedule_once(self.update_buttons, 1)
 
     def update_usb_capacity(self):
         self.usb_capacity = device_manager.check_usb_capacity()
@@ -178,7 +178,7 @@ class DateSelectionPopup(Popup):
     def update_directory_list(self):
         self.date_list = data_manager.parse_hd_dates()
 
-    def update_buttons(self):
+    def update_buttons(self, dt):
         self.ids.btn0.text = f"Past Day\n{self.date_list['Past Day']['size']} Mb"
         if self.date_list['Past Day']['size'] > self.usb_capacity:
             self.ids.btn0.disabled = True
@@ -210,9 +210,9 @@ class DateSelectionPopup(Popup):
     def btn_press(self, instance):
         selection = instance.text
 
-        for i in self.date_list.items():
-            if selection == self.date_list[i]:
-                data_manager.download_flight_data(directories=self.date_list[i][0])
+        for key in self.date_list.keys():
+            if selection == self.date_list[key]:
+                data_manager.download_flight_data(directories=self.date_list[key]['dir_list'])
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
@@ -243,19 +243,19 @@ class AircraftSelectionPopup(Popup):
 
         layout = StackLayout(cols=4, spacing=10, size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
-        for key in self.aircraft_dict.keys:
+        for key in self.aircraft_dict.keys():
             btn = Button(text=f"{self.aircraft_dict[key]}\n{self.aircraft_dict[key]['size']}",
                          size_hint_y=None, height=40)
             btn.bind(on_release=self.btn_press)
-            layout.add_widget()
+            layout.add_widget(btn)
         self.ids.scroll_view.add_widget(layout)
 
     def btn_press(self, instance):
         selection = instance.text
 
-        for i in range(len(self.aircraft_dict)):
-            if selection == self.aircraft_dict[i]:
-                data_manager.download_flight_data(directories=self.aircraft_list[i][0])
+        for key in self.aircraft_dict.keys():
+            if selection == self.aircraft_dict[key]:
+                data_manager.download_flight_data(directories=self.aircraft_list[key]['dir_list'])
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
