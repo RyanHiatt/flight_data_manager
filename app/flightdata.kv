@@ -228,14 +228,15 @@ HomeScreen:
         rows: 2
 
         Label:
-            size_hint_y: 0.1
+            size_hint_y: 0.05
+            text: "select aircraft"
 
         ScrollView:
             id: scroll_view
             do_scroll_x: False
             do_scroll_y: True
             size_hint: (1, None)
-            size: (root.width, self.height)
+            size: (root.width, root.height*0.9)
 
 
 <DownloadCompletePopup>:
