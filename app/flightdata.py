@@ -246,7 +246,7 @@ class AircraftSelectionPopup(Popup):
         layout.bind(minimum_height=layout.setter('height'))
         for key in self.aircraft_dict.keys():
             btn = Button(text=f"{key.split('-')[0]}\n{key.split('-')[1]}\n{self.aircraft_dict[key]['size']} Mb",
-                         font_size=50, size_hint_y=None, height=100, on_release=self.btn_press)
+                         font_size=20, size_hint_y=None, height=100, on_release=self.btn_press)
             layout.add_widget(btn)
         self.ids.scroll_view.add_widget(layout)
 
