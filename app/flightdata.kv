@@ -224,12 +224,18 @@ HomeScreen:
 
 <AircraftSelectionPopup>:
 
-    ScrollView:
-        id: scroll_view
-        do_scroll_x: False
-        do_scroll_y: True
-        size_hint: (1, None)
-        size: (root.width, root.height)
+    GridLayout:
+        rows: 2
+
+        Label:
+            size_hint_y: 0.1
+
+        ScrollView:
+            id: scroll_view
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: (1, None)
+            size: (root.width, self.height)
 
 
 <DownloadCompletePopup>:

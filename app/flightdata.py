@@ -242,7 +242,7 @@ class AircraftSelectionPopup(Popup):
 
     def generate_buttons(self):
 
-        layout = GridLayout(cols=4, spacing=10, size_hint=(None, None))
+        layout = GridLayout(cols=4, spacing=10, size_hint=(1, None))
         layout.bind(minimum_height=layout.setter('height'))
         for key in self.aircraft_dict.keys():
             btn = Button(text=f"{key}\n{self.aircraft_dict[key]['size']}",
