@@ -255,7 +255,7 @@ class AircraftSelectionPopup(Popup):
 
         for key in self.aircraft_dict.keys():
             if selection == key:
-                data_manager.download_flight_data(directories=self.aircraft_list[key]['dir_list'])
+                data_manager.download_flight_data(directories=self.aircraft_dict[key]['dir_list'])
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
