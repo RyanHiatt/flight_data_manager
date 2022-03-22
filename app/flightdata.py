@@ -170,7 +170,7 @@ class DateSelectionPopup(Popup):
     def on_open(self):
         self.update_usb_capacity()
         self.update_directory_list()
-        Clock.schedule_once(self.update_buttons, 1)
+        self.generate_buttons()
 
     def update_usb_capacity(self):
         self.usb_capacity = device_manager.check_usb_capacity()
@@ -178,10 +178,11 @@ class DateSelectionPopup(Popup):
     def update_directory_list(self):
         self.date_list = data_manager.parse_hd_dates()
 
-    def update_buttons(self, dt):
+    def generate_buttons(self):
         self.ids.btn0.text = f"Past Day\n{self.date_list['Past Day']['size']} Mb"
         if self.date_list['Past Day']['size'] > self.usb_capacity:
-            self.ids.btn0.disabled = True
+            pass
+            # self.ids.btn0.disabled = True
 
         self.ids.btn1.text = f"{self.date_list['Past Week']}\n{self.date_list['Past Week']['size']}"
         if self.date_list['Past Week']['size'] > self.usb_capacity:
@@ -241,7 +242,7 @@ class AircraftSelectionPopup(Popup):
 
     def generate_buttons(self):
 
-        layout = StackLayout(cols=4, spacing=10, size_hint_y=None)
+        layout = StackLayout(spacing=10, size_hint_y=None)
         layout.bind(minimum_height=layout.setter('height'))
         for key in self.aircraft_dict.keys():
             btn = Button(text=f"{self.aircraft_dict[key]}\n{self.aircraft_dict[key]['size']}",
