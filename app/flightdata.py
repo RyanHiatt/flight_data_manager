@@ -252,7 +252,7 @@ class AircraftSelectionPopup(Popup):
 
     def btn_press(self, instance):
         print(instance.text)
-        selection = instance.text
+        selection = "{}-{}".format(instance.text.split('\n')[0], instance.text.split('\n')[0])
 
         for key in self.aircraft_dict.keys():
             if selection == self.aircraft_dict[key]:
