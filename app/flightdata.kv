@@ -227,10 +227,14 @@ HomeScreen:
     GridLayout:
         rows: 2
 
-        Button:
-            size_hint: (None, None)
-            size: (200, root.height*0.1)
-            text: "select aircraft"
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+
+            Button:
+                size_hint: (None, None)
+                size: (200, root.height*0.1)
+                text: "select aircraft"
 
         ScrollView:
             id: scroll_view
