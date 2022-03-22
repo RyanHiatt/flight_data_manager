@@ -234,7 +234,8 @@ HomeScreen:
             Button:
                 size_hint: (None, None)
                 size: (200, root.height*0.1)
-                text: "select aircraft"
+                text: "Exit"
+                on_release: root.dismiss()
 
         ScrollView:
             id: scroll_view

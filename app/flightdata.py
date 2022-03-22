@@ -247,11 +247,11 @@ class AircraftSelectionPopup(Popup):
         for key in self.aircraft_dict.keys():
             btn = Button(text=f"{key.split('-')[0]}\n{key.split('-')[1]}\n{self.aircraft_dict[key]['size']} Mb",
                          size_hint_y=None, height=100, on_release=self.btn_press)
-            btn.bind(on_release=self.btn_press)
             layout.add_widget(btn)
         self.ids.scroll_view.add_widget(layout)
 
     def btn_press(self, instance):
+        print("btn press")
         selection = instance.text
 
         for key in self.aircraft_dict.keys():
