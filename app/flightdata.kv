@@ -224,28 +224,13 @@ HomeScreen:
 
 <AircraftSelectionPopup>:
 
-    GridLayout:
-        rows: 2
+    ScrollView:
+        id: scroll_view
+        do_scroll_x: False
+        do_scroll_y: True
+        size_hint: (1, None)
+        size: (self.width, self.height)
 
-        Label:
-            size_hint_y: 0.1
-            text: "Select an aircraft"
-
-        GridLayout:
-            cols: 3
-
-            Label:
-                size_hint_x: 0.1
-
-            ScrollView:
-                id: scroll_view
-                do_scroll_x: False
-                do_scroll_y: True
-                size_hint: (1, None)
-                size: (self.width, self.height)
-
-            Label:
-                size_hint_x: 0.1
 
 <DownloadCompletePopup>:
     GridLayout:
