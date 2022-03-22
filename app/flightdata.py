@@ -251,7 +251,7 @@ class AircraftSelectionPopup(Popup):
         self.ids.scroll_view.add_widget(layout)
 
     def btn_press(self, instance):
-        print(instance.text)
+        print("{}-{}".format(instance.text.split('\n')[0], instance.text.split('\n')[0]))
         selection = "{}-{}".format(instance.text.split('\n')[0], instance.text.split('\n')[0])
 
         for key in self.aircraft_dict.keys():
