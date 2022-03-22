@@ -227,8 +227,9 @@ HomeScreen:
     GridLayout:
         rows: 2
 
-        Label:
-            size_hint_y: 0.05
+        Button:
+            size_hint: (None, None)
+            size: (200, root.height*0.1)
             text: "select aircraft"
 
         ScrollView:
@@ -236,7 +237,7 @@ HomeScreen:
             do_scroll_x: False
             do_scroll_y: True
             size_hint: (1, None)
-            size: (root.width, root.height*0.9)
+            size: (root.width, root.height*0.8)
 
 
 <DownloadCompletePopup>:
