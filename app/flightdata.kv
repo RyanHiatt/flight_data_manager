@@ -102,7 +102,8 @@ HomeScreen:
             Button:
                 text: 'Exit'
                 size_hint_y: 0.1
-                size_hint: (0.2, 1)
+                size_hint: (0.4, 0.2)
+                on_release: root.dismiss()
 
         GridLayout:
             rows: 4
@@ -231,15 +232,15 @@ HomeScreen:
 <AircraftSelectionPopup>:
 
     GridLayout:
-        rows: 2
+        cols: 2
 
         AnchorLayout:
             anchor_x: 'center'
             anchor_y: 'center'
-            size_hint_y: 0.2
+            size_hint_x: 0.15
 
             Button:
-                size_hint: (0.2, 1)
+                size_hint: (1, 0.25)
                 text: "Exit"
                 on_release: root.dismiss()
 
@@ -248,7 +249,7 @@ HomeScreen:
             do_scroll_x: False
             do_scroll_y: True
             size_hint: (1, None)
-            size: (root.width, root.height*0.65)
+            size: (root.width*0.85, root.height*0.9)
 
 
 <DownloadCompletePopup>:
