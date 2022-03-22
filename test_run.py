@@ -30,18 +30,16 @@ if __name__ == '__main__':
     # Run the above setup
     setup()
 
-    from utils.devicemanager import DeviceManager
-    # Instantiate device manager and check for devices to set paths
-    # device_manager = DeviceManager()
-    # device_manager.check_for_devices()
+    config = configparser.ConfigParser()
+    config.read('config.ini')
 
     from tests.test_functions import generate_simulated_hd, generate_simulated_sd
-    # generate_simulated_hd()
-    generate_simulated_sd(path='/Users/ryanhiatt/dev/projects/flight_data_manager/tests/test_sd')
 
-    from utils.datamanager import DataManager
-    data_manager = DataManager()
-    data_manager.upload_flight_data()
+    generate_simulated_hd(path=config.get('Paths', 'hd'), num_entries=100)
+
+    # from utils.datamanager import DataManager
+    # data_manager = DataManager()
+    # data_manager.upload_flight_data()
     # data_manager.clear_sd_card()
 
 
