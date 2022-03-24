@@ -76,15 +76,16 @@ HomeScreen:
         cols: 1
 
         Label:
-            text: "Upload Complete\nIf you would like a copy of you flight data\ninsert a usb flash drive and press 'Copy'"
+            text: "Upload Complete\n\nIf you would like a copy of your flight data\ninsert a usb flash drive and press 'Copy'"
             font_size: 20
+            halign: 'center'
 
         GridLayout
             cols: 2
 
             Button:
                 text: "Close"
-                font_size: 50
+                font_size: 40
                 on_release: root.exit_popup()
 
             Button:
