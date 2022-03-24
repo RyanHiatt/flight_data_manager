@@ -229,7 +229,7 @@ class AircraftSelectionPopup(Popup):
         # Call dismiss_popup in 60 seconds
         Clock.schedule_once(self.dismiss_popup, 60)
 
-    def dismiss_popup(self):
+    def dismiss_popup(self, dt):
         self.dismiss()
 
     def update_usb_capacity(self):
@@ -267,7 +267,7 @@ class DownloadCompletePopup(Popup):
         # Call dismiss_popup in 60 seconds
         Clock.schedule_once(self.dismiss_popup, 60)
 
-    def dismiss_popup(self):
+    def dismiss_popup(self, dt):
         self.dismiss()
 
 

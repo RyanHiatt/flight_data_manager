@@ -385,7 +385,7 @@ class DataManager:
 
         for directory in directories:
             try:
-                shutil.copytree(directory, dst=f"{config.get('Paths', 'hd')}/FlightData")
+                shutil.copytree(directory, dst=f"{config.get('Paths', 'hd')}/FlightData/{directory.split('/')[-1]}")
             except Exception as e:
                 logger.error(f"USB download error: {e}")
         logger.info("USB download completed")
