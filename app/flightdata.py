@@ -103,6 +103,7 @@ class UploadPopup(Popup):
         Clock.schedule_once(self.dismiss_popup, 60)
 
     def dismiss_popup(self, dt):
+        device_manager.eject_usb()
         self.dismiss()
 
     def device_update(self, dt):

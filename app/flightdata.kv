@@ -37,7 +37,7 @@ HomeScreen:
                 text_size: self.size
                 valign: 'bottom'
                 halign: 'center'
-                text: 'SD Card'
+                text: 'Insert SD Card'
 
             AnchorLayout:
                 anchor_x: 'center'
@@ -56,7 +56,7 @@ HomeScreen:
                 text_size: self.size
                 valign: 'bottom'
                 halign: 'center'
-                text: 'USB Drive'
+                text: 'Insert USB Drive'
 
             AnchorLayout:
                 anchor_x: 'center'
@@ -76,18 +76,21 @@ HomeScreen:
         cols: 1
 
         Label:
-            text: "Upload Complete"
+            text: "Upload Complete\nIf you would like a copy of you flight data\ninsert a usb flash drive and press 'Copy'"
+            font_size: 20
 
         GridLayout
             cols: 2
 
             Button:
                 text: "Close"
+                font_size: 50
                 on_release: root.exit_popup()
 
             Button:
                 id: copy_button
                 text:"Copy"
+                font_size: 50
                 disabled: True
                 on_release: root.copy_data()
 
