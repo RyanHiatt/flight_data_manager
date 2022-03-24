@@ -297,10 +297,10 @@ class StorageLabel(Label):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.initial_cap_update()
+        Clock.schedule_once(self.initial_cap_update, 10)
         Clock.schedule_interval(self.update_capacity, 60)
 
-    def initial_cap_update(self):
+    def initial_cap_update(self, dt):
         try:
             self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
             self.text = ' ' + self.remaining_storage + ' Gb Remaining'
