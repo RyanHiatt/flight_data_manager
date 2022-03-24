@@ -1,3 +1,3 @@
 #! /bin/sh
-cd /home/pi/flight_data_manager
-python3 run.py
+cd ~/flight_data_manager/ || return
+python run.py
