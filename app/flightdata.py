@@ -164,7 +164,7 @@ class PasswordPopup(Popup):
 
 class DateSelectionPopup(Popup):
 
-    date_list = DictProperty()
+    date_dict = DictProperty()
     usb_capacity = NumericProperty()
 
     def on_open(self):
@@ -176,37 +176,43 @@ class DateSelectionPopup(Popup):
         self.usb_capacity = device_manager.check_usb_capacity()
 
     def update_directory_list(self):
-        self.date_list = data_manager.parse_hd_dates()
+        self.date_dict = data_manager.parse_hd_dates()
 
     def generate_buttons(self):
-        self.ids.btn0.text = f"Past Day\n{self.date_list['Past Day']['size']} Mb"
-        if self.date_list['Past Day']['size'] > self.usb_capacity:
-            pass
-            # self.ids.btn0.disabled = True
 
-        self.ids.btn1.text = f"{self.date_list['Past Week']}\n{self.date_list['Past Week']['size']}"
-        if self.date_list['Past Week']['size'] > self.usb_capacity:
-            self.ids.btn1.disabled = True
+        for key in self.date_list.keys():
+            btn = Button(text=f"key\n{self.date_dict[key]['size']} Mb", font_size=20, on_release=self.btn_press)
+            if self.date_dict[key]['size'] > self.usb_capacity:
+                btn.disabled = True
+            self.ids.btn_grid.add_widget(btn)
 
-        self.ids.btn2.text = f"{self.date_list['Past Month']}\n{self.date_list['Past Month']['size']}"
-        if self.date_list['Past Month']['size'] > self.usb_capacity:
-            self.ids.btn2.disabled = True
-
-        self.ids.btn3.text = f"{self.date_list['Past 3 Months']}\n{self.date_list['Past 3 Months']['size']}"
-        if self.date_list['Past 3 Months']['size'] > self.usb_capacity:
-            self.ids.btn3.disabled = True
-
-        self.ids.btn4.text = f"{self.date_list['Past 6 Months']}\n{self.date_list['Past 6 Months']['size']}"
-        if self.date_list['Past 6 Months']['size'] > self.usb_capacity:
-            self.ids.btn4.disabled = True
-
-        self.ids.btn5.text = f"{self.date_list['Past Year']}\n{self.date_list['Past Year']['size']}"
-        if self.date_list['Past Year']['size'] > self.usb_capacity:
-            self.ids.btn5.disabled = True
-
-        self.ids.btn6.text = f"{self.date_list['All']}\n{self.date_list['All']['size']}"
-        if self.date_list['All']['size'] > self.usb_capacity:
-            self.ids.btn6.disabled = True
+        # self.ids.btn0.text = f"Past Day\n{self.date_list['Past Day']['size']} Mb"
+        # if self.date_list['Past Day']['size'] > self.usb_capacity:
+        #     self.ids.btn0.disabled = True
+        #
+        # self.ids.btn1.text = f"{self.date_list['Past Week']}\n{self.date_list['Past Week']['size']}"
+        # if self.date_list['Past Week']['size'] > self.usb_capacity:
+        #     self.ids.btn1.disabled = True
+        #
+        # self.ids.btn2.text = f"{self.date_list['Past Month']}\n{self.date_list['Past Month']['size']}"
+        # if self.date_list['Past Month']['size'] > self.usb_capacity:
+        #     self.ids.btn2.disabled = True
+        #
+        # self.ids.btn3.text = f"{self.date_list['Past 3 Months']}\n{self.date_list['Past 3 Months']['size']}"
+        # if self.date_list['Past 3 Months']['size'] > self.usb_capacity:
+        #     self.ids.btn3.disabled = True
+        #
+        # self.ids.btn4.text = f"{self.date_list['Past 6 Months']}\n{self.date_list['Past 6 Months']['size']}"
+        # if self.date_list['Past 6 Months']['size'] > self.usb_capacity:
+        #     self.ids.btn4.disabled = True
+        #
+        # self.ids.btn5.text = f"{self.date_list['Past Year']}\n{self.date_list['Past Year']['size']}"
+        # if self.date_list['Past Year']['size'] > self.usb_capacity:
+        #     self.ids.btn5.disabled = True
+        #
+        # self.ids.btn6.text = f"{self.date_list['All']}\n{self.date_list['All']['size']}"
+        # if self.date_list['All']['size'] > self.usb_capacity:
+        #     self.ids.btn6.disabled = True
 
     def btn_press(self, instance):
         selection = instance.text

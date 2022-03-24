@@ -343,6 +343,8 @@ class DataManager:
             },
         }
 
+        logger.debug("Download date dictionary compiled")
+
         return compiled_results
 
     def parse_hd_aircraft(self):
@@ -369,10 +371,25 @@ class DataManager:
         for index, plane in enumerate(aircraft):
             aircraft[plane]["size"] = category_sizes[index]
 
+        logger.debug("Download aircraft dictionary compiled")
+
         return aircraft
 
-    def download_flight_data(self, directories):
-        pass
+    @staticmethod
+    def download_flight_data(directories):
+
+        try:
+            os.mkdir(f"{config.get('Paths', 'usb')}/FlightData")
+        except Exception as e:
+            logger.warning(f"USB download folder creation error: {e}")
+
+        for directory in directories:
+            try:
+                shutil.copytree(directory, dst=f"{config.get('Paths', 'hd')}/FlightData")
+            except Exception as e:
+                logger.error(f"USB download error: {e}")
+        logger.info("USB download completed")
+
 
     @staticmethod
     def clear_hd():
