@@ -1,5 +1,6 @@
 #! /bin/sh
+# start_app.sh
 cd /
 cd /home/pi/flight_data_manager/
-/usr/bin/python run.py
+sudo python run.py
 cd /
