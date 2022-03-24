@@ -192,7 +192,7 @@ class DateSelectionPopup(Popup):
     def generate_buttons(self):
 
         for key in self.date_dict.keys():
-            btn = Button(text=f"{key}\n{self.date_dict[key]['size']} Mb", font_size=20, on_release=self.btn_press,
+            btn = Button(text=f"{key}\n{self.date_dict[key]['size']} Mb", font_size=30, on_release=self.btn_press,
                          halign='center')
             if self.date_dict[key]['size'] > self.usb_capacity:
                 btn.disabled = True
@@ -245,7 +245,7 @@ class AircraftSelectionPopup(Popup):
         layout.bind(minimum_height=layout.setter('height'))
         for key in self.aircraft_dict.keys():
             btn = Button(text=f"{key.split('-')[0]}\n{key.split('-')[1]}\n{self.aircraft_dict[key]['size']} Mb",
-                         font_size=20, size_hint_y=None, height=100, on_release=self.btn_press)
+                         font_size=20, size_hint_y=None, height=100, on_release=self.btn_press, halign='center')
             layout.add_widget(btn)
         self.ids.scroll_view.add_widget(layout)
 
