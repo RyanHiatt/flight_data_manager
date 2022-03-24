@@ -216,11 +216,11 @@ class DateSelectionPopup(Popup):
         #     self.ids.btn6.disabled = True
 
     def btn_press(self, instance):
-        selection = instance.text
+        selection = instance.text.split('\n')[0]
 
-        for key in self.date_list.keys():
-            if selection == self.date_list[key]:
-                data_manager.download_flight_data(directories=self.date_list[key]['dir_list'])
+        for key in self.date_dict.keys():
+            if selection == key:
+                data_manager.download_flight_data(directories=self.date_dict[key]['dir_list'])
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
