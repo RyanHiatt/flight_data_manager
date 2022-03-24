@@ -301,9 +301,12 @@ class StorageLabel(Label):
         Clock.schedule_interval(self.update_capacity, 60)
 
     def initial_cap_update(self):
-        self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
-        self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
+        try:
+            self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
+            self.text = ' ' + self.remaining_storage + ' Gb Remaining'
+            logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
+        except Exception as e:
+            logger.error(f"Initial HD cap update error: {e}")
 
     def update_capacity(self, dt):
         self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
