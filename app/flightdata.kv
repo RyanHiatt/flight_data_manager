@@ -69,7 +69,7 @@ HomeScreen:
 
 <UploadPopup>:
     size_hint: None, None
-    size: (400, 400)
+    size: (500, 400)
 
     GridLayout:
         rows: 2
@@ -86,12 +86,14 @@ HomeScreen:
             Button:
                 text: "Close"
                 font_size: 40
+                size_hint: (0.9, 0.9)
                 on_release: root.exit_popup()
 
             Button:
                 id: copy_button
                 text:"Copy"
-                font_size: 50
+                font_size: 40
+                size_hint: (0.9, 0.9)
                 disabled: True
                 on_release: root.copy_data()
 
