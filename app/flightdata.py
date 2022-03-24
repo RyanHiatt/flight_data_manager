@@ -96,9 +96,14 @@ class DataTransferButton(Button):
 
 class UploadPopup(Popup):
 
-    def __init__(self, **kwargs):
-        super(UploadPopup, self).__init__(**kwargs)
+    def on_open(self):
         Clock.schedule_interval(self.device_update, 1)
+
+        # Call dismiss_popup in 60 seconds
+        Clock.schedule_once(self.dismiss_popup, 60)
+
+    def dismiss_popup(self, dt):
+        self.dismiss()
 
     def device_update(self, dt):
         self.ids.copy_button.disabled = not device_manager.usb_status
@@ -129,9 +134,8 @@ class UploadPopup(Popup):
 class PasswordPopup(Popup):
     current_key = ''
 
-    def __init__(self, **kwargs):
-        super(PasswordPopup, self).__init__(**kwargs)
-        # call dismiss_popup in 60 seconds
+    def on_open(self):
+        # Call dismiss_popup in 60 seconds
         Clock.schedule_once(self.dismiss_popup, 60)
 
     def dismiss_popup(self, dt):
@@ -172,6 +176,12 @@ class DateSelectionPopup(Popup):
         self.update_directory_list()
         self.generate_buttons()
 
+        # Call dismiss_popup in 60 seconds
+        Clock.schedule_once(self.dismiss_popup, 60)
+
+    def dismiss_popup(self, dt):
+        self.dismiss()
+
     def update_usb_capacity(self):
         self.usb_capacity = device_manager.check_usb_capacity()
 
@@ -187,33 +197,8 @@ class DateSelectionPopup(Popup):
                 btn.disabled = True
             self.ids.btn_grid.add_widget(btn)
 
-        # self.ids.btn0.text = f"Past Day\n{self.date_list['Past Day']['size']} Mb"
-        # if self.date_list['Past Day']['size'] > self.usb_capacity:
-        #     self.ids.btn0.disabled = True
-        #
-        # self.ids.btn1.text = f"{self.date_list['Past Week']}\n{self.date_list['Past Week']['size']}"
-        # if self.date_list['Past Week']['size'] > self.usb_capacity:
-        #     self.ids.btn1.disabled = True
-        #
-        # self.ids.btn2.text = f"{self.date_list['Past Month']}\n{self.date_list['Past Month']['size']}"
-        # if self.date_list['Past Month']['size'] > self.usb_capacity:
-        #     self.ids.btn2.disabled = True
-        #
-        # self.ids.btn3.text = f"{self.date_list['Past 3 Months']}\n{self.date_list['Past 3 Months']['size']}"
-        # if self.date_list['Past 3 Months']['size'] > self.usb_capacity:
-        #     self.ids.btn3.disabled = True
-        #
-        # self.ids.btn4.text = f"{self.date_list['Past 6 Months']}\n{self.date_list['Past 6 Months']['size']}"
-        # if self.date_list['Past 6 Months']['size'] > self.usb_capacity:
-        #     self.ids.btn4.disabled = True
-        #
-        # self.ids.btn5.text = f"{self.date_list['Past Year']}\n{self.date_list['Past Year']['size']}"
-        # if self.date_list['Past Year']['size'] > self.usb_capacity:
-        #     self.ids.btn5.disabled = True
-        #
-        # self.ids.btn6.text = f"{self.date_list['All']}\n{self.date_list['All']['size']}"
-        # if self.date_list['All']['size'] > self.usb_capacity:
-        #     self.ids.btn6.disabled = True
+        btn = Button(text='By Aircraft', font_size=20, on_release=self.btn_press, halign='center')
+        self.ids.btn_grid.add_widget(btn)
 
     def btn_press(self, instance):
         selection = instance.text.split('\n')[0]
@@ -240,6 +225,12 @@ class AircraftSelectionPopup(Popup):
         self.update_usb_capacity()
         self.update_aircraft_dict()
         self.generate_buttons()
+
+        # Call dismiss_popup in 60 seconds
+        Clock.schedule_once(self.dismiss_popup, 60)
+
+    def dismiss_popup(self):
+        self.dismiss()
 
     def update_usb_capacity(self):
         self.usb_capacity = device_manager.check_usb_capacity()
@@ -269,8 +260,15 @@ class AircraftSelectionPopup(Popup):
 
 
 class DownloadCompletePopup(Popup):
-    # Simple confirmation popup
-    pass
+
+    def on_open(self):
+        device_manager.eject_usb()
+
+        # Call dismiss_popup in 60 seconds
+        Clock.schedule_once(self.dismiss_popup, 60)
+
+    def dismiss_popup(self):
+        self.dismiss()
 
 
 class DataTransferLabel(Label):
