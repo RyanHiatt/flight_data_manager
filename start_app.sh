@@ -1,5 +1,5 @@
 #! /bin/sh
 cd /
 cd /home/pi/flight_data_manager/
-python run.py
+/user/bin/python3 run.py
 cd /
