@@ -380,13 +380,13 @@ class DataManager:
 
         try:
             os.mkdir(f"{config.get('Paths', 'usb')}/FlightData")
-        except Exception as e:
+        except FileExistsError as e:
             logger.warning(f"USB download folder creation error: {e}")
 
         for directory in directories:
             try:
-                shutil.copytree(directory, dst=f"{config.get('Paths', 'hd')}/FlightData/{directory.split('/')[-1]}")
-            except Exception as e:
+                shutil.copytree(directory, dst=f"{config.get('Paths', 'usb')}/FlightData/{directory.split('/')[-1]}")
+            except FileExistsError as e:
                 logger.error(f"USB download error: {e}")
         logger.info("USB download completed")
 

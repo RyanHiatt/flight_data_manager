@@ -262,10 +262,13 @@ class AircraftSelectionPopup(Popup):
 class DownloadCompletePopup(Popup):
 
     def on_open(self):
-        device_manager.eject_usb()
+        Clock.schedule_once(self.eject_usb, 3)
 
         # Call dismiss_popup in 60 seconds
         Clock.schedule_once(self.dismiss_popup, 60)
+
+    def eject_usb(self, dt):
+        device_manager.eject_usb()
 
     def dismiss_popup(self, dt):
         self.dismiss()
