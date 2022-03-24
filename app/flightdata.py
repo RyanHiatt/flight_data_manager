@@ -180,7 +180,7 @@ class DateSelectionPopup(Popup):
 
     def generate_buttons(self):
 
-        for key in self.date_list.keys():
+        for key in self.date_dict.keys():
             btn = Button(text=f"key\n{self.date_dict[key]['size']} Mb", font_size=20, on_release=self.btn_press)
             if self.date_dict[key]['size'] > self.usb_capacity:
                 btn.disabled = True
