@@ -9,7 +9,6 @@ from kivy.properties import StringProperty
 from kivy.properties import DictProperty
 from kivy.properties import NumericProperty
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.image import Image

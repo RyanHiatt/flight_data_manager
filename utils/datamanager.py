@@ -314,7 +314,7 @@ class DataManager:
 
         compiled_results = {
             "Past Day": {
-                "dir list": past_day,
+                "dir_list": past_day,
                 "size": category_sizes[0]
             },
             "Past Week": {
@@ -389,7 +389,6 @@ class DataManager:
             except FileExistsError as e:
                 logger.error(f"USB download error: {e}")
         logger.info("USB download completed")
-
 
     @staticmethod
     def clear_hd():
