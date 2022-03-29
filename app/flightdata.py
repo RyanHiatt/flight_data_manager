@@ -102,6 +102,7 @@ class UploadPopup(Popup):
         Clock.schedule_once(self.dismiss_popup, 60)
 
     def dismiss_popup(self, dt):
+        device_manager.eject_sd()
         device_manager.eject_usb()
         self.dismiss()
 
@@ -117,6 +118,7 @@ class UploadPopup(Popup):
 
             # Eject SD card
             device_manager.eject_sd()
+            device_manager.eject_usb()
 
             self.dismiss()
 

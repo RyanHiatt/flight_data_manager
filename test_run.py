@@ -1,7 +1,6 @@
 import os
 import sys
 import configparser
-# import pytest
 
 
 def setup():
@@ -29,17 +28,5 @@ def setup():
 if __name__ == '__main__':
     # Run the above setup
     setup()
-
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-
-    from tests.test_functions import generate_simulated_hd, generate_simulated_sd
-
-    generate_simulated_hd(path=config.get('Paths', 'hd'), num_entries=100)
-
-    # from utils.datamanager import DataManager
-    # data_manager = DataManager()
-    # data_manager.upload_flight_data()
-    # data_manager.clear_sd_card()
 
 
