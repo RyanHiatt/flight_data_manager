@@ -382,13 +382,17 @@ class DataManager:
             os.mkdir(f"{config.get('Paths', 'usb')}/FlightData")
         except FileExistsError as e:
             logger.warning(f"USB download folder creation error: {e}")
+            return False
 
         for directory in directories:
             try:
                 shutil.copytree(directory, dst=f"{config.get('Paths', 'usb')}/FlightData/{directory.split('/')[-1]}")
             except FileExistsError as e:
                 logger.error(f"USB download error: {e}")
+                return False
+
         logger.info("USB download completed")
+        return True
 
     @staticmethod
     def clear_hd():

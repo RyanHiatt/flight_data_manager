@@ -20,7 +20,6 @@ data_manager = DataManager()
 # test data upload from sd card to hard drive
 def upload_from_sd_to_hd(num_iter: int, clean_data: bool) -> bool:
 
-    overall_result = None
     iteration_results = []
 
     # loop x iterations
@@ -53,23 +52,59 @@ def test_dirty_upload_from_sd_to_hd():
     assert upload_from_sd_to_hd(100, False) == True
 
 
-# test parse_hd_dates
-def dl_parse_hd_dates():
-    pass
+# test data download from hard drive to usb drive
+def download_from_hd_to_usb_date(num_iter: int):
+
+    data_manager.clear_hd()
+    generate_simulated_hd(path=config.get('Paths', 'hd'), num_entries=100)
+
+    iteration_results = []
+
+    data_pool = data_manager.parse_hd_dates()['All']['dir_list']
+
+    # loop x iterations
+    for i in range(num_iter):
+        iteration_results.append(data_manager.download_flight_data(data_pool))
+
+    # get overall result
+    if False in iteration_results:
+        overall_result = False
+    else:
+        overall_result = True
+
+    # return
+    return overall_result
 
 
-# test parse_hd_aircraft
-def dl_parse_hd_aircraft():
-    pass
+def test_download_from_hd_to_usb_date():
+    assert download_from_hd_to_usb_date(100) == True
 
 
 # test data download from hard drive to usb drive
-def download_from_hd_to_usb():
-    pass
+def download_from_hd_to_usb_aircraft(num_iter: int):
+    data_manager.clear_hd()
+    generate_simulated_hd(path=config.get('Paths', 'hd'), num_entries=100)
+
+    iteration_results = []
+
+    data_pool = data_manager.parse_hd_aircraft()
+
+    # loop x iterations
+    for i in range(num_iter):
+        iteration_results.append(data_manager.download_flight_data(data_pool))
+
+    # get overall result
+    if False in iteration_results:
+        overall_result = False
+    else:
+        overall_result = True
+
+    # return
+    return overall_result
 
 
-def test_download_from_hd_to_usb():
-    pass
+def test_download_from_hd_to_usb_aircraft():
+    assert download_from_hd_to_usb_date(100) == True
 
 
 # test data copy from sd card to usb drive
