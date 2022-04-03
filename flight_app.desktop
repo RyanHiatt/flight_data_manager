@@ -1,0 +1,3 @@
+[Desktop Entry]
+Name=flight_data_manager
+Exec=sh /home/pi/flight_data_manager/start_app.sh

@@ -3,6 +3,6 @@
 cd /
 cd /home/pi/flight_data_manager/
 git pull
-sleep 5
+sleep 3
 python3 run.py
 cd /

@@ -127,5 +127,5 @@ def generate_simulated_hd(path: str, num_entries: int):
 
 
 if __name__ == '__main__':
-    # generate_simulated_sd(path="/Users/ryanhiatt/dev/projects/flight_data_manager/tests/test_sd", clean=True)
-    generate_simulated_hd(path="/home/ryanhiatt/dev/projects/flight_data_manager/tests/test_hd", num_entries=10)
+    generate_simulated_sd(path="/Volumes/TESTSD/", clean=True)
+    # generate_simulated_hd(path="/home/ryanhiatt/dev/projects/flight_data_manager/tests/test_hd", num_entries=10)
