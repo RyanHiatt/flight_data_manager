@@ -2,7 +2,6 @@ import configparser
 import time
 import logging
 
-import kivy
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.clock import Clock
@@ -78,7 +77,7 @@ class DataTransferButton(Button):
         uploading_popup.open()
 
         # Transfer data from SD Card to Hard Drive
-        await(data_manager.upload_flight_data())
+        data_manager.upload_flight_data()
         uploading_popup.dismiss()
 
         # Open the post-transfer popup
