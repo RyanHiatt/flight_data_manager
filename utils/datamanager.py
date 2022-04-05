@@ -18,12 +18,12 @@ config.read('config.ini')
 
 # Instantiate logging
 logger = logging.getLogger(name=__name__)
-logger.setLevel(level=logging.DEBUG)
+logger.setLevel(level=logging.INFO)
 
 # Create file handler and set level
 file_handler = logging.FileHandler(filename=config.get("Paths", "base_path") + "/logs/data_manager.log",
                                    mode='w', encoding='utf-8')
-file_handler.setLevel(level=logging.DEBUG)
+file_handler.setLevel(level=logging.INFO)
 
 # Create formatter
 formatter = logging.Formatter(fmt="[%(levelname)s]\t%(asctime)s:\t%(message)s", datefmt='%Y-%m-%d %H:%M:%S')

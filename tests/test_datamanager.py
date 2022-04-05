@@ -108,11 +108,31 @@ def test_download_from_hd_to_usb_aircraft():
 
 
 # test data copy from sd card to usb drive
+def copy_from_sd_to_usb(num_iter: int, clean_data: bool):
+
+    # clear the sd card and start fresh
+    data_manager.clear_sd_card()
+    # simulate sd
+    generate_simulated_sd(path=config.get('Paths', 'sd'), clean=clean_data)
+
+    iteration_results = []
+
+    # loop x iterations
+    for i in range(num_iter):
+        iteration_results.append(data_manager.copy_sd_to_usb())
+
+    # get overall result
+    if False in iteration_results:
+        overall_result = False
+    else:
+        overall_result = True
+
+    # return
+    return overall_result
+
+
 def test_copy_from_sd_to_usb():
-    pass
-
-
-
+    assert copy_from_sd_to_usb(100, True) == True
 
 
 if __name__ == '__main__':
