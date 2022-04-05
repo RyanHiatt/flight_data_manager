@@ -20,6 +20,8 @@ data_manager = DataManager()
 # test data upload from sd card to hard drive
 def upload_from_sd_to_hd(num_iter: int, clean_data: bool) -> bool:
 
+    # clear sd
+    data_manager.clear_sd_card()
     iteration_results = []
 
     # loop x iterations
