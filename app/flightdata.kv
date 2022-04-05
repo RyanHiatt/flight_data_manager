@@ -69,6 +69,16 @@ HomeScreen:
                     disabled: True
                     on_release: self.download_data()
 
+<InterimPopup>:
+    size_hint: None, None
+    size: (500, 400)
+
+    Label:
+        halign: 'center'
+        valign: 'center'
+        text: 'Uploading Please Wait'
+        font_size: 60
+
 <UploadPopup>:
     size_hint: None, None
     size: (500, 400)

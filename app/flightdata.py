@@ -55,7 +55,7 @@ class HomeScreen(GridLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Clock.schedule_interval(self.device_update, 1)
+        Clock.schedule_interval(self.device_update, 0.5)
         logger.info("Device update loop initialized")
 
     def device_update(self, dt):
@@ -73,14 +73,18 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Upload Pressed')
 
+        uploading_popup = InterimPopup(title='Uploading')
+        uploading_popup.open()
+
         # Transfer data from SD Card to Hard Drive
-        data_manager.upload_flight_data()
+        if data_manager.upload_flight_data():
+            uploading_popup.dismiss()
 
-        # Open the post-transfer popup
-        popup = UploadPopup(title='Upload Complete')
-        popup.open()
+            # Open the post-transfer popup
+            popup = UploadPopup(title='Upload Complete')
+            popup.open()
 
-        logger.info(f"Upload Completed: {time.time() - start_time} seconds")
+            logger.info(f"Upload Completed: {time.time() - start_time} seconds")
 
     def download_data(self):
         start_time = time.time()
@@ -91,6 +95,13 @@ class DataTransferButton(Button):
         popup.open()
 
         logger.info(f"Download Completed: {time.time() - start_time}")
+
+
+class InterimPopup(Popup):
+
+    def on_open(self):
+        # Call dismiss_popup in 60 seconds
+        Clock.schedule_once(self.dismiss_popup, 240)
 
 
 class UploadPopup(Popup):
