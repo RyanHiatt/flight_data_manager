@@ -73,8 +73,13 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Upload Pressed')
 
+        interim_popup = InterimPopup(title='Uploading')
+        interim_popup.open()
+
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
+
+        interim_popup.dismiss()
 
         # Open the post-transfer popup
         popup = UploadPopup(title='Upload Complete')
