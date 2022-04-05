@@ -2,6 +2,7 @@ import configparser
 import time
 import logging
 
+import kivy
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.clock import Clock
@@ -77,14 +78,14 @@ class DataTransferButton(Button):
         uploading_popup.open()
 
         # Transfer data from SD Card to Hard Drive
-        if data_manager.upload_flight_data():
-            uploading_popup.dismiss()
+        await(data_manager.upload_flight_data())
+        uploading_popup.dismiss()
 
-            # Open the post-transfer popup
-            popup = UploadPopup(title='Upload Complete')
-            popup.open()
+        # Open the post-transfer popup
+        popup = UploadPopup(title='Upload Complete')
+        popup.open()
 
-            logger.info(f"Upload Completed: {time.time() - start_time} seconds")
+        logger.info(f"Upload Completed: {time.time() - start_time} seconds")
 
     def download_data(self):
         start_time = time.time()
@@ -100,6 +101,7 @@ class DataTransferButton(Button):
 class InterimPopup(Popup):
 
     def on_open(self):
+
         # Call dismiss_popup in 60 seconds
         Clock.schedule_once(self.dismiss_popup, 240)
 
