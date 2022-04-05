@@ -386,7 +386,7 @@ class DataManager:
                 shutil.copytree(directory, dst=f"{config.get('Paths', 'usb')}/FlightData/{directory.split('/')[-1]}")
             except FileExistsError as e:
                 logger.error(f"USB download error: {e}")
-                return False
+                pass
 
         logger.info("USB download completed")
         return True
