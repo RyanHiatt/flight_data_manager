@@ -69,7 +69,7 @@ HomeScreen:
                     disabled: True
                     on_release: self.download_data()
 
-<InterimPopup>:
+<InterimUploadPopup>:
     size_hint: None, None
     size: (500, 400)
 
@@ -77,6 +77,16 @@ HomeScreen:
         halign: 'center'
         valign: 'center'
         text: 'Uploading Please Wait'
+        font_size: 40
+
+<InterimDownloadPopup>:
+    size_hint: None, None
+    size: (500, 400)
+
+    Label:
+        halign: 'center'
+        valign: 'center'
+        text: 'Downloading Please Wait'
         font_size: 40
 
 <UploadPopup>:
@@ -89,7 +99,7 @@ HomeScreen:
 
         Label:
             text: "Upload Complete\n\nIf you would like a copy of your flight data\ninsert a usb flash drive and press 'Copy'"
-            font_size: 20
+            font_size: 25
             halign: 'center'
 
         GridLayout
@@ -109,6 +119,26 @@ HomeScreen:
                 size_hint: (0.9, 0.9)
                 disabled: True
                 on_release: root.copy_data()
+
+<UploadCompletePopup>:
+    size_hint: None, None
+        size: (500, 400)
+
+        GridLayout:
+            rows: 2
+            cols: 3
+            Label:
+            Label:
+                text: "Upload Complete\n\nPlease remove your devices"
+                halign: 'center'
+                font_size: 30
+            Label:
+            Label:
+            Button:
+                text: "Exit"
+                font_size: 30
+                on_release: root.dismiss()
+            Label:
 
 <PasswordPopup>:
     GridLayout:

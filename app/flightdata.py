@@ -73,7 +73,7 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Upload Pressed')
 
-        interim_popup = InterimPopup(title='Uploading')
+        interim_popup = InterimUploadPopup(title='Uploading')
         interim_popup.open()
 
         # Transfer data from SD Card to Hard Drive
@@ -98,12 +98,12 @@ class DataTransferButton(Button):
         logger.info(f"Download Completed: {time.time() - start_time}")
 
 
-class InterimPopup(Popup):
+class InterimUploadPopup(Popup):
 
     def on_open(self):
 
         # Call dismiss_popup in 60 seconds
-        Clock.schedule_once(self.dismiss_popup, 240)
+        Clock.schedule_once(self.dismiss_popup, 1000)
 
 
 class UploadPopup(Popup):
@@ -144,6 +144,12 @@ class UploadPopup(Popup):
         device_manager.eject_sd()
 
         self.dismiss()
+
+
+class CopyCompletePopup(Popup):
+    def on_open(self):
+        # Call dismiss_popup in 60 seconds
+        Clock.schedule_once(self.dismiss_popup, 60)
 
 
 class PasswordPopup(Popup):
@@ -220,7 +226,10 @@ class DateSelectionPopup(Popup):
 
         for key in self.date_dict.keys():
             if selection == key:
+                interim_popup = InterimDownloadPopup(title='Downloading')
+                interim_popup.open()
                 data_manager.download_flight_data(directories=self.date_dict[key]['dir_list'])
+                interim_popup.dismiss()
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
@@ -268,10 +277,20 @@ class AircraftSelectionPopup(Popup):
 
         for key in self.aircraft_dict.keys():
             if selection == key:
+                interim_popup = InterimDownloadPopup(title='Downloading')
+                interim_popup.open()
                 data_manager.download_flight_data(directories=self.aircraft_dict[key]['dir_list'])
+                interim_popup.dismiss()
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
+
+
+class InterimDownloadPopup(Popup):
+    def on_open(self):
+
+        # Call dismiss_popup in 60 seconds
+        Clock.schedule_once(self.dismiss_popup, 1000)
 
 
 class DownloadCompletePopup(Popup):
