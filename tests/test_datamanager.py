@@ -51,7 +51,7 @@ def test_clean_upload_from_sd_to_hd():
 
 
 def test_dirty_upload_from_sd_to_hd():
-    assert upload_from_sd_to_hd(10, False) == True
+    assert upload_from_sd_to_hd(10, False) == False
 
 
 # test data download from hard drive to usb drive
