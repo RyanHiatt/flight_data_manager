@@ -378,11 +378,8 @@ class DataManager:
     @staticmethod
     def download_flight_data(directories):
 
-        try:
+        if not os.path.isdir(f"{config.get('Paths', 'usb')}/FlightData"):
             os.mkdir(f"{config.get('Paths', 'usb')}/FlightData")
-        except FileExistsError as e:
-            logger.warning(f"USB download folder creation error: {e}")
-            return False
 
         for directory in directories:
             try:

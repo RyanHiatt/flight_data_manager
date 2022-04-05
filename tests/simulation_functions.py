@@ -66,7 +66,9 @@ def generate_simulated_sd(path: str, clean: bool = True):
 
         if bool(random.getrandbits(1)):  # True or False
             # Generate data_log
-            os.mkdir(f"{path}/data_log")
+            if not os.path.isdir(f"{path}/data_log"):
+                os.mkdir(f"{path}/data_log")
+
             for i in range(0, random.randint(2, 8)):
                 with open(file=f"{path}/data_log/log_{secrets.token_hex(4)}.csv", mode="w") as data_csv:
                     pass
