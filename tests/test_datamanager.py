@@ -3,9 +3,7 @@ import configparser
 from tests.simulation_functions import generate_simulated_hd, generate_simulated_sd
 from utils.datamanager import DataManager
 from utils.devicemanager import DeviceManager
-from run import setup
 
-setup()
 
 # Instantiate configparser and read config
 config = configparser.ConfigParser()

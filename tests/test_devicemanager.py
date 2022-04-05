@@ -2,9 +2,7 @@ import configparser
 
 from utils.devicemanager import DeviceManager
 from utils.datamanager import DataManager
-from run import setup
 
-setup()
 
 # Instantiate configparser and read config
 config = configparser.ConfigParser()
