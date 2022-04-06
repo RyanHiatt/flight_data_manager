@@ -75,7 +75,6 @@ HomeScreen:
 
     Label:
         halign: 'center'
-        valign: 'center'
         text: 'Uploading Please Wait'
         font_size: 40
 
@@ -85,7 +84,6 @@ HomeScreen:
 
     Label:
         halign: 'center'
-        valign: 'center'
         text: 'Downloading Please Wait'
         font_size: 40
 
@@ -122,23 +120,45 @@ HomeScreen:
 
 <UploadCompletePopup>:
     size_hint: None, None
-        size: (500, 400)
+    size: (500, 400)
 
-        GridLayout:
-            rows: 2
-            cols: 3
-            Label:
-            Label:
-                text: "Upload Complete\n\nPlease remove your devices"
-                halign: 'center'
-                font_size: 30
-            Label:
-            Label:
-            Button:
-                text: "Exit"
-                font_size: 30
-                on_release: root.dismiss()
-            Label:
+    GridLayout:
+        rows: 2
+        cols: 3
+        Label:
+        Label:
+            text: "Upload Complete\n\nPlease remove your devices"
+            halign: 'center'
+            font_size: 30
+        Label:
+        Label:
+        Button:
+            text: "Exit"
+            font_size: 30
+            on_release: root.dismiss()
+        Label:
+
+<CopyCompletePopup>:
+
+    size_hint: None, None
+    size: (500, 400)
+
+    GridLayout:
+        rows: 2
+        cols: 3
+        Label:
+        Label:
+            text: "Upload Complete\n\nPlease remove your devices"
+            halign: 'center'
+            font_size: 30
+        Label:
+        Label:
+        Button:
+            text: "Exit"
+            font_size: 30
+            on_release: root.dismiss()
+        Label:
+
 
 <PasswordPopup>:
     GridLayout:
