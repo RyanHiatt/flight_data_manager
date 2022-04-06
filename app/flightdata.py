@@ -76,10 +76,12 @@ class DataTransferButton(Button):
         interim_popup = InterimUploadPopup(title='Uploading')
         interim_popup.open()
 
+        time.sleep(3)
+
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
 
-        time.sleep(5)
+        time.sleep(3)
         interim_popup.dismiss()
 
         # Open the post-transfer popup
@@ -103,8 +105,8 @@ class InterimUploadPopup(Popup):
 
     def on_open(self):
 
-        # Call dismiss_popup in 1000 seconds
-        Clock.schedule_once(self.dismiss, 1000)
+        # Call dismiss_popup in 120 seconds
+        Clock.schedule_once(self.dismiss, 120)
 
 
 class UploadPopup(Popup):
@@ -230,7 +232,7 @@ class DateSelectionPopup(Popup):
                 interim_popup = InterimDownloadPopup(title='Downloading')
                 interim_popup.open()
                 data_manager.download_flight_data(directories=self.date_dict[key]['dir_list'])
-                time.sleep(5)
+                time.sleep(3)
                 interim_popup.dismiss()
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
@@ -282,7 +284,7 @@ class AircraftSelectionPopup(Popup):
                 interim_popup = InterimDownloadPopup(title='Downloading')
                 interim_popup.open()
                 data_manager.download_flight_data(directories=self.aircraft_dict[key]['dir_list'])
-                time.sleep(5)
+                time.sleep(3)
                 interim_popup.dismiss()
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
@@ -292,8 +294,8 @@ class AircraftSelectionPopup(Popup):
 class InterimDownloadPopup(Popup):
     def on_open(self):
 
-        # Call dismiss_popup in 1000 seconds
-        Clock.schedule_once(self.dismiss, 1000)
+        # Call dismiss_popup in 120 seconds
+        Clock.schedule_once(self.dismiss, 120)
 
 
 class DownloadCompletePopup(Popup):
