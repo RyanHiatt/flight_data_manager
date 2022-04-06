@@ -100,8 +100,8 @@ class DataTransferButton(Button):
                     break
 
         finally:
-            self.interim_popup.dismiss()
             self.thread = None
+            self.interim_popup.dismiss()
 
     def download_data(self):
         start_time = time.time()
