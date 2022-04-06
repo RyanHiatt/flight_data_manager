@@ -93,7 +93,6 @@ class DataTransferButton(Button):
                     break
 
         finally:
-            self.thread = None
             self.interim_popup.dismiss()
 
             # Open the post-transfer popup
@@ -101,6 +100,8 @@ class DataTransferButton(Button):
             popup.open()
 
             logger.info(f"Upload Completed: {time.time() - self.start_time} seconds")
+
+            self.thread = None
 
     def download_data(self):
         start_time = time.time()
