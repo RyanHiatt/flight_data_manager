@@ -77,13 +77,14 @@ class DataTransferButton(Button):
         self.interim_popup = InterimUploadPopup(title='Uploading')
         self.interim_popup.open()
 
-        # Transfer data from SD Card to Hard Drive
-        data_manager.upload_flight_data()
-
         self.thread = Thread(target=self.thread_upload)
         self.thread.start()
 
     def thread_upload(self):
+
+        # Transfer data from SD Card to Hard Drive
+        data_manager.upload_flight_data()
+
         try:
             for i in range(5):
                 self.interim_popup.ids.pro_bar.value = i
