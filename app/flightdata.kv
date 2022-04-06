@@ -73,10 +73,15 @@ HomeScreen:
     size_hint: None, None
     size: (500, 400)
 
-    Label:
-        halign: 'center'
-        text: 'Uploading Please Wait'
-        font_size: 40
+    GridLayout:
+        rows: 2
+        Label:
+            halign: 'center'
+            text: 'Uploading Please Wait'
+            font_size: 40
+        ProgressBar:
+            id: pro_bar
+            max: 5
 
 <InterimDownloadPopup>:
     size_hint: None, None

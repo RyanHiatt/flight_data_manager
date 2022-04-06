@@ -1,6 +1,7 @@
 import configparser
 import time
 import logging
+from threading import Thread
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -70,7 +71,7 @@ class HomeScreen(GridLayout):
 class DataTransferButton(Button):
 
     def upload_data(self):
-        start_time = time.time()
+        self.start_time = time.time()
         logger.debug('Upload Pressed')
 
         self.interim_popup = InterimUploadPopup(title='Uploading')
@@ -79,14 +80,26 @@ class DataTransferButton(Button):
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
 
-        time.sleep(3)
-        self.interim_popup.dismiss()
+        self.thread = Thread(target=self.thread_upload)
+        self.thread.start()
 
-        # Open the post-transfer popup
-        popup = UploadPopup(title='Upload Complete')
-        popup.open()
+    def thread_upload(self):
+        try:
+            for i in range(5):
+                self.interim_popup.ids.pro_bar.value = i
+                time.sleep(1)
+                if self.thread is None:  # cancel condition
+                    break
 
-        logger.info(f"Upload Completed: {time.time() - start_time} seconds")
+        finally:
+            self.thread = None
+            self.interim_popup.dismiss()
+
+            # Open the post-transfer popup
+            popup = UploadPopup(title='Upload Complete')
+            popup.open()
+
+            logger.info(f"Upload Completed: {time.time() - self.start_time} seconds")
 
     def download_data(self):
         start_time = time.time()
