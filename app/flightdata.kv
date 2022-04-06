@@ -69,29 +69,6 @@ HomeScreen:
                     disabled: True
                     on_release: self.download_data()
 
-<InterimUploadPopup>:
-    size_hint: None, None
-    size: (500, 400)
-
-    GridLayout:
-        rows: 2
-        Label:
-            halign: 'center'
-            text: 'Uploading Please Wait'
-            font_size: 40
-        ProgressBar:
-            id: pro_bar
-            max: 5
-
-<InterimDownloadPopup>:
-    size_hint: None, None
-    size: (500, 400)
-
-    Label:
-        halign: 'center'
-        text: 'Downloading Please Wait'
-        font_size: 40
-
 <UploadPopup>:
     size_hint: None, None
     size: (500, 400)

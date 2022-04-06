@@ -76,39 +76,14 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Upload Pressed')
 
-        self.thread = Thread(target=self.thread_upload, daemon=True)
-        self.thread.start()
-
-        label = Label(text='Uploading Please Wait', font_size=40, halign='center')
-        progress_bar = ProgressBar(max=5)
-        layout = GridLayout(rows=2)
-        layout.add_widget(label)
-        layout.add_widget(progress_bar)
-
-        interim_popup = Popup(title='Uploading', size_hint=(None, None), size=(500, 400), content=layout)
-
-        # interim_popup = InterimUploadPopup(title='Uploading')
-        interim_popup.open()
-
-        for i in range(5):
-            progress_bar.value = i
-            time.sleep(1)
-
-        interim_popup.dismiss()
+        # Transfer data from SD Card to Hard Drive
+        data_manager.upload_flight_data()
 
         # Open the post-transfer popup
         popup = UploadPopup(title='Upload Complete')
         popup.open()
 
         logger.info(f"Upload Completed: {time.time() - start_time} seconds")
-
-    def thread_upload(self):
-        try:
-            # Transfer data from SD Card to Hard Drive
-            data_manager.upload_flight_data()
-
-        finally:
-            self.thread = None
 
     def download_data(self):
         start_time = time.time()
@@ -121,14 +96,6 @@ class DataTransferButton(Button):
         logger.info(f"Download Completed: {time.time() - start_time}")
 
 
-class InterimUploadPopup(Popup):
-
-    def on_open(self):
-
-        # Call dismiss_popup in 120 seconds
-        Clock.schedule_once(self.dismiss, 120)
-
-
 class UploadPopup(Popup):
 
     def on_open(self):
@@ -138,8 +105,8 @@ class UploadPopup(Popup):
         Clock.schedule_once(self.dismiss_popup, 60)
 
     def dismiss_popup(self, dt):
-        device_manager.eject_sd()
-        device_manager.eject_usb()
+        Clock.schedule_once(self.eject_sd, 3)
+        Clock.schedule_once(self.eject_usb, 3)
         self.dismiss()
 
     def device_update(self, dt):
@@ -153,8 +120,8 @@ class UploadPopup(Popup):
                 data_manager.clear_sd_card()
 
             # Eject SD card
-            device_manager.eject_sd()
-            device_manager.eject_usb()
+            Clock.schedule_once(self.eject_sd, 3)
+            Clock.schedule_once(self.eject_usb, 3)
 
             self.dismiss()
 
@@ -164,9 +131,15 @@ class UploadPopup(Popup):
             data_manager.clear_sd_card()
 
         # Eject SD card
-        device_manager.eject_sd()
+        Clock.schedule_once(self.eject_sd, 3)
 
         self.dismiss()
+
+    def eject_sd(self, dt):
+        device_manager.eject_sd()
+
+    def eject_usb(self, dt):
+        device_manager.eject_usb()
 
 
 class CopyCompletePopup(Popup):
@@ -249,11 +222,7 @@ class DateSelectionPopup(Popup):
 
         for key in self.date_dict.keys():
             if selection == key:
-                interim_popup = InterimDownloadPopup(title='Downloading')
-                interim_popup.open()
                 data_manager.download_flight_data(directories=self.date_dict[key]['dir_list'])
-                time.sleep(3)
-                interim_popup.dismiss()
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
@@ -301,21 +270,10 @@ class AircraftSelectionPopup(Popup):
 
         for key in self.aircraft_dict.keys():
             if selection == key:
-                interim_popup = InterimDownloadPopup(title='Downloading')
-                interim_popup.open()
                 data_manager.download_flight_data(directories=self.aircraft_dict[key]['dir_list'])
-                time.sleep(3)
-                interim_popup.dismiss()
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
-
-
-class InterimDownloadPopup(Popup):
-    def on_open(self):
-
-        # Call dismiss_popup in 120 seconds
-        Clock.schedule_once(self.dismiss, 120)
 
 
 class DownloadCompletePopup(Popup):
