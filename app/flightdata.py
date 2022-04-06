@@ -79,6 +79,7 @@ class DataTransferButton(Button):
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
 
+        time.sleep(5)
         interim_popup.dismiss()
 
         # Open the post-transfer popup
@@ -229,6 +230,7 @@ class DateSelectionPopup(Popup):
                 interim_popup = InterimDownloadPopup(title='Downloading')
                 interim_popup.open()
                 data_manager.download_flight_data(directories=self.date_dict[key]['dir_list'])
+                time.sleep(5)
                 interim_popup.dismiss()
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
@@ -280,6 +282,7 @@ class AircraftSelectionPopup(Popup):
                 interim_popup = InterimDownloadPopup(title='Downloading')
                 interim_popup.open()
                 data_manager.download_flight_data(directories=self.aircraft_dict[key]['dir_list'])
+                time.sleep(5)
                 interim_popup.dismiss()
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
