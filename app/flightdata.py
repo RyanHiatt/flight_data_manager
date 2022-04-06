@@ -80,11 +80,16 @@ class DataTransferButton(Button):
         self.thread = Thread(target=self.thread_upload)
         self.thread.start()
 
-    def thread_upload(self):
-
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
 
+        # Open the post-transfer popup
+        popup = UploadPopup(title='Upload Complete')
+        popup.open()
+
+        logger.info(f"Upload Completed: {time.time() - self.start_time} seconds")
+
+    def thread_upload(self):
         try:
             for i in range(5):
                 self.interim_popup.ids.pro_bar.value = i
@@ -94,13 +99,6 @@ class DataTransferButton(Button):
 
         finally:
             self.interim_popup.dismiss()
-
-            # Open the post-transfer popup
-            popup = UploadPopup(title='Upload Complete')
-            popup.open()
-
-            logger.info(f"Upload Completed: {time.time() - self.start_time} seconds")
-
             self.thread = None
 
     def download_data(self):
