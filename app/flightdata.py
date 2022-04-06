@@ -74,11 +74,11 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Upload Pressed')
 
-        self.thread = Thread(target=self.thread_upload, daemon=True)
-        self.thread.start()
-
         interim_popup = InterimUploadPopup(title='Uploading')
         interim_popup.open()
+
+        self.thread = Thread(target=self.thread_upload, daemon=True)
+        self.thread.start()
 
         for i in range(5):
             interim_popup.ids.pro_bar.value = i
