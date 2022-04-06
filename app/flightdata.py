@@ -91,7 +91,7 @@ class DataTransferButton(Button):
         self.thread.start()
 
         for i in range(5):
-            interim_popup.ids.pro_bar.value = i
+            progress_bar.value = i
             time.sleep(1)
 
         interim_popup.dismiss()
