@@ -83,6 +83,8 @@ class DataTransferButton(Button):
         # Transfer data from SD Card to Hard Drive
         data_manager.upload_flight_data()
 
+        time.sleep(5)
+
         # Open the post-transfer popup
         popup = UploadPopup(title='Upload Complete')
         popup.open()
