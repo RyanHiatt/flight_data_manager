@@ -76,6 +76,9 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Upload Pressed')
 
+        self.thread = Thread(target=self.thread_upload, daemon=True)
+        self.thread.start()
+
         label = Label(text='Uploading Please Wait', font_size=40, halign='center')
         progress_bar = ProgressBar(max=5)
         layout = GridLayout(rows=2)
@@ -86,9 +89,6 @@ class DataTransferButton(Button):
 
         # interim_popup = InterimUploadPopup(title='Uploading')
         interim_popup.open()
-
-        self.thread = Thread(target=self.thread_upload, daemon=True)
-        self.thread.start()
 
         for i in range(5):
             progress_bar.value = i
