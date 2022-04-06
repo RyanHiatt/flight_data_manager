@@ -15,6 +15,8 @@ from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.popup import Popup
 
+from kivy.uix.progressbar import ProgressBar
+
 from utils.datamanager import DataManager
 from utils.devicemanager import DeviceManager
 
@@ -74,7 +76,15 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Upload Pressed')
 
-        interim_popup = InterimUploadPopup(title='Uploading')
+        label = Label(text='Uploading Please Wait', font_size=40, halign='center')
+        progress_bar = ProgressBar(max=5)
+        layout = GridLayout(rows=2)
+        layout.add_widget(label)
+        layout.add_widget(progress_bar)
+
+        interim_popup = Popup(title='Uploading', size_hint=(None, None), size=(500, 400), content=layout)
+
+        # interim_popup = InterimUploadPopup(title='Uploading')
         interim_popup.open()
 
         self.thread = Thread(target=self.thread_upload, daemon=True)
