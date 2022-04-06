@@ -102,8 +102,8 @@ class InterimUploadPopup(Popup):
 
     def on_open(self):
 
-        # Call dismiss_popup in 60 seconds
-        Clock.schedule_once(self.dismiss_popup, 1000)
+        # Call dismiss_popup in 1000 seconds
+        Clock.schedule_once(self.dismiss, 1000)
 
 
 class UploadPopup(Popup):
@@ -289,8 +289,8 @@ class AircraftSelectionPopup(Popup):
 class InterimDownloadPopup(Popup):
     def on_open(self):
 
-        # Call dismiss_popup in 60 seconds
-        Clock.schedule_once(self.dismiss_popup, 1000)
+        # Call dismiss_popup in 1000 seconds
+        Clock.schedule_once(self.dismiss, 1000)
 
 
 class DownloadCompletePopup(Popup):
