@@ -1,7 +1,8 @@
 import os
 import sys
 import configparser
-
+from utils.devicemanager import DeviceManager
+from tests.simulation_functions import generate_simulated_hd
 
 def setup():
 
@@ -29,4 +30,12 @@ if __name__ == '__main__':
     # Run the above setup
     setup()
 
+    device_manager = DeviceManager()
+    device_manager.locate_hd()
+
+    # Initialize and read the config
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
+    generate_simulated_hd(config.get('Paths', 'hd'), 100)
 
