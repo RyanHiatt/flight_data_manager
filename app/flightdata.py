@@ -74,7 +74,7 @@ class DataTransferButton(Button):
         start_time = time.time()
         logger.debug('Upload Pressed')
 
-        self.thread = Thread(target=self.thread_upload)
+        self.thread = Thread(target=self.thread_upload, daemon=True)
         self.thread.start()
 
         interim_popup = InterimUploadPopup(title='Uploading')
