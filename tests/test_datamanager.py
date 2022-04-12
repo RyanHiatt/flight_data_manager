@@ -47,11 +47,11 @@ def upload_from_sd_to_hd(num_iter: int, clean_data: bool) -> bool:
 
 
 def test_clean_upload_from_sd_to_hd():
-    assert upload_from_sd_to_hd(10, True) == True
+    assert upload_from_sd_to_hd(200, True) == True
 
 
 def test_dirty_upload_from_sd_to_hd():
-    assert upload_from_sd_to_hd(10, False) == False
+    assert upload_from_sd_to_hd(200, False) == False
 
 
 # test data download from hard drive to usb drive
@@ -79,7 +79,7 @@ def download_from_hd_to_usb_date(num_iter: int):
 
 
 def test_download_from_hd_to_usb_date():
-    assert download_from_hd_to_usb_date(10) == True
+    assert download_from_hd_to_usb_date(200) == True
 
 
 # test data download from hard drive to usb drive
@@ -106,7 +106,7 @@ def download_from_hd_to_usb_aircraft(num_iter: int):
 
 
 def test_download_from_hd_to_usb_aircraft():
-    assert download_from_hd_to_usb_date(10) == True
+    assert download_from_hd_to_usb_date(200) == True
 
 
 # test data copy from sd card to usb drive
@@ -134,7 +134,7 @@ def copy_from_sd_to_usb(num_iter: int, clean_data: bool):
 
 
 def test_copy_from_sd_to_usb():
-    assert copy_from_sd_to_usb(10, True) == True
+    assert copy_from_sd_to_usb(200, True) == True
 
 
 if __name__ == '__main__':

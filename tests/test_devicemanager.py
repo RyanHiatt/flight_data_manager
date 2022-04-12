@@ -60,7 +60,7 @@ def detect_and_handle_sd(num_iter: int):
 
 
 def test_detect_and_handle_sd():
-    assert detect_and_handle_sd(10) == True
+    assert detect_and_handle_sd(200) == True
 
 
 # test usb drive detection and handling
@@ -83,7 +83,7 @@ def detect_and_handle_usb(num_iter: int):
 
 
 def test_detect_and_handle_usb():
-    assert detect_and_handle_usb(10) == True
+    assert detect_and_handle_usb(200) == True
 
 
 # test hd detection and handling
@@ -106,7 +106,7 @@ def detect_and_handle_hd(num_iter: int):
 
 
 def test_detect_and_handle_hd():
-    assert detect_and_handle_hd(10) == True
+    assert detect_and_handle_hd(200) == True
 
 
 if __name__ == '__main__':
