@@ -1,7 +1,7 @@
 import configparser
 import time
 import logging
-from threading import Thread
+import json
 
 from kivy.app import App
 from kivy.core.window import Window
@@ -259,21 +259,35 @@ class AircraftSelectionPopup(Popup):
 
         layout = GridLayout(cols=4, spacing=10, size_hint=(1, None))
         layout.bind(minimum_height=layout.setter('height'))
-        for key in self.aircraft_dict.keys():
-            btn = Button(text=f"{key.split('-')[0]}\n{key.split('-')[1]}\n{self.aircraft_dict[key]['size']} Mb",
-                         font_size=20, size_hint_y=None, height=100, on_release=self.btn_press, halign='center')
-            layout.add_widget(btn)
-        self.ids.scroll_view.add_widget(layout)
+        with open(f"{config.get('Paths', 'base_path')}/aircraft_reference.json", "r") as file:
+            key_json = json.load(file)
+            for key in self.aircraft_dict.keys():
+
+                if key in key_json.keys():
+                    text = f"{key_json[key]}\n{self.aircraft_dict[key]['size']} Mb"
+                else:
+                    text = f"{key.split('-')[0]}\n{key.split('-')[1]}\n{self.aircraft_dict[key]['size']} Mb"
+
+                btn = Button(text=text, font_size=20, size_hint_y=None, height=100, on_release=self.btn_press, halign='center')
+                layout.add_widget(btn)
+            self.ids.scroll_view.add_widget(layout)
 
     def btn_press(self, instance):
         selection = "{}-{}".format(instance.text.split('\n')[0], instance.text.split('\n')[1])
 
-        for key in self.aircraft_dict.keys():
-            if selection == key:
-                data_manager.download_flight_data(directories=self.aircraft_dict[key]['dir_list'])
-                popup = DownloadCompletePopup(title="Download Complete")
-                popup.open()
-                self.dismiss()
+        with open(f"{config.get('Paths', 'base_path')}/aircraft_reference.json", "r") as file:
+            key_json = json.load(file)
+            for key in self.aircraft_dict.keys():
+
+                for k, v in key_json.items():
+                    if key == v:
+                        selection = k
+
+                if selection == key:
+                    data_manager.download_flight_data(directories=self.aircraft_dict[key]['dir_list'])
+                    popup = DownloadCompletePopup(title="Download Complete")
+                    popup.open()
+                    self.dismiss()
 
 
 class DownloadCompletePopup(Popup):
