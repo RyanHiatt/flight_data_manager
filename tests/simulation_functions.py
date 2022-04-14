@@ -100,8 +100,8 @@ def generate_simulated_hd(path: str, num_entries: int):
     """
 
     # Used to generate names and dates
-    airframe_names = ['Cessna 172S', 'Cirrus SR20', 'Cessna 165A', 'Cirrus SR22', 'Cessna 208C']
-    system_ids = ['A4230C5A35', 'C7A12097DA', '38A7FC7085', 'FDF51CCBAD', '392EE09698']
+    airframe_names = ['Cessna 172S', 'Cirrus SR20', 'Cessna 172R', 'Cirrus SR22', 'Cessna 208C']
+    system_ids = ['254A3DC58', '260364EFD', '24E3A63CB', '25D5F09AC', '392EE09698']
     d1 = datetime.datetime.strptime('2021-01-01T01-00-00', '%Y-%m-%dT%H-%M-%S')
     d2 = datetime.datetime.now()
 

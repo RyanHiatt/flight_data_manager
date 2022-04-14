@@ -2,6 +2,7 @@ import os
 import sys
 import configparser
 from utils.devicemanager import DeviceManager
+from utils.datamanager import DataManager
 from tests.simulation_functions import generate_simulated_hd
 
 def setup():
@@ -32,6 +33,9 @@ if __name__ == '__main__':
 
     device_manager = DeviceManager()
     device_manager.locate_hd()
+
+    data_manager = DataManager()
+    data_manager.clear_hd()
 
     # Initialize and read the config
     config = configparser.ConfigParser()
