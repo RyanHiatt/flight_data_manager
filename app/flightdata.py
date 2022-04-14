@@ -280,7 +280,7 @@ class AircraftSelectionPopup(Popup):
             for key in self.aircraft_dict.keys():
 
                 for k, v in key_json.items():
-                    if key == v:
+                    if instance.text.split('\n')[0] == v:
                         selection = k
 
                 if selection == key:
