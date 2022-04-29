@@ -41,7 +41,8 @@ file_handler = logging.FileHandler(filename=config.get("Paths", "base_path") + "
 file_handler.setLevel(level=logging.INFO)
 
 # Create formatter
-formatter = logging.Formatter(fmt="[%(levelname)s]\t%(asctime)s:\t%(message)s", datefmt='%Y-%m-%d %H:%M:%S')
+formatter = logging.Formatter(
+    fmt="[%(levelname)s]\t%(asctime)s:\t%(message)s", datefmt='%Y-%m-%d %H:%M:%S')
 
 # Add formatter to file handler
 file_handler.setFormatter(fmt=formatter)
@@ -214,7 +215,8 @@ class DateSelectionPopup(Popup):
                 btn.disabled = True
             self.ids.btn_grid.add_widget(btn)
 
-        btn = Button(text='By Aircraft', font_size=25, on_release=self.btn_press, halign='center')
+        btn = Button(text='By Aircraft', font_size=25,
+                     on_release=self.btn_press, halign='center')
         self.ids.btn_grid.add_widget(btn)
 
     def btn_press(self, instance):
@@ -222,7 +224,8 @@ class DateSelectionPopup(Popup):
 
         for key in self.date_dict.keys():
             if selection == key:
-                data_manager.download_flight_data(directories=self.date_dict[key]['dir_list'])
+                data_manager.download_flight_data(
+                    directories=self.date_dict[key]['dir_list'])
                 popup = DownloadCompletePopup(title="Download Complete")
                 popup.open()
                 self.dismiss()
@@ -268,12 +271,14 @@ class AircraftSelectionPopup(Popup):
                 else:
                     text = f"{key.split('-')[0]}\n{key.split('-')[1]}\n{self.aircraft_dict[key]['size']} Mb"
 
-                btn = Button(text=text, font_size=20, size_hint_y=None, height=100, on_release=self.btn_press, halign='center')
+                btn = Button(text=text, font_size=20, size_hint_y=None,
+                             height=100, on_release=self.btn_press, halign='center')
                 layout.add_widget(btn)
             self.ids.scroll_view.add_widget(layout)
 
     def btn_press(self, instance):
-        selection = "{}-{}".format(instance.text.split('\n')[0], instance.text.split('\n')[1])
+        selection = "{}-{}".format(instance.text.split('\n')
+                                   [0], instance.text.split('\n')[1])
 
         with open(f"{config.get('Paths', 'base_path')}/aircraft_reference.json", "r") as file:
             key_json = json.load(file)
@@ -284,7 +289,11 @@ class AircraftSelectionPopup(Popup):
                         selection = k
 
                 if selection == key:
-                    data_manager.download_flight_data(directories=self.aircraft_dict[key]['dir_list'])
+                    try:
+                        data_manager.download_flight_data(
+                            directories=self.aircraft_dict[key]['dir_list'])
+                    except:
+                        pass
                     popup = DownloadCompletePopup(title="Download Complete")
                     popup.open()
                     self.dismiss()
@@ -332,16 +341,20 @@ class StorageLabel(Label):
 
     def initial_cap_update(self, dt):
         try:
-            self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
+            self.remaining_storage = str(
+                device_manager.update_hd_capacity() // 1024)
             self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-            logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
+            logger.debug(
+                f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
         except Exception as e:
             logger.error(f"Initial HD cap update error: {e}")
 
     def update_capacity(self, dt):
-        self.remaining_storage = str(device_manager.update_hd_capacity() // 1024)
+        self.remaining_storage = str(
+            device_manager.update_hd_capacity() // 1024)
         self.text = ' ' + self.remaining_storage + ' Gb Remaining'
-        logger.debug(f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
+        logger.debug(
+            f"Hard drive remaining capacity updated: {self.remaining_storage} GiB")
 
 
 class FlightDataApp(App):
